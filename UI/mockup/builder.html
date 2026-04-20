@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workflow builder — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows" aria-current="page">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Workflow">
+        <div class="shell-subnav__title">Workflow</div>
+        <a class="shell-subnav__link" href="canvas.html">Canvas</a>
+        <a class="shell-subnav__link" href="builder.html" aria-current="page">Builder (compact)</a>
+        <a class="shell-subnav__link" href="workflow-runs.html">Runs <span class="shell-subnav__badge">1.2k</span></a>
+        <a class="shell-subnav__link" href="triggers.html">Triggers</a>
+        <a class="shell-subnav__link" href="workflows.html">Variables</a>
+        <a class="shell-subnav__link" href="workflows.html">Versions</a>
+        <a class="shell-subnav__link" href="members.html">Permissions</a>
+        <a class="shell-subnav__link" href="workspace-settings.html">Settings</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">Workflows<span>/</span>Builder<span>/</span><strong>New</strong></nav>
+          <div class="shell-main__actions">
+            <span class="pill pill--warn">Draft v15 · unsaved</span>
+            <button type="button" class="btn btn--ghost">Undo</button>
+            <button type="button" class="btn btn--ghost">Redo</button>
+            <button type="button" class="btn">Validate</button>
+            <button type="button" class="btn">Test run</button>
+            <button type="button" class="btn btn--primary">Deploy</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:170px 1fr 280px;gap:12px;min-height:520px">
+          <div style="border-right:1px dashed var(--border);padding-right:8px">
+            <input type="search" class="input input--wide" style="width:100%;margin-bottom:10px" placeholder="Search nodes" />
+            <div class="shell-subnav__group">Triggers</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◈ webhook</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◈ schedule</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◈ manual</div>
+            <div class="shell-subnav__group">Actions</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◇ http request</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◇ transform</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◇ branch</div>
+            <div class="shell-subnav__group">Connectors</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◉ stripe</div>
+            <div class="card" style="padding:6px 8px;margin-bottom:4px;font-size:12px;font-family:var(--font-mono)">◉ netsuite</div>
+          </div>
+
+          <div class="canvas-wrap">
+            <svg viewBox="0 0 700 400" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none" preserveAspectRatio="xMidYMid meet">
+              <defs><marker id="m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="var(--ink)"/></marker></defs>
+              <path d="M155 40 L200 40" stroke="var(--ink)" stroke-width="1.5" fill="none" marker-end="url(#m)"></path>
+              <path d="M340 40 L390 40" stroke="var(--ink)" stroke-width="1.5" fill="none" marker-end="url(#m)"></path>
+              <path d="M530 40 L580 40" stroke="var(--ink)" stroke-width="1.5" fill="none" marker-end="url(#m)"></path>
+              <path d="M655 70 Q680 160 200 120 Q01 115 115 210" stroke="var(--ink)" stroke-width="1.5" fill="none" marker-end="url(#m)"></path>
+              <path d="M680 70 Q700 180 300 145 Q10 130 380 225" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="4 3" fill="none" marker-end="url(#m)"></path>
+          </svg>
+            <div class="node-card node-card--trigger" style="left:24px;top:56px">Stripe charge<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">webhook</span><div style="margin-top:6px"><span class="pill pill--success">ok</span></div></div>
+            <div class="node-card" style="left:210px;top:56px">Fetch customer<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">stripe</span><div style="margin-top:6px"><span class="pill pill--success">ok</span></div></div>
+            <div class="node-card" style="left:400px;top:56px">Map invoice<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">transform</span><div style="margin-top:6px"><span class="pill pill--success">ok</span></div></div>
+            <div class="node-card node-card--branch" style="left:590px;top:48px">Branch<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">amount &gt; $100</span><div style="margin-top:6px"><span class="pill pill--info">idle</span></div></div>
+            <div class="node-card node-card--selected" style="left:120px;top:220px">Upsert NetSuite<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">invoice</span><div style="margin-top:6px"><span class="pill pill--warn">3 retries</span></div></div>
+            <div class="node-card" style="left:380px;top:240px">Slack #billing<br/><span style="font-size:10px;color:var(--ink-muted);font-family:var(--font-mono)">notify</span><div style="margin-top:6px"><span class="pill">skipped</span></div></div>
+          </div>
+
+          <div class="card" style="align-self:start">
+            <div style="font-weight:700;margin-bottom:8px;font-size:13px">Node · Upsert NetSuite</div>
+            <div class="tabs"><span class="tab tab--active">Config</span><span class="tab">Input</span><span class="tab">Output</span><span class="tab">Runs</span></div>
+            <label style="display:block;font-size:11px;color:var(--ink-muted);margin-bottom:4px">External ID field</label>
+            <input class="input input--wide" style="width:100%;margin-bottom:10px" value="invoice.external_id" />
+            <label style="display:block;font-size:11px;color:var(--ink-muted);margin-bottom:4px">Payload map</label>
+            <div style="font-family:var(--font-mono);font-size:11px;padding:8px;background:var(--paper-2);border:1px solid var(--border);border-radius:6px;min-height:80px">invoice_v3 ← map(trigger.payload)</div>
+            <div style="margin-top:12px;display:flex;gap:8px"><button type="button" class="btn btn--primary" style="flex:1">Save</button><button type="button" class="btn">Cancel</button></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

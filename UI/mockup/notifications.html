@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notifications — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+  <style>.chk{width:18px;height:18px;border:1px solid var(--border-strong);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:var(--accent);color:#fff}.chk--off{background:var(--paper)}</style>
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings" aria-current="page">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Settings">
+        <div class="shell-subnav__title">Settings</div>
+        <a class="shell-subnav__link" href="workspace-settings.html">General</a>
+        <a class="shell-subnav__link" href="members.html">Members</a>
+        <a class="shell-subnav__link" href="profile.html">Profile</a>
+        <a class="shell-subnav__link" href="notifications.html" aria-current="page">Notifications</a>
+        <a class="shell-subnav__link" href="profile.html">Appearance</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">my account<span>/</span>notifications</nav>
+          <div class="shell-main__actions">
+            <button type="button" class="btn">Send sample</button>
+            <button type="button" class="btn btn--primary">Save</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">Notifications</h1>
+        <p class="shell-page-sub">When to ping you and where. Workspace-wide alerts still apply.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><strong>Email</strong><span class="shell-top__spacer"></span><span class="chk">✓</span></div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-muted)">priya@acme.co</div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><strong>Slack DM</strong><span class="shell-top__spacer"></span><span class="chk">✓</span></div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-muted)">@priya · acme.slack.com</div>
+            <div style="font-size:11px;color:var(--accent-3);margin-top:4px">connected</div>
+          </div>
+          <div class="card">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><strong>SMS</strong><span class="shell-top__spacer"></span><span class="chk chk--off"></span></div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--ink-muted)">+1 ••• ••• 4421</div>
+            <div style="font-size:11px;color:var(--accent-4);margin-top:4px">off — upgrade to Pro</div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <div style="display:grid;grid-template-columns:1.8fr 100px 100px 100px;padding:8px 12px;border-bottom:1px solid var(--ink);background:var(--paper-2);font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-muted)">
+            <div>Event</div><div>Email</div><div>Slack</div><div>In-app</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1.8fr 100px 100px 100px;padding:10px 12px;border-bottom:1px dashed var(--border);align-items:center"><div><div style="font-weight:500">Workflow fails (final)</div><div style="font-size:11px;color:var(--ink-muted)">good default</div></div><div class="chk">✓</div><div class="chk">✓</div><div class="chk">✓</div></div>
+          <div style="display:grid;grid-template-columns:1.8fr 100px 100px 100px;padding:10px 12px;border-bottom:1px dashed var(--border);align-items:center"><div>Workflow fails (will retry)</div><div class="chk chk--off"></div><div class="chk chk--off"></div><div class="chk">✓</div></div>
+          <div style="display:grid;grid-template-columns:1.8fr 100px 100px 100px;padding:10px 12px;border-bottom:1px dashed var(--border);align-items:center"><div>Connection broken</div><div class="chk">✓</div><div class="chk">✓</div><div class="chk">✓</div></div>
+          <div style="display:grid;grid-template-columns:1.8fr 100px 100px 100px;padding:10px 12px;align-items:center"><div><div>Weekly digest</div><div style="font-size:11px;color:var(--ink-muted)">Monday 09:00</div></div><div class="chk">✓</div><div class="chk chk--off"></div><div class="chk chk--off"></div></div>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:16px"><strong>Quiet by default, loud when it matters.</strong> Auto-enable alerts that impact users.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

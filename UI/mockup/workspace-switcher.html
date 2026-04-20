@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workspace switcher — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">switch workspace</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home" aria-current="page">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Home">
+        <div class="shell-subnav__title">Home</div>
+        <a class="shell-subnav__link" href="dashboard.html">Welcome</a>
+        <a class="shell-subnav__link" href="workspace-switcher.html" aria-current="page">Switch <span class="shell-subnav__badge">4</span></a>
+        <a class="shell-subnav__link" href="workspace-settings.html">Create new</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">Workspace<span>/</span>Workflows</nav>/</span>Switch</nav>
+          <div class="shell-main__actions">
+            <input type="search" class="input" placeholder="Filter…" />
+            <button type="button" class="btn btn--primary">+ New workspace</button>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--ink-muted);margin:0 0 16px">Anchored to workspace control in the rail — role shown to avoid wrong-permission confusion.</p>
+
+        <div class="card" style="max-width:520px;border-width:2px;box-shadow:var(--shadow-md)">
+          <div style="padding:10px 12px;border-bottom:1px dashed var(--border);display:flex;align-items:center;gap:10px">
+            <div style="width:28px;height:28px;border:1px solid var(--border);border-radius:6px;background:var(--paper-2)"></div>
+            <div><div style="font-weight:600">Priya Shah</div><div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">priya@acme.co</div></div>
+            <span style="margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--ink-muted)">⌘⇧O</span>
+          </div>
+          <div style="padding:8px">
+            <div style="display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:10px;border-radius:6px;background:var(--accent-muted);align-items:center">
+              <div style="width:24px;height:24px;border-radius:6px;background:var(--accent)"></div>
+              <div>
+                <div style="font-weight:600;display:flex;gap:8px;align-items:center">Acme Ops <span style="font-family:var(--font-mono);font-size:10px;color:var(--accent-3)">● current</span></div>
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">acme-ops · 14 members · 28 flows · Admin</div>
+              </div>
+              <span class="kbd">⌘1</span>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:10px;align-items:center">
+              <div style="width:24px;height:24px;border-radius:6px;background:var(--accent-2)"></div>
+              <div>
+                <div style="font-weight:600">Acme Finance</div>
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">acme-fin · 6 members · 9 flows · Builder</div>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted)">⌘2</span>
+            </div>
+            <div style="display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:10px;align-items:center">
+              <div style="width:24px;height:24px;border-radius:6px;background:var(--accent-3)"></div>
+              <div>
+                <div style="font-weight:600">Priya · personal</div>
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">priya · 1 member · 2 flows · Owner</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:8px 12px;border-top:1px dashed var(--border);display:flex;gap:8px;flex-wrap:wrap">
+            <button type="button" class="btn btn--ghost">+ Create</button>
+            <button type="button" class="btn btn--ghost">Join by code</button>
+            <span class="shell-top__spacer"></span>
+            <button type="button" class="btn btn--ghost">Sign out</button>
+          </div>
+        </div>
+        <p style="font-size:13px;color:var(--ink-2);margin-top:20px;max-width:52ch">Workspaces are <strong>hard boundaries</strong>: separate connections, secrets, runs, and members.</p>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

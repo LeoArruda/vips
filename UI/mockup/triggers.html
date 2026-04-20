@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Triggers — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers" aria-current="page">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Triggers">
+        <div class="shell-subnav__title">Triggers</div>
+        <div class="shell-subnav__group">Kind</div>
+        <a class="shell-subnav__link" href="triggers.html" aria-current="page">All <span class="shell-subnav__badge">24</span></a>
+        <a class="shell-subnav__link" href="triggers.html">Webhooks <span class="shell-subnav__badge">12</span></a>
+        <a class="shell-subnav__link" href="triggers.html">Schedules <span class="shell-subnav__badge">9</span></a>
+        <a class="shell-subnav__link" href="triggers.html">Events <span class="shell-subnav__badge">3</span></a>
+        <div class="shell-subnav__group">Health</div>
+        <a class="shell-subnav__link" href="triggers.html">Recent fires</a>
+        <a class="shell-subnav__link" href="triggers.html">Failed deliveries <span class="shell-subnav__badge">1</span></a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">Workspace<span>/</span>Triggers<span>/</span>All</nav>
+          <div class="shell-main__actions">
+            <button type="button" class="btn btn--ghost">Timezone · UTC</button>
+            <button type="button" class="btn btn--primary">+ Trigger</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">Triggers</h1>
+        <p class="shell-page-sub">24 configured · 1 failing</p>
+
+        <div class="card" style="margin-bottom:16px">
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px">Activity · last 24h · 10 min buckets</div>
+          <div style="display:grid;grid-template-columns:repeat(36,1fr);gap:3px">
+            <span style="height:14px;background:color-mix(in oklab,var(--ink) 45%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 55%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--accent) 50%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 40%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 60%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 35%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 50%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--accent-4) 55%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 45%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 52%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 48%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 58%,var(--paper));border-radius:2px"></span>
+            <span style="height:14px;background:color-mix(in oklab,var(--ink) 42%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 50%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 55%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 38%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 62%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 44%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 51%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 47%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 56%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 40%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 53%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 49%,var(--paper));border-radius:2px"></span>
+            <span style="height:14px;background:color-mix(in oklab,var(--ink) 57%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 43%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 52%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 46%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 54%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 41%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 59%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 48%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 50%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 45%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 55%,var(--paper));border-radius:2px"></span><span style="height:14px;background:color-mix(in oklab,var(--ink) 47%,var(--paper));border-radius:2px"></span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);margin-top:6px"><span>−24h</span><span>−12h</span><span>now</span></div>
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="table">
+            <thead>
+              <tr><th>Trigger</th><th>Kind</th><th>Workflow</th><th>Last fire</th><th>State</th></tr>
+            </thead>
+            <tbody>
+              <tr><td style="font-family:var(--font-mono);font-size:12px"><strong>stripe.charge.succeeded</strong></td><td style="color:var(--ink-muted)">webhook</td><td>billing-sync</td><td style="font-family:var(--font-mono);color:var(--ink-muted)">10s ago</td><td><span class="pill pill--success">ok</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px"><strong>daily 08:00 UTC</strong></td><td style="color:var(--ink-muted)">cron</td><td>KPI digest</td><td style="font-family:var(--font-mono);color:var(--ink-muted)">2h ago</td><td><span class="pill pill--success">ok</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px"><strong>zendesk.ticket.created</strong></td><td style="color:var(--ink-muted)">webhook</td><td>zendesk triage</td><td style="font-family:var(--font-mono);color:var(--ink-muted)">4m ago</td><td><span class="pill pill--success">ok</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px"><strong>every 15 min</strong></td><td style="color:var(--ink-muted)">cron</td><td>churn flagger</td><td style="font-family:var(--font-mono);color:var(--ink-muted)">3m ago</td><td><span class="pill pill--danger">error</span></td></tr>
+              <tr><td style="font-family:var(--font-mono);font-size:12px"><strong>calendar.event.created</strong></td><td style="color:var(--ink-muted)">event</td><td>HRIS sync</td><td style="font-family:var(--font-mono);color:var(--ink-muted)">22m ago</td><td><span class="pill pill--success">ok</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

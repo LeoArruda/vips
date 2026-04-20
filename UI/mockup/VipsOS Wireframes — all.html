@@ -1,0 +1,4010 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>VipsOS — Wireframes (full folder)</title>
+<style>
+/* ==========================================================
+   VipsOS Wireframes — hand-drawn low-fi
+   Paper + ink + one warm accent. Annotations carry the thinking.
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Kalam:wght@300;400;700&family=Gloria+Hallelujah&family=JetBrains+Mono:wght@400;500&family=Shantell+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  /* paper + ink */
+  --paper:       #fbf8f0;
+  --paper-2:     #f5f0e2;
+  --paper-edge:  #ece5d1;
+  --ink:         #1e1a14;
+  --ink-2:       #3a332a;
+  --ink-muted:   #7a7064;
+  --ink-faint:   #b5ac9b;
+
+  /* accents — all oklch, same L/C, hue varies */
+  --accent:      oklch(0.75 0.16 55);   /* warm orange */
+  --accent-2:    oklch(0.75 0.16 210);  /* cool blue */
+  --accent-3:    oklch(0.75 0.16 140);  /* sage green */
+  --accent-4:    oklch(0.75 0.16 25);   /* soft red */
+
+  /* typography */
+  --font-hand:    'Shantell Sans', 'Kalam', cursive;
+  --font-hand-alt:'Caveat', cursive;
+  --font-note:    'Gloria Hallelujah', 'Kalam', cursive;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* stroke widths for the sketchy feel */
+  --sw-thin:   1px;
+  --sw-med:    1.4px;
+  --sw-thick:  2px;
+
+  /* density */
+  --gap: 20px;
+  --pad: 16px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-hand);
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+/* subtle paper grain */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 20% 10%, rgba(180,160,120,0.06), transparent 60%),
+    radial-gradient(ellipse at 80% 90%, rgba(180,160,120,0.06), transparent 60%);
+  mix-blend-mode: multiply;
+}
+
+/* ----- page frame ----- */
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 40px 120px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ----- title block ----- */
+.doc-title {
+  font-family: var(--font-hand-alt);
+  font-size: 72px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0 0 4px;
+}
+.doc-title .accent { color: var(--accent); }
+.doc-sub {
+  font-family: var(--font-note);
+  font-size: 17px;
+  color: var(--ink-muted);
+  margin: 0 0 4px;
+}
+.doc-meta {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ----- section headers ----- */
+.section {
+  margin: 80px 0 0;
+  scroll-margin-top: 24px;
+}
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  margin: 0 0 8px;
+}
+.section-title {
+  font-family: var(--font-hand-alt);
+  font-size: 52px;
+  line-height: 1;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+.section-title .num {
+  color: var(--accent);
+  font-size: 36px;
+  vertical-align: 6px;
+  margin-right: 10px;
+}
+.section-intro {
+  font-family: var(--font-hand);
+  font-size: 17px;
+  color: var(--ink-2);
+  max-width: 720px;
+  margin: 0 0 28px;
+  line-height: 1.55;
+}
+
+/* ----- hand-drawn frame primitive ----- */
+.frame {
+  position: relative;
+  background: var(--paper);
+  border: var(--sw-med) solid var(--ink);
+  border-radius: 6px 10px 8px 12px;
+  padding: var(--pad);
+}
+.frame.rough {
+  /* uneven edge illusion via multiple shadows */
+  box-shadow:
+    1px 1px 0 var(--ink),
+    2px 2px 0 rgba(30,26,20,0.15),
+    0 4px 0 -2px rgba(30,26,20,0.1);
+}
+.frame.tinted { background: var(--paper-2); }
+.frame.inset  { background: var(--paper-2); border-style: dashed; border-color: var(--ink-muted); }
+
+/* sketch line */
+.hr-sketch {
+  height: 2px;
+  background: var(--ink);
+  border: 0;
+  margin: 12px 0;
+  border-radius: 2px;
+  position: relative;
+}
+.hr-sketch::after {
+  content: "";
+  position: absolute;
+  left: 4%;
+  right: 8%;
+  top: 0;
+  height: 2px;
+  background: rgba(30,26,20,0.3);
+  transform: translateY(-3px) rotate(-0.3deg);
+}
+
+/* placeholder rect (image / chart / map) */
+.ph {
+  background:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 10px,
+      rgba(30,26,20,0.08) 10px 11px
+    );
+  border: 1.2px dashed var(--ink-muted);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-muted);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 6px;
+}
+
+/* pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1.2px solid var(--ink);
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 12px;
+  font-family: var(--font-hand);
+  background: var(--paper);
+}
+.pill.success { background: color-mix(in oklab, var(--accent-3) 35%, var(--paper)); }
+.pill.warn    { background: color-mix(in oklab, var(--accent) 35%, var(--paper)); }
+.pill.danger  { background: color-mix(in oklab, var(--accent-4) 35%, var(--paper)); }
+.pill.info    { background: color-mix(in oklab, var(--accent-2) 30%, var(--paper)); }
+.pill.dot::before {
+  content: "";
+  width: 6px; height: 6px; border-radius: 999px;
+  background: var(--ink);
+  display: inline-block;
+}
+.pill.success.dot::before { background: oklch(0.55 0.16 140); }
+.pill.warn.dot::before    { background: oklch(0.6 0.18 55); }
+.pill.danger.dot::before  { background: oklch(0.55 0.2 25); }
+.pill.info.dot::before    { background: oklch(0.55 0.16 210); }
+
+/* sticky-note annotation */
+.note {
+  position: relative;
+  font-family: var(--font-note);
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: color-mix(in oklab, var(--accent) 35%, #fff9df);
+  border: 1.2px solid var(--ink);
+  border-radius: 2px;
+  padding: 10px 12px 12px;
+  box-shadow: 2px 3px 0 rgba(30,26,20,0.15);
+  transform: rotate(-0.6deg);
+  max-width: 280px;
+}
+.note.blue   { background: color-mix(in oklab, var(--accent-2) 30%, #eaf4ff); }
+.note.green  { background: color-mix(in oklab, var(--accent-3) 30%, #ecf6e8); }
+.note.red    { background: color-mix(in oklab, var(--accent-4) 30%, #fbecea); }
+.note.tilt-r { transform: rotate(0.8deg); }
+.note.tilt-0 { transform: rotate(0deg); }
+.note .tag {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--ink-muted);
+  margin-bottom: 4px;
+}
+
+/* arrow marker used beside annotations */
+.arrow-callout {
+  display: inline-block;
+  font-family: var(--font-hand-alt);
+  font-size: 20px;
+  color: var(--ink);
+  transform: rotate(-8deg);
+}
+
+/* variant label (A / B / C) */
+.variant-label {
+  font-family: var(--font-hand-alt);
+  font-weight: 700;
+  font-size: 28px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+.variant-label .chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  border: 1.6px solid var(--ink);
+  border-radius: 50%;
+  background: var(--accent);
+  color: var(--ink);
+  font-family: var(--font-hand-alt);
+  font-weight: 700;
+  font-size: 22px;
+  transform: rotate(-3deg);
+}
+.variant-label .sub {
+  font-family: var(--font-note);
+  font-size: 14px;
+  color: var(--ink-muted);
+  font-weight: 400;
+}
+
+/* tab bar */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 16px 0 20px;
+  border-bottom: 1.4px solid var(--ink);
+  padding-bottom: 0;
+}
+.tab {
+  font-family: var(--font-hand);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 8px 14px 10px;
+  border: 1.4px solid var(--ink);
+  border-bottom: none;
+  border-radius: 8px 10px 0 0;
+  background: var(--paper-2);
+  color: var(--ink-2);
+  cursor: pointer;
+  position: relative;
+  top: 1.4px;
+  transform: rotate(-0.2deg);
+}
+.tab:hover { background: var(--paper); }
+.tab.active {
+  background: var(--paper);
+  color: var(--ink);
+  box-shadow: inset 0 -4px 0 var(--accent);
+}
+
+/* side-by-side option grid */
+.options-grid {
+  display: grid;
+  gap: 32px;
+}
+.options-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.options-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+/* ----- tweak panel ----- */
+.tweaks-panel {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 260px;
+  background: var(--paper);
+  border: 1.6px solid var(--ink);
+  border-radius: 6px 10px 8px 12px;
+  padding: 14px 16px 16px;
+  z-index: 100;
+  box-shadow: 3px 4px 0 rgba(30,26,20,0.2);
+  font-family: var(--font-hand);
+  display: none;
+}
+.tweaks-panel.open { display: block; }
+.tweaks-panel h4 {
+  margin: 0 0 10px;
+  font-family: var(--font-hand-alt);
+  font-size: 22px;
+  font-weight: 700;
+}
+.tweaks-panel .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+  gap: 8px;
+  font-size: 13px;
+}
+.tweaks-panel .seg {
+  display: inline-flex;
+  border: 1.2px solid var(--ink);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.tweaks-panel .seg button {
+  border: 0;
+  background: var(--paper);
+  padding: 4px 9px;
+  cursor: pointer;
+  font-family: var(--font-hand);
+  font-size: 12px;
+  color: var(--ink);
+  border-right: 1.2px solid var(--ink);
+}
+.tweaks-panel .seg button:last-child { border-right: 0; }
+.tweaks-panel .seg button.on {
+  background: var(--accent);
+  font-weight: 600;
+}
+.tweaks-panel .toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/* density toggles */
+body[data-density="spacious"] { --gap: 22px; --pad: 18px; }
+body[data-density="medium"]   { --gap: 14px; --pad: 12px; }
+body[data-density="dense"]    { --gap: 8px;  --pad: 8px;  font-size: 13px; }
+
+/* annotations off */
+body[data-annotations="off"] .note,
+body[data-annotations="off"] .arrow-callout,
+body[data-annotations="off"] .margin-notes { display: none !important; }
+
+/* sketch intensity */
+body[data-sketch="clean"] .frame { transform: none !important; box-shadow: 1px 1px 0 var(--ink) !important; border-radius: 6px !important; }
+body[data-sketch="clean"] .note  { transform: none !important; }
+body[data-sketch="loose"] .frame { /* keep rotations */ }
+
+/* dark paper tweak */
+body[data-paper="dark"] {
+  --paper:      #1e1a16;
+  --paper-2:    #26221c;
+  --paper-edge: #2c2822;
+  --ink:        #f3ead6;
+  --ink-2:      #d6ccb4;
+  --ink-muted:  #8a8172;
+  --ink-faint:  #5d5648;
+}
+body[data-paper="dark"] .ph {
+  background: repeating-linear-gradient(135deg, transparent 0 10px, rgba(243,234,214,0.06) 10px 11px);
+}
+
+/* ----- storyboard strip ----- */
+.strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+.strip .step { position: relative; }
+.strip .step-num {
+  font-family: var(--font-hand-alt);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+.strip .step-title {
+  font-family: var(--font-hand-alt);
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+.strip .step-cap {
+  font-family: var(--font-note);
+  font-size: 13px;
+  color: var(--ink-muted);
+  margin-top: 8px;
+  line-height: 1.45;
+}
+.strip .step + .step::before {
+  content: "→";
+  position: absolute;
+  left: -14px;
+  top: 10px;
+  font-family: var(--font-hand-alt);
+  font-size: 26px;
+  color: var(--ink-muted);
+  transform: rotate(-5deg);
+}
+
+/* ----- generic UI atoms used inside screens ----- */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.4px solid var(--ink);
+  border-radius: 6px;
+  padding: 5px 12px;
+  font-family: var(--font-hand);
+  font-size: 13px;
+  background: var(--paper);
+  box-shadow: 1.5px 2px 0 rgba(30,26,20,0.2);
+  cursor: default;
+}
+.ui-btn.primary { background: var(--accent); font-weight: 600; }
+.ui-btn.ghost   { box-shadow: none; border-style: dashed; color: var(--ink-muted); }
+.ui-btn.sm      { padding: 2px 8px; font-size: 12px; }
+
+.ui-input {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 1.2px solid var(--ink-muted);
+  border-radius: 6px;
+  padding: 4px 10px;
+  background: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.ui-input.wide { width: 100%; }
+
+/* nav item row */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  font-size: 13px;
+  border-radius: 6px;
+  color: var(--ink-2);
+}
+.nav-item.active {
+  background: color-mix(in oklab, var(--accent) 35%, transparent);
+  color: var(--ink);
+  font-weight: 600;
+}
+.nav-item .dot { width: 10px; height: 10px; border: 1.2px solid var(--ink); border-radius: 2px; flex: none; }
+.nav-section-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--ink-faint);
+  margin: 14px 0 4px 8px;
+}
+
+/* screen chrome (browser bar) */
+.chrome {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-bottom: 1.4px solid var(--ink);
+  background: var(--paper-2);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-muted);
+}
+.chrome .dots { display: flex; gap: 4px; }
+.chrome .dots i { width: 9px; height: 9px; border: 1px solid var(--ink); border-radius: 50%; display: inline-block; }
+.chrome .url { flex: 1; text-align: center; opacity: 0.8; }
+
+/* margin notes column helper */
+.margin-notes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 8px;
+}
+
+/* scroll tab nav (top of doc) */
+.toc {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in oklab, var(--paper) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1.2px solid var(--ink);
+  padding: 10px 40px;
+  margin: 0 -40px 0;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  font-family: var(--font-hand);
+  font-size: 13px;
+}
+.toc a {
+  color: var(--ink-2);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1.2px dashed transparent;
+}
+.toc a:hover { border-color: var(--ink-muted); color: var(--ink); }
+
+/* tiny connector line svg container */
+.canvas-wrap { position: relative; }
+.canvas-wrap svg.connectors {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+</style>
+</head>
+<body data-density="spacious" data-sketch="loose" data-annotations="on" data-paper="light">
+
+<!-- Tweaks state stored as JSON for host persistence -->
+<script>
+  const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+    "density": "spacious",
+    "sketch": "loose",
+    "annotations": "on",
+    "paper": "light"
+  }/*EDITMODE-END*/;
+  // apply on load
+  Object.entries(TWEAK_DEFAULTS).forEach(([k,v]) => document.body.setAttribute('data-'+k, v));
+</script>
+
+<div class="page">
+
+  <!-- ============ title ============ -->
+  <header>
+    <p class="doc-meta">VIPSOS · WIREFRAME PACK · FULL FOLDER · v0.1 · APR 2026 · Inlines atoms, shells, dashboard, builder, flows, screens.jsx→screens5.jsx (styles.css mirrors the embedded &lt;style&gt;)</p>
+    <h1 class="doc-title">Wireframing <span class="accent">VipsOS</span></h1>
+    <p class="doc-sub">Low-fi exploration before we commit. Feel over pixels. Thinking in the margins.</p>
+  </header>
+
+  <!-- ============ section 0 — designer's notes ============ -->
+  <section class="section" id="s0" style="margin-top:48px">
+    <p class="section-label">Designer's notes · start here</p>
+    <h2 class="section-title"><span class="num">00</span>How I'm reading this brief</h2>
+
+    <div style="display:grid; grid-template-columns:1.4fr 1fr; gap:32px; align-items:start">
+      <div>
+        <p style="font-family:var(--font-hand); font-size:16px; line-height:1.6; max-width:620px; color:var(--ink-2)">
+          The design system calls for <em>clarity, speed, trust</em> — for a platform that sits between
+          an ops team who just wants to know <em>is it broken</em> and a platform engineer who lives in the
+          workflow builder. Most integration platforms get one of those right and make the other feel like a
+          punishment. I'm optimizing for both, through <strong>one shell</strong> that gracefully demotes complexity.
+        </p>
+        <p style="font-family:var(--font-hand); font-size:16px; line-height:1.6; max-width:620px; color:var(--ink-2); margin-top:10px">
+          I'll explore three shells, three dashboards, one builder, and two storyboards. The storyboards are
+          the acid test: if a flow can be told in four sketches, the shell is pulling its weight.
+        </p>
+        <p style="font-family:var(--font-hand); font-size:16px; line-height:1.6; max-width:620px; color:var(--ink-2); margin-top:10px">
+          Reference vibe: <strong>n8n</strong> for the DAG builder, <strong>Retool</strong> for the shell density,
+          <strong>Stripe</strong> for settings-surface clarity. Not copying — triangulating.
+        </p>
+
+        <div class="hr-sketch"></div>
+
+        <h3 style="font-family:var(--font-hand-alt); font-size:26px; margin:14px 0 8px">Assumptions I'm making</h3>
+        <ul style="font-family:var(--font-hand); font-size:15px; line-height:1.7; color:var(--ink-2); padding-left:22px">
+          <li>Primary personas: <strong>platform engineer</strong> (builds) + <strong>ops user</strong> (monitors).
+              Admin and embedded are secondary for this pass.</li>
+          <li>Density default is <strong>spacious</strong> (Linear/Notion), with a toggle to go ops-dense.</li>
+          <li>Builder is strictly <strong>left-to-right DAG</strong> per your pick — not a vertical step list.</li>
+          <li>Everything is <strong>lo-fi intentionally</strong>. No real icons, no final type. Placeholders announce themselves.</li>
+          <li>Workspace multi-tenancy exists but isn't the star — shown through a workspace switcher chip, not a whole screen.</li>
+        </ul>
+
+        <h3 style="font-family:var(--font-hand-alt); font-size:26px; margin:18px 0 8px">Open questions for you →</h3>
+        <ol style="font-family:var(--font-hand); font-size:15px; line-height:1.7; color:var(--ink-2); padding-left:22px">
+          <li>Is the overview a <em>status room</em>, a <em>welcome</em>, or a <em>checklist</em>? I've drawn all three.</li>
+          <li>Do we want workspace-scoped or global nav? Shell B implies workspace-scoped.</li>
+          <li>Minimap + zoom on canvas — table stakes or nice-to-have?</li>
+          <li>Run detail: single-pane with log drawer, or dedicated log page?</li>
+        </ol>
+      </div>
+
+      <aside class="margin-notes">
+        <div class="note tilt-r" style="max-width:none">
+          <span class="tag">System constraints</span>
+          App shell must serve <strong>15+ product areas</strong>. Nav can't collapse into three items — but we can tier them:
+          primary (build) vs operate vs admin.
+        </div>
+        <div class="note blue">
+          <span class="tag">Principle in play</span>
+          "Visual hierarchy must do the work" — so I'm leaning on typographic scale + surface tint rather than color.
+          Accent orange is reserved for <em>action</em> and <em>selected</em>.
+        </div>
+        <div class="note green">
+          <span class="tag">What I'm NOT doing</span>
+          No final icon system. No hero illustrations. No dark-mode polish. If these wireframes survive, the hi-fi pass earns them.
+        </div>
+        <div class="note red">
+          <span class="tag">Risk I'm flagging</span>
+          The builder canvas is dangerous to wireframe — too abstract and you design the wrong thing. I'm showing it
+          realistic enough to pressure-test layout, but we should hi-fi it early.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- TOC -->
+  <nav class="toc" style="margin-top:64px">
+    <a href="#s1">01 · Shells</a>
+    <a href="#s2">02 · Dashboard</a>
+    <a href="#s3">03 · Workflow builder</a>
+    <a href="#s4">04 · Flow · Setup</a>
+    <a href="#s5">05 · Flow · Incident</a>
+    <a href="#s7">07 · Workflows list</a>
+    <a href="#s8">08 · Workflow runs</a>
+    <a href="#s9">09 · Run detail</a>
+    <a href="#s10">10 · Connections</a>
+    <a href="#s11">11 · Add connection</a>
+    <a href="#s12">12 · Triggers</a>
+    <a href="#s13">13 · Secrets</a>
+    <a href="#s14">14 · Workspace settings</a>
+    <a href="#s15">15 · Members</a>
+    <a href="#s16">16 · Notifications</a>
+    <a href="#s17">17 · Templates</a>
+    <a href="#s18">18 · Empty state</a>
+    <a href="#s19">19 · Command palette</a>
+    <a href="#s20">20 · Workspace switcher</a>
+    <a href="#s21">21 · Profile</a>
+    <a href="#s6">22 · Next steps</a>
+  </nav>
+
+  <!-- Sections mounted by React below -->
+  <div id="root-shells"></div>
+  <div id="root-dashboard"></div>
+  <div id="root-builder"></div>
+  <div id="root-flow1"></div>
+  <div id="root-flow2"></div>
+  <div id="root-screens-extended"></div>
+
+  <!-- ============ next steps ============ -->
+  <!-- <section class="section" id="s6">
+    <p class="section-label">Designer's notes · closing</p>
+    <h2 class="section-title"><span class="num">22</span>Where I'd go next</h2>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; margin-top:14px">
+      <div class="frame" style="padding:14px">
+        <div style="font-family:var(--font-hand-alt); font-size:22px; font-weight:700">1 · Pick a shell</div>
+        <p style="font-size:14px; color:var(--ink-2); margin-top:4px">
+          My gut: <strong>Shell B</strong> (icon rail + contextual sub-nav) scales best to the 15 product areas in your spec
+          without a mega-menu. But A is the safer pick if we want power users to pin everything.
+        </p>
+      </div>
+      <div class="frame" style="padding:14px">
+        <div style="font-family:var(--font-hand-alt); font-size:22px; font-weight:700">2 · Resolve the dashboard question</div>
+        <p style="font-size:14px; color:var(--ink-2); margin-top:4px">
+          Dashboard is role-dependent. I'd propose C for new workspaces, and it <em>graduates</em> into A once the workspace
+          has real traffic. B is the "anytime" view. We don't have to pick one.
+        </p>
+      </div>
+      <div class="frame" style="padding:14px">
+        <div style="font-family:var(--font-hand-alt); font-size:22px; font-weight:700">3 · Hi-fi the builder first</div>
+        <p style="font-size:14px; color:var(--ink-2); margin-top:4px">
+          Node cards, port states, expression editor, and config drawer compound. Locking that visual language
+          early removes ambiguity from 10+ downstream screens.
+        </p>
+      </div>
+    </div>
+
+    <div class="hr-sketch" style="margin-top:24px"></div>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:20px">
+      <div>
+        <h3 style="font-family:var(--font-hand-alt); font-size:26px; margin:0 0 8px">Screens I haven't drawn (yet)</h3>
+        <ul style="font-family:var(--font-hand); font-size:14px; line-height:1.7; color:var(--ink-2); padding-left:22px">
+          <li>Runs list + filters (→ implied by dashboards)</li>
+          <li>Connector detail + versioning</li>
+          <li>Environment/worker management</li>
+          <li>Secrets, RBAC, audit log</li>
+          <li>Billing & usage</li>
+          <li>Embedded setup (white-label auth)</li>
+        </ul>
+        <p style="font-family:var(--font-note); font-size:13px; color:var(--ink-muted); margin-top:6px">
+          Each of these wants its own 3-variant pass once the shell is settled.
+        </p>
+      </div>
+      <div>
+        <h3 style="font-family:var(--font-hand-alt); font-size:26px; margin:0 0 8px">Things to try in hi-fi</h3>
+        <ul style="font-family:var(--font-hand); font-size:14px; line-height:1.7; color:var(--ink-2); padding-left:22px">
+          <li>Live data streaming into node cards (subtle pulse, not ornamental)</li>
+          <li>Command palette (⌘K) as the true primary navigation</li>
+          <li>Side-by-side diff for workflow versions</li>
+          <li>"Ask why it failed" inline assistant in the run detail</li>
+        </ul>
+      </div>
+    </div>
+  </section> -->
+
+</div>
+
+<!-- ============ Tweaks panel ============ -->
+<div class="tweaks-panel" id="tweaks">
+  <h4>Tweaks</h4>
+  <div class="row">
+    <span>Density</span>
+    <span class="seg" data-key="density">
+      <button data-val="spacious">spacious</button>
+      <button data-val="medium">medium</button>
+      <button data-val="dense">dense</button>
+    </span>
+  </div>
+  <div class="row">
+    <span>Sketch</span>
+    <span class="seg" data-key="sketch">
+      <button data-val="loose">loose</button>
+      <button data-val="clean">clean</button>
+    </span>
+  </div>
+  <div class="row">
+    <span>Annotations</span>
+    <span class="seg" data-key="annotations">
+      <button data-val="on">on</button>
+      <button data-val="off">off</button>
+    </span>
+  </div>
+  <div class="row">
+    <span>Paper</span>
+    <span class="seg" data-key="paper">
+      <button data-val="light">light</button>
+      <button data-val="dark">dark</button>
+    </span>
+  </div>
+  <div style="font-family:var(--font-mono); font-size:10px; color:var(--ink-muted); margin-top:10px; line-height:1.4">
+    Toggle the top-bar "Tweaks" button to show/hide this panel. State persists to disk.
+  </div>
+</div>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+
+// ==== atoms.jsx ====
+// atoms.jsx — small reusable wireframe primitives
+// All hand-drawn vibe, paper + ink + accent orange.
+
+const Rough = ({ children, style = {}, rotate = 0, className = '', ...rest }) => (
+  <div
+    className={'frame rough ' + className}
+    style={{ transform: `rotate(${rotate}deg)`, ...style }}
+    {...rest}
+  >
+    {children}
+  </div>
+);
+
+const Ph = ({ label = 'placeholder', h = 80, style = {}, className = '' }) => (
+  <div className={'ph ' + className} style={{ height: h, ...style }}>{label}</div>
+);
+
+const Pill = ({ kind = '', children, dot = false }) => (
+  <span className={`pill ${dot ? 'dot' : ''} ${kind}`}>{children}</span>
+);
+
+const Note = ({ children, color = '', tilt = '', tag = '' }) => (
+  <div className={`note ${color} ${tilt}`}>
+    {tag && <span className="tag">{tag}</span>}
+    {children}
+  </div>
+);
+
+const Arrow = ({ children = '←', style = {} }) => (
+  <span className="arrow-callout" style={style}>{children}</span>
+);
+
+const Btn = ({ children, variant = '', size = '' }) => (
+  <span className={`ui-btn ${variant} ${size}`}>{children}</span>
+);
+
+const InputMock = ({ placeholder = 'search…', wide = false, style = {} }) => (
+  <span className={'ui-input ' + (wide ? 'wide' : '')} style={style}>
+    <span style={{ opacity: 0.6 }}>⌕</span> {placeholder}
+  </span>
+);
+
+// Sketchy squiggle line — used for text placeholders
+const Squiggle = ({ w = '100%', opacity = 0.7, style = {} }) => (
+  <svg width={w} height="8" viewBox="0 0 200 8" preserveAspectRatio="none"
+       style={{ display: 'block', opacity, ...style }}>
+    <path d="M0 4 Q 10 1, 20 4 T 40 4 T 60 4 T 80 4 T 100 4 T 120 4 T 140 4 T 160 4 T 180 4 T 200 4"
+          stroke="currentColor" strokeWidth="1.2" fill="none" strokeLinecap="round"/>
+  </svg>
+);
+
+const LineText = ({ lines = 3, widths = null, gap = 8, style = {} }) => {
+  const ws = widths || Array.from({ length: lines }, (_, i) =>
+    i === lines - 1 ? `${55 + Math.random() * 25}%` : '100%');
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap, ...style }}>
+      {ws.map((w, i) => <Squiggle key={i} w={w} opacity={0.55} />)}
+    </div>
+  );
+};
+
+// Section header component
+const SectionHeader = ({ num, label, title, children }) => (
+  <div className="section" id={`s${num}`}>
+    <p className="section-label">{label}</p>
+    <h2 className="section-title"><span className="num">{num}</span>{title}</h2>
+    {children && <p className="section-intro">{children}</p>}
+  </div>
+);
+
+// Variant header (A / B / C)
+const VariantHeader = ({ letter, title, sub }) => (
+  <h3 className="variant-label">
+    <span className="chip">{letter}</span>
+    <span>{title}</span>
+    {sub && <span className="sub">· {sub}</span>}
+  </h3>
+);
+
+// A lo-fi "screen frame" — big wireframe card with a fake window chrome
+const Screen = ({ title = 'VipsOS', children, style = {}, height = null }) => (
+  <div className="frame rough" style={{ padding: 0, overflow: 'hidden', ...style }}>
+    <div className="chrome">
+      <span className="dots"><i/><i/><i/></span>
+      <span className="url">app.vipsos.dev / {title}</span>
+      <span style={{ opacity: 0.5 }}>⤢</span>
+    </div>
+    <div style={{ padding: 14, minHeight: height || 'auto' }}>
+      {children}
+    </div>
+  </div>
+);
+
+// Nav item for sidebar mocks
+const NavItem = ({ active, label, badge }) => (
+  <div className={'nav-item ' + (active ? 'active' : '')}>
+    <span className="dot" />
+    <span style={{ flex: 1 }}>{label}</span>
+    {badge && <span style={{ fontSize: 10, opacity: 0.6, fontFamily: 'var(--font-mono)' }}>{badge}</span>}
+  </div>
+);
+
+// Sketchy arrow SVG between elements
+const SketchArrow = ({ from, to, color = 'currentColor', curve = 0 }) => {
+  // from/to are {x,y} coords within a relative parent svg
+  const mx = (from.x + to.x) / 2 + curve;
+  const my = (from.y + to.y) / 2 - Math.abs(curve) * 0.5;
+  return (
+    <g>
+      <path d={`M ${from.x} ${from.y} Q ${mx} ${my} ${to.x} ${to.y}`}
+            stroke={color} strokeWidth="1.6" fill="none" strokeLinecap="round"/>
+      <path d={`M ${to.x - 8} ${to.y - 5} L ${to.x} ${to.y} L ${to.x - 8} ${to.y + 5}`}
+            stroke={color} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+    </g>
+  );
+};
+
+Object.assign(window, {
+  Rough, Ph, Pill, Note, Arrow, Btn, InputMock, Squiggle, LineText,
+  SectionHeader, VariantHeader, Screen, NavItem, SketchArrow,
+});
+
+
+// ==== shells.jsx ====
+// shells.jsx — App shell / navigation explorations
+// 3 distinct structural approaches
+
+/* ---------- Shared sidebar content ---------- */
+const PRIMARY_NAV = [
+  { label: 'Overview',   active: true },
+  { label: 'Workflows',  badge: '24' },
+  { label: 'Runs',       badge: '1.2k' },
+  { label: 'Connectors' },
+  { label: 'Templates' },
+  { label: 'Marketplace' },
+];
+const SECONDARY_NAV = [
+  { label: 'Environments' },
+  { label: 'Workers' },
+  { label: 'Secrets' },
+  { label: 'Teams' },
+  { label: 'Audit log' },
+  { label: 'Billing' },
+  { label: 'Settings' },
+];
+
+/* ============================================================
+   VARIANT A — Classic left sidebar (Retool-style)
+   Left rail: full labels, grouped. Thin utility top bar.
+   ============================================================ */
+function ShellA() {
+  return (
+    <Screen title="shell · A" height={420}>
+      <div style={{ display: 'grid', gridTemplateColumns: '180px 1fr', gap: 12, minHeight: 380 }}>
+        {/* left sidebar */}
+        <div style={{ borderRight: '1.2px dashed var(--ink-muted)', paddingRight: 10 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '2px 4px 10px', borderBottom: '1px dashed var(--ink-faint)' }}>
+            <div style={{ width: 20, height: 20, border: '1.4px solid var(--ink)', borderRadius: 4, background: 'var(--accent)' }} />
+            <strong style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18 }}>VipsOS</strong>
+            <span style={{ marginLeft: 'auto', fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>⌄</span>
+          </div>
+          <div style={{ padding: '8px 0 6px' }}>
+            <InputMock placeholder="⌘K quick find" wide />
+          </div>
+          <div className="nav-section-title">Build</div>
+          {PRIMARY_NAV.map((n, i) => <NavItem key={i} {...n} />)}
+          <div className="nav-section-title">Operate</div>
+          {SECONDARY_NAV.slice(0, 3).map((n, i) => <NavItem key={i} {...n} />)}
+          <div className="nav-section-title">Admin</div>
+          {SECONDARY_NAV.slice(3).map((n, i) => <NavItem key={i} {...n} />)}
+          <div style={{ marginTop: 12, padding: 6, borderTop: '1px dashed var(--ink-faint)', display: 'flex', alignItems: 'center', gap: 6 }}>
+            <div style={{ width: 20, height: 20, border: '1.4px solid var(--ink)', borderRadius: '50%', background: 'var(--paper-2)' }} />
+            <span style={{ fontSize: 12 }}>acme-prod</span>
+            <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--ink-muted)' }}>⇄</span>
+          </div>
+        </div>
+
+        {/* main column */}
+        <div>
+          {/* top bar */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '2px 0 10px', borderBottom: '1.2px solid var(--ink-faint)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-muted)' }}>Workspace / Overview</span>
+            <span style={{ marginLeft: 'auto' }}>
+              <Pill kind="info" dot>prod</Pill>
+            </span>
+            <Btn size="sm">+ New</Btn>
+            <span style={{ width: 22, height: 22, border: '1.2px solid var(--ink)', borderRadius: '50%' }} />
+          </div>
+          {/* content placeholder */}
+          <div style={{ padding: '18px 0' }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700, marginBottom: 4 }}>Good morning, Priya</div>
+            <LineText lines={1} widths={['60%']} />
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10, marginTop: 16 }}>
+              {['runs today', 'success %', 'p95 latency', 'failing'].map((l, i) => (
+                <div key={i} className="frame" style={{ padding: 8 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>{l}</div>
+                  <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 24, fontWeight: 700 }}>{['12.4k', '99.2', '184ms', '3'][i]}</div>
+                </div>
+              ))}
+            </div>
+            <Ph h={120} label="workflow health chart" style={{ marginTop: 14 }} />
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+/* ============================================================
+   VARIANT B — Icon rail + contextual sub-nav (Linear-style)
+   Slim icon rail on far-left, contextual panel expands next to it.
+   Good when many modules but want more canvas.
+   ============================================================ */
+function ShellB() {
+  return (
+    <Screen title="shell · B" height={420}>
+      <div style={{ display: 'grid', gridTemplateColumns: '48px 150px 1fr', gap: 10, minHeight: 380 }}>
+        {/* icon rail */}
+        <div style={{ borderRight: '1.2px dashed var(--ink-muted)', padding: '0 6px', display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center' }}>
+          <div style={{ width: 28, height: 28, border: '1.4px solid var(--ink)', borderRadius: 6, background: 'var(--accent)', marginTop: 2 }} />
+          <div style={{ height: 6 }} />
+          {['◇', '⌘', '▷', '⚙︎', '⊕', '☰', '◉'].map((g, i) => (
+            <div key={i} style={{
+              width: 32, height: 32, border: '1.4px solid var(--ink)', borderRadius: 6,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: i === 1 ? 'var(--paper-2)' : 'var(--paper)',
+              fontFamily: 'var(--font-hand-alt)', fontSize: 16,
+              boxShadow: i === 1 ? 'inset 2px 2px 0 rgba(30,26,20,0.1)' : 'none',
+            }}>{g}</div>
+          ))}
+          <div style={{ flex: 1 }} />
+          <div style={{ width: 26, height: 26, border: '1.2px solid var(--ink)', borderRadius: '50%' }} />
+        </div>
+
+        {/* contextual sub-nav */}
+        <div style={{ borderRight: '1.2px dashed var(--ink-muted)', paddingRight: 8 }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700, padding: '4px 6px 8px' }}>Workflows</div>
+          <div className="nav-section-title">Views</div>
+          <NavItem label="All flows" active />
+          <NavItem label="Mine" badge="7" />
+          <NavItem label="Scheduled" />
+          <NavItem label="Disabled" />
+          <div className="nav-section-title">Folders</div>
+          <NavItem label="Billing sync" />
+          <NavItem label="Support ops" />
+          <NavItem label="Data pipelines" />
+          <NavItem label="+ new folder" />
+          <div className="nav-section-title">Pinned</div>
+          <NavItem label="Stripe → NS" />
+          <NavItem label="Zendesk triage" />
+        </div>
+
+        {/* main */}
+        <div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 0 10px', borderBottom: '1.2px solid var(--ink-faint)' }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-muted)' }}>Overview</span>
+            <span style={{ marginLeft: 'auto' }}><Pill kind="success" dot>all healthy</Pill></span>
+            <Btn size="sm">filter</Btn>
+            <Btn size="sm" variant="primary">+ workflow</Btn>
+          </div>
+          <div style={{ padding: '14px 0' }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Overview</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10, marginTop: 14 }}>
+              {[0, 1, 2].map(i => (
+                <div key={i} className="frame" style={{ padding: 10 }}>
+                  <LineText lines={1} widths={['40%']} />
+                  <Ph h={50} label="stat chart" style={{ marginTop: 6 }} />
+                </div>
+              ))}
+            </div>
+            <Ph h={100} label="activity feed" style={{ marginTop: 10 }} />
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+/* ============================================================
+   VARIANT C — Top nav + context drawer (Stripe-settings-style)
+   Horizontal primary nav. Workspace switcher prominent.
+   Better for marketing/docs bleed + embedded surfaces.
+   ============================================================ */
+function ShellC() {
+  return (
+    <Screen title="shell · C" height={420}>
+      {/* top nav */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, padding: '0 0 10px', borderBottom: '1.4px solid var(--ink)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+          <div style={{ width: 22, height: 22, border: '1.4px solid var(--ink)', borderRadius: 4, background: 'var(--accent)' }} />
+          <strong style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18 }}>VipsOS</strong>
+        </div>
+        <span style={{ color: 'var(--ink-faint)' }}>/</span>
+        <span style={{ fontSize: 13, display: 'flex', alignItems: 'center', gap: 4 }}>acme <span style={{ fontSize: 10, color: 'var(--ink-muted)' }}>⌄</span></span>
+        <span style={{ color: 'var(--ink-faint)' }}>/</span>
+        <Pill kind="info" dot>prod</Pill>
+        <div style={{ marginLeft: 'auto', display: 'flex', gap: 14, alignItems: 'center' }}>
+          {['Overview', 'Workflows', 'Runs', 'Connectors', 'Templates', 'Settings'].map((l, i) => (
+            <span key={i} style={{
+              fontSize: 13,
+              fontWeight: i === 0 ? 700 : 400,
+              borderBottom: i === 0 ? '2px solid var(--accent)' : 'none',
+              paddingBottom: 8, marginBottom: -9,
+            }}>{l}</span>
+          ))}
+          <InputMock placeholder="⌘K" />
+          <div style={{ width: 22, height: 22, border: '1.2px solid var(--ink)', borderRadius: '50%' }} />
+        </div>
+      </div>
+
+      {/* main + right drawer */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 220px', gap: 14, marginTop: 14 }}>
+        <div>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 28, fontWeight: 700 }}>This week</div>
+          <LineText lines={1} widths={['55%']} />
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 10, marginTop: 14 }}>
+            <div className="frame" style={{ padding: 10 }}>
+              <LineText lines={1} widths={['30%']} />
+              <Ph h={70} label="runs by day" style={{ marginTop: 6 }} />
+            </div>
+            <div className="frame" style={{ padding: 10 }}>
+              <LineText lines={1} widths={['30%']} />
+              <Ph h={70} label="error rate" style={{ marginTop: 6 }} />
+            </div>
+          </div>
+          <Ph h={90} label="recent runs table" style={{ marginTop: 10 }} />
+        </div>
+        <div className="frame tinted" style={{ padding: 10 }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700, marginBottom: 4 }}>Right now</div>
+          <LineText lines={2} />
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <Pill kind="success" dot>stripe — 2m ago</Pill>
+            <Pill kind="success" dot>zendesk — 3m ago</Pill>
+            <Pill kind="warn" dot>salesforce — retry</Pill>
+            <Pill kind="danger" dot>s3 — failed</Pill>
+          </div>
+          <div style={{ marginTop: 10 }}><Btn size="sm">open run →</Btn></div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+Object.assign(window, { ShellA, ShellB, ShellC });
+
+
+// ==== dashboard.jsx ====
+// dashboard.jsx — Overview / Home page explorations
+// 3 distinctly different approaches to the dashboard content area.
+
+/* ============================================================
+   DASHBOARD A — "Operational room"
+   For ops users. Live status front-and-center. Big health strip.
+   Table of recent runs. Minimal decoration.
+   ============================================================ */
+function DashboardA() {
+  return (
+    <Screen title="overview · A  — operational" height={540}>
+      {/* top summary strip */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 8 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 30, fontWeight: 700 }}>Overview</div>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-muted)' }}>acme / prod</span>
+        <span style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+          <Btn size="sm">last 24h ⌄</Btn>
+          <Btn size="sm">refresh ↻</Btn>
+        </span>
+      </div>
+
+      {/* KPI row */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 10, marginBottom: 12 }}>
+        {[
+          { l: 'runs · 24h',   v: '12,482', s: '+4.1%',  tone: 'success' },
+          { l: 'success rate', v: '99.12%', s: '+0.04',  tone: 'success' },
+          { l: 'p95 latency',  v: '184 ms', s: '—',      tone: 'info' },
+          { l: 'in-flight',    v: '46',     s: 'steady', tone: 'info' },
+          { l: 'failing flows', v: '3',     s: '↑ 1',    tone: 'danger' },
+        ].map((k, i) => (
+          <div key={i} className="frame" style={{ padding: 10 }}>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>{k.l}</div>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 28, fontWeight: 700, lineHeight: 1 }}>{k.v}</div>
+            <div style={{ marginTop: 6 }}><Pill kind={k.tone} dot>{k.s}</Pill></div>
+          </div>
+        ))}
+      </div>
+
+      {/* health strip */}
+      <div className="frame" style={{ padding: 10, marginBottom: 12 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6 }}>
+          <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>Connector health</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>24 connectors · 3 degraded</span>
+        </div>
+        {/* pill grid representing connectors */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: 4 }}>
+          {Array.from({ length: 24 }, (_, i) => {
+            const bad = [5, 11, 19].includes(i);
+            const warn = [2, 15].includes(i);
+            const color = bad ? 'var(--accent-4)' : warn ? 'var(--accent)' : 'var(--accent-3)';
+            return (
+              <div key={i} style={{
+                height: 22, border: '1.2px solid var(--ink)', borderRadius: 4,
+                background: `color-mix(in oklab, ${color} 45%, var(--paper))`,
+                fontSize: 9, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                padding: '0 4px', whiteSpace: 'nowrap', overflow: 'hidden',
+              }}>{['stripe','zd','sf','slack','s3','pg','ga','nr','gh','jr','hs','nt','in','mg','ok','ln','bq','sn','sg','tw','cb','al','md','wb'][i]}</div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* two cols */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: 12 }}>
+        {/* recent runs table */}
+        <div className="frame" style={{ padding: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>Recent runs</span>
+            <span style={{ fontSize: 11, color: 'var(--ink-muted)' }}>view all →</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '14px 1.6fr 0.8fr 0.6fr 0.6fr', gap: 6, fontSize: 12 }}>
+            {[
+              ['ok',  'stripe-invoice-sync',     'cron · 5m',    '2m ago',  '312ms'],
+              ['ok',  'zendesk-to-slack',        'webhook',      '2m ago',  '84ms'],
+              ['err', 'salesforce-account-mirror','webhook',     '3m ago',  '—'],
+              ['ok',  'analytics-ingest',        'cron · 15m',   '4m ago',  '1.2s'],
+              ['warn','onboarding-hubspot',      'manual',       '9m ago',  '730ms'],
+              ['ok',  'nightly-warehouse',       'cron · daily', '22m ago', '14s'],
+            ].map((row, i) => (
+              <React.Fragment key={i}>
+                <div><Pill kind={{ ok: 'success', err: 'danger', warn: 'warn' }[row[0]]} dot /></div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>{row[1]}</div>
+                <div style={{ color: 'var(--ink-muted)' }}>{row[2]}</div>
+                <div style={{ color: 'var(--ink-muted)' }}>{row[3]}</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>{row[4]}</div>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+        {/* needs attention */}
+        <div className="frame tinted" style={{ padding: 10 }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700, marginBottom: 6 }}>Needs attention</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {[
+              ['danger', 'salesforce mirror', '11 failures in last hour', 'investigate →'],
+              ['warn',   'stripe webhook',    'latency p95 above SLA',   'view →'],
+              ['info',   'rotate secret',     'gh-token expires in 3d',  'rotate →'],
+            ].map((item, i) => (
+              <div key={i} style={{ borderBottom: i < 2 ? '1px dashed var(--ink-faint)' : 'none', paddingBottom: 6 }}>
+                <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                  <Pill kind={item[0]} dot>{item[1]}</Pill>
+                </div>
+                <div style={{ fontSize: 12, color: 'var(--ink-muted)', margin: '3px 0 4px' }}>{item[2]}</div>
+                <div style={{ fontSize: 12 }}><Btn size="sm">{item[3]}</Btn></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+/* ============================================================
+   DASHBOARD B — "Welcome + momentum"
+   For platform builders. More narrative, more visuals.
+   Highlights what you built, celebrates activity.
+   ============================================================ */
+function DashboardB() {
+  return (
+    <Screen title="overview · B — builder" height={540}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 14 }}>
+        {/* hero */}
+        <div style={{
+          border: '1.4px solid var(--ink)', borderRadius: 8, padding: 16,
+          background: 'color-mix(in oklab, var(--accent) 18%, var(--paper))',
+          display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 14, alignItems: 'center',
+        }}>
+          <div>
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.12em', color: 'var(--ink-muted)' }}>Friday, 18 April</div>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 34, fontWeight: 700, lineHeight: 1.05, marginTop: 4 }}>
+              Good morning, Priya.<br />
+              <span style={{ fontSize: 22, color: 'var(--ink-2)' }}>12.4k integrations ran smoothly this week.</span>
+            </div>
+            <div style={{ marginTop: 10, display: 'flex', gap: 6 }}>
+              <Btn variant="primary">+ new workflow</Btn>
+              <Btn>browse templates</Btn>
+              <Btn>invite teammate</Btn>
+            </div>
+          </div>
+          <Ph h={120} label="weekly run sparkline" />
+        </div>
+
+        {/* 3-col metrics */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+          {[
+            ['activity', 'runs · 7d', '86,240', 'runs-by-day sparkbars'],
+            ['health',   'uptime · 7d', '99.94%', 'uptime band chart'],
+            ['usage',    'worker hrs', '312 / 500', 'usage progress'],
+          ].map((c, i) => (
+            <div key={i} className="frame" style={{ padding: 10 }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.14em' }}>{c[0]}</div>
+              <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between' }}>
+                <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700 }}>{c[1]}</span>
+                <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700 }}>{c[2]}</span>
+              </div>
+              <Ph h={54} label={c[3]} style={{ marginTop: 6 }} />
+            </div>
+          ))}
+        </div>
+
+        {/* 2-col: pinned flows + activity feed */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1.3fr 1fr', gap: 10 }}>
+          <div className="frame" style={{ padding: 10 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 8 }}>
+              <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>Pinned workflows</span>
+              <span style={{ fontSize: 11, color: 'var(--ink-muted)' }}>customize →</span>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+              {[
+                ['Stripe → NetSuite', '99.4%', '12m cadence'],
+                ['Zendesk triage',   '100%',  'on webhook'],
+                ['Nightly warehouse','99.8%', 'daily 02:00'],
+                ['Support digest',   '98.1%', 'hourly'],
+              ].map((f, i) => (
+                <div key={i} className="frame inset" style={{ padding: 8 }}>
+                  <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12 }}>{f[0]}</div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4, fontSize: 11, color: 'var(--ink-muted)' }}>
+                    <span>success {f[1]}</span><span>{f[2]}</span>
+                  </div>
+                  <Ph h={30} label="mini run strip" style={{ marginTop: 6 }} />
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="frame tinted" style={{ padding: 10 }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700, marginBottom: 8 }}>Team activity</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 8, fontSize: 12 }}>
+              {[
+                ['amit',   'deployed',  '"billing-sync" v14',  '12m ago'],
+                ['priya',  'approved',  'new secret: sf-prod', '1h ago'],
+                ['lena',   'installed', 'Notion connector',    '2h ago'],
+                ['amit',   'rotated',   'api key for gh',      '3h ago'],
+                ['system', 'alerted',   'SLA breach on s3',    '5h ago'],
+              ].map((a, i) => (
+                <div key={i} style={{ display: 'flex', gap: 6 }}>
+                  <div style={{ width: 20, height: 20, borderRadius: '50%', border: '1.2px solid var(--ink)', background: 'var(--paper)', flex: 'none' }} />
+                  <div style={{ flex: 1 }}>
+                    <span style={{ fontWeight: 600 }}>{a[0]}</span>{' '}
+                    <span style={{ color: 'var(--ink-muted)' }}>{a[1]}</span>{' '}
+                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11 }}>{a[2]}</span>
+                  </div>
+                  <div style={{ color: 'var(--ink-faint)', fontSize: 10, fontFamily: 'var(--font-mono)' }}>{a[3]}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+/* ============================================================
+   DASHBOARD C — "Getting-started / progressive"
+   For the new workspace. Progress checklist drives the page.
+   Empty-state-friendly. Grows into B as user matures.
+   ============================================================ */
+function DashboardC() {
+  return (
+    <Screen title="overview · C — progressive" height={540}>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 14 }}>
+        {/* main column */}
+        <div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, textTransform: 'uppercase', letterSpacing: '0.14em', color: 'var(--ink-muted)' }}>Set up your workspace</div>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 32, fontWeight: 700, marginTop: 2 }}>You're 2 of 5 in.</div>
+          <LineText lines={1} widths={['70%']} style={{ marginTop: 6 }} />
+
+          {/* checklist */}
+          <div className="frame" style={{ padding: 10, marginTop: 12 }}>
+            {[
+              [true,  'Create workspace',  'acme-prod',                 'done'],
+              [true,  'Invite a teammate', '3 members joined',           'done'],
+              [false, 'Connect your first app', 'pick from 180+ connectors', 'Connect →'],
+              [false, 'Build a workflow',  'or pick a template',         'Start →'],
+              [false, 'Enable monitoring', 'wire up Slack alerts',       'Enable →'],
+            ].map((s, i) => (
+              <div key={i} style={{
+                display: 'flex', alignItems: 'center', gap: 10,
+                padding: '8px 2px', borderBottom: i < 4 ? '1px dashed var(--ink-faint)' : 'none',
+              }}>
+                <div style={{
+                  width: 22, height: 22, border: '1.4px solid var(--ink)', borderRadius: '50%',
+                  background: s[0] ? 'var(--accent-3)' : 'var(--paper)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-hand-alt)', fontSize: 14, fontWeight: 700,
+                  flex: 'none',
+                }}>{s[0] ? '✓' : i + 1}</div>
+                <div style={{ flex: 1 }}>
+                  <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 17, fontWeight: 700, textDecoration: s[0] ? 'line-through' : 'none', color: s[0] ? 'var(--ink-muted)' : 'var(--ink)' }}>{s[1]}</div>
+                  <div style={{ fontSize: 12, color: 'var(--ink-muted)' }}>{s[2]}</div>
+                </div>
+                <div>
+                  {s[0] ? <Pill kind="success" dot>{s[3]}</Pill> : <Btn size="sm" variant={i === 2 ? 'primary' : ''}>{s[3]}</Btn>}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* quickstart templates */}
+          <div style={{ marginTop: 14 }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 20, fontWeight: 700, marginBottom: 6 }}>Start from a template</div>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 10 }}>
+              {[
+                ['Stripe → Slack', 'notify on new high-value charge'],
+                ['HubSpot ↔ Salesforce', 'two-way contact sync'],
+                ['Zendesk digest', 'daily summary to email'],
+              ].map((t, i) => (
+                <div key={i} className="frame inset" style={{ padding: 10 }}>
+                  <Ph h={50} label="preview diagram" />
+                  <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 15, fontWeight: 700, marginTop: 6 }}>{t[0]}</div>
+                  <div style={{ fontSize: 11, color: 'var(--ink-muted)' }}>{t[1]}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* right rail */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+          <div className="frame tinted" style={{ padding: 10 }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700 }}>Learn the basics</div>
+            <LineText lines={2} style={{ marginTop: 4 }} />
+            {['What is a workflow?', 'Connectors explained', 'Environments + workers'].map((l, i) => (
+              <div key={i} style={{ padding: '5px 0', borderTop: '1px dashed var(--ink-faint)', fontSize: 12, display: 'flex', justifyContent: 'space-between' }}>
+                <span>{l}</span><span style={{ color: 'var(--ink-muted)' }}>3 min →</span>
+              </div>
+            ))}
+          </div>
+          <div className="frame" style={{ padding: 10 }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700 }}>Plan</div>
+            <div style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Free · trial</div>
+            <Ph h={30} label="usage bar" style={{ marginTop: 6 }} />
+            <div style={{ marginTop: 8 }}><Btn size="sm">upgrade</Btn></div>
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+Object.assign(window, { DashboardA, DashboardB, DashboardC });
+
+
+// ==== builder.jsx ====
+// builder.jsx — Workflow builder wireframe (left-to-right node-graph DAG)
+// One primary layout + a config drawer close-up.
+
+// Node card inside the canvas
+const NodeCard = ({ x, y, w = 130, h = 68, title, sub, kind = '', selected = false, state = 'idle', icon = '◻' }) => (
+  <div style={{
+    position: 'absolute', left: x, top: y, width: w, minHeight: h,
+    border: selected ? '1.8px solid var(--accent)' : '1.4px solid var(--ink)',
+    borderRadius: 8,
+    background: kind === 'trigger' ? 'color-mix(in oklab, var(--accent) 20%, var(--paper))'
+              : kind === 'branch'  ? 'color-mix(in oklab, var(--accent-2) 20%, var(--paper))'
+              : kind === 'action'  ? 'var(--paper)'
+              : 'var(--paper)',
+    padding: 8,
+    boxShadow: selected
+      ? '0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent), 2px 3px 0 rgba(30,26,20,0.15)'
+      : '2px 3px 0 rgba(30,26,20,0.15)',
+    fontFamily: 'var(--font-hand)',
+  }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+      <span style={{
+        width: 22, height: 22, border: '1.2px solid var(--ink)', borderRadius: 5,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13,
+        background: 'var(--paper)',
+      }}>{icon}</span>
+      <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.15 }}>
+        <span style={{ fontSize: 12, fontWeight: 700 }}>{title}</span>
+        <span style={{ fontSize: 10, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>{sub}</span>
+      </div>
+    </div>
+    <div style={{ marginTop: 6, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <Pill kind={state === 'ok' ? 'success' : state === 'err' ? 'danger' : state === 'warn' ? 'warn' : 'info'} dot>
+        {{ ok: 'ok', err: 'failed', warn: '3 retries', idle: 'idle', running: 'running' }[state] || 'idle'}
+      </Pill>
+      <span style={{ fontSize: 10, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>⋯</span>
+    </div>
+    {/* port dots */}
+    <span style={{ position: 'absolute', left: -5, top: '50%', width: 10, height: 10, borderRadius: '50%', border: '1.4px solid var(--ink)', background: 'var(--paper)' }} />
+    <span style={{ position: 'absolute', right: -5, top: '50%', width: 10, height: 10, borderRadius: '50%', border: '1.4px solid var(--ink)', background: 'var(--paper)' }} />
+  </div>
+);
+
+function BuilderCanvas() {
+  return (
+    <Screen title="workflow · billing-sync · edit" height={620}>
+      {/* top toolbar */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 0 10px', borderBottom: '1.2px solid var(--ink-faint)' }}>
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-muted)' }}>Workflows / billing-sync /</span>
+        <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 20, fontWeight: 700 }}>Draft v15</span>
+        <Pill kind="warn" dot>unsaved</Pill>
+        <span style={{ marginLeft: 'auto', display: 'flex', gap: 6 }}>
+          <Btn size="sm">undo</Btn><Btn size="sm">redo</Btn>
+          <Btn size="sm">validate</Btn>
+          <Btn size="sm">test run</Btn>
+          <Btn size="sm" variant="primary">deploy →</Btn>
+        </span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '170px 1fr 260px', gap: 10, marginTop: 10, minHeight: 500 }}>
+        {/* left: node library */}
+        <div style={{ borderRight: '1.2px dashed var(--ink-muted)', paddingRight: 8 }}>
+          <InputMock placeholder="search nodes" wide />
+          <div className="nav-section-title" style={{ marginTop: 10 }}>Triggers</div>
+          {['webhook', 'schedule', 'manual', 'queue msg'].map(n =>
+            <div key={n} className="frame inset" style={{ padding: '4px 6px', marginBottom: 4, fontSize: 12, fontFamily: 'var(--font-mono)' }}>◈ {n}</div>
+          )}
+          <div className="nav-section-title">Actions</div>
+          {['http request', 'transform', 'loop', 'branch', 'write db'].map(n =>
+            <div key={n} className="frame inset" style={{ padding: '4px 6px', marginBottom: 4, fontSize: 12, fontFamily: 'var(--font-mono)' }}>◇ {n}</div>
+          )}
+          <div className="nav-section-title">Connectors</div>
+          {['stripe', 'salesforce', 'slack', 'netsuite'].map(n =>
+            <div key={n} className="frame inset" style={{ padding: '4px 6px', marginBottom: 4, fontSize: 12, fontFamily: 'var(--font-mono)' }}>◉ {n}</div>
+          )}
+        </div>
+
+        {/* canvas */}
+        <div className="canvas-wrap" style={{
+          position: 'relative', minHeight: 500,
+          border: '1.2px dashed var(--ink-muted)', borderRadius: 8,
+          background:
+            'radial-gradient(circle at 12px 12px, rgba(30,26,20,0.15) 1px, transparent 1.5px) 0 0/24px 24px, var(--paper)',
+          overflow: 'hidden',
+        }}>
+          {/* connectors svg */}
+          <svg className="connectors" viewBox="0 0 760 500" preserveAspectRatio="none">
+            <defs>
+              <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--ink)"/>
+              </marker>
+            </defs>
+            {/* trigger -> fetch */}
+            <path d="M 140 104 C 170 104, 170 104, 200 104" stroke="var(--ink)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+            {/* fetch -> transform */}
+            <path d="M 335 104 C 365 104, 365 104, 395 104" stroke="var(--ink)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+            {/* transform -> branch */}
+            <path d="M 530 104 C 560 104, 560 104, 590 104" stroke="var(--ink)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+            {/* branch -> netsuite (top) */}
+            <path d="M 720 96 C 740 96, 140 210, 200 210" stroke="var(--ink)" strokeWidth="1.6" fill="none" strokeDasharray="none" markerEnd="url(#arr)"/>
+            {/* branch -> slack alert (bottom) */}
+            <path d="M 720 112 C 740 112, 140 320, 200 320" stroke="var(--accent-4)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+            {/* netsuite -> log */}
+            <path d="M 335 210 C 470 210, 470 210, 560 210" stroke="var(--ink)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+            {/* slack -> pagerduty */}
+            <path d="M 335 320 C 470 320, 470 320, 560 320" stroke="var(--ink)" strokeWidth="1.6" fill="none" markerEnd="url(#arr)"/>
+
+            {/* branch labels */}
+            <text x="730" y="80" fontFamily="var(--font-hand)" fontSize="11" fill="var(--ink-2)">amount ≥ 5000</text>
+            <text x="730" y="138" fontFamily="var(--font-hand)" fontSize="11" fill="var(--accent-4)">else → alert</text>
+          </svg>
+
+          <NodeCard x={10} y={70} title="Stripe: charge.succeeded" sub="webhook" kind="trigger" icon="◈" state="ok" />
+          <NodeCard x={200} y={70} title="Fetch customer" sub="stripe.customer.get" kind="action" icon="◉" state="ok" />
+          <NodeCard x={395} y={70} title="Transform payload" sub="map → invoice" kind="action" icon="◇" state="ok" />
+          <NodeCard x={590} y={70} title="Branch · amount" sub="if/else" kind="branch" icon="⋔" selected state="ok" />
+
+          <NodeCard x={200} y={176} title="Create NetSuite invoice" sub="ns.invoice.create" kind="action" icon="◉" state="ok" />
+          <NodeCard x={560} y={176} title="Log result" sub="write to audit" kind="action" icon="◇" state="ok" />
+
+          <NodeCard x={200} y={286} title="Send Slack alert" sub="#ops-alerts" kind="action" icon="◉" state="warn" />
+          <NodeCard x={560} y={286} title="Page on-call" sub="pagerduty.trigger" kind="action" icon="◉" state="idle" />
+
+          {/* minimap */}
+          <div style={{
+            position: 'absolute', right: 10, bottom: 10,
+            width: 140, height: 70, border: '1.2px solid var(--ink)',
+            background: 'color-mix(in oklab, var(--paper-2) 80%, transparent)',
+            borderRadius: 4, padding: 4,
+            fontFamily: 'var(--font-mono)', fontSize: 9, color: 'var(--ink-muted)',
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>minimap</span><span>fit ⌕</span></div>
+            <div style={{ position: 'relative', marginTop: 2, height: 48 }}>
+              {[[6,6,22,6],[32,6,22,6],[58,6,22,6],[84,6,22,6],[32,22,22,6],[84,22,22,6],[32,38,22,6],[84,38,22,6]].map((r,i)=>
+                <div key={i} style={{ position:'absolute', left:r[0], top:r[1], width:r[2], height:r[3], background:'var(--ink-muted)', opacity:0.6, borderRadius:1}}/>
+              )}
+              <div style={{ position:'absolute', left: 26, top: 2, width: 70, height: 20, border:'1.4px solid var(--accent)', borderRadius:2}}/>
+            </div>
+          </div>
+
+          {/* zoom controls */}
+          <div style={{ position: 'absolute', right: 10, top: 10, display: 'flex', flexDirection: 'column', gap: 4 }}>
+            {['+','−','⌕','↺'].map(c =>
+              <div key={c} style={{ width:28, height:28, border:'1.2px solid var(--ink)', borderRadius:6, background:'var(--paper)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:'var(--font-hand-alt)', fontSize:14 }}>{c}</div>
+            )}
+          </div>
+        </div>
+
+        {/* right: inspector / config drawer */}
+        <div style={{ borderLeft: '1.2px dashed var(--ink-muted)', paddingLeft: 10 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 6 }}>
+            <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>Branch · amount</span>
+            <span style={{ fontSize: 11, color: 'var(--ink-muted)' }}>✕</span>
+          </div>
+          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>node_id: br_4f2c</div>
+
+          <div style={{ display: 'flex', gap: 4, marginTop: 8, borderBottom: '1.2px solid var(--ink-faint)' }}>
+            {['Config', 'Input', 'Output', 'Runs'].map((t, i) => (
+              <span key={t} style={{
+                fontSize: 12, fontWeight: 600, padding: '4px 8px',
+                borderBottom: i === 0 ? '2px solid var(--accent)' : '2px solid transparent',
+                color: i === 0 ? 'var(--ink)' : 'var(--ink-muted)',
+              }}>{t}</span>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 10, display: 'flex', flexDirection: 'column', gap: 10 }}>
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginBottom: 3, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Expression</div>
+              <div className="frame inset" style={{ padding: 6, fontFamily: 'var(--font-mono)', fontSize: 11 }}>
+                {'{{ trigger.amount }} >= 5000'}
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginBottom: 3, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>True branch</div>
+              <div className="frame" style={{ padding: 6, fontSize: 12 }}>→ Create NetSuite invoice</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginBottom: 3, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>False branch</div>
+              <div className="frame" style={{ padding: 6, fontSize: 12 }}>→ Send Slack alert</div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginBottom: 3, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Retry policy</div>
+              <div style={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+                <Pill>3x exponential</Pill><Pill>on 5xx</Pill>
+              </div>
+            </div>
+            <div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginBottom: 3, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Last test run</div>
+              <Pill kind="success" dot>passed · 124ms</Pill>
+            </div>
+            <Btn size="sm" variant="primary">save node</Btn>
+          </div>
+        </div>
+      </div>
+    </Screen>
+  );
+}
+
+Object.assign(window, { BuilderCanvas, NodeCard });
+
+
+// ==== flows.jsx ====
+// flows.jsx — Two user-flow storyboards as 4-frame strips.
+// Flow 1: "Platform engineer connects their first app + builds a workflow" (happy path)
+// Flow 2: "Ops user wakes to a failed workflow and investigates" (incident path)
+
+// Mini lo-fi frame used inside strips. Tighter than full Screen.
+const MiniFrame = ({ title = '', children, height = 170 }) => (
+  <div className="frame rough" style={{ padding: 0, overflow: 'hidden' }}>
+    <div className="chrome" style={{ padding: '4px 8px', fontSize: 10 }}>
+      <span className="dots"><i/><i/><i/></span>
+      <span className="url">{title}</span>
+    </div>
+    <div style={{ padding: 10, minHeight: height }}>{children}</div>
+  </div>
+);
+
+/* -------- Flow 1 — setup -------- */
+function Flow1() {
+  return (
+    <div className="strip">
+      <div className="step">
+        <div className="step-num">01</div>
+        <h4 className="step-title">Empty state → pick a connector</h4>
+        <MiniFrame title="connectors · gallery">
+          <InputMock placeholder="search 180+ apps" wide />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 6, marginTop: 8 }}>
+            {['stripe','slack','sf','gh','ns','hs','pg','jr','s3'].map(a => (
+              <div key={a} className="frame inset" style={{ padding: 4, textAlign: 'center' }}>
+                <div style={{ width: 22, height: 22, border: '1.2px solid var(--ink)', borderRadius: 4, margin: '0 auto 3px', background: 'var(--paper-2)' }} />
+                <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)' }}>{a}</span>
+              </div>
+            ))}
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Priya lands on an empty workspace. A search + grid beats an infinite list — she types "stripe".</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">02</div>
+        <h4 className="step-title">Auth with guided setup</h4>
+        <MiniFrame title="connectors · stripe · auth">
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700 }}>Connect Stripe</div>
+          <div style={{ fontSize: 11, color: 'var(--ink-muted)' }}>OAuth or API key</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 8 }}>
+            <div className="frame inset" style={{ padding: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 14, height: 14, border: '1.4px solid var(--ink)', borderRadius: '50%', background: 'var(--accent)' }}/>
+              <span style={{ fontSize: 12 }}>Sign in with Stripe</span>
+              <span style={{ marginLeft: 'auto', fontSize: 10, color: 'var(--ink-muted)' }}>recommended</span>
+            </div>
+            <div className="frame inset" style={{ padding: 6, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <span style={{ width: 14, height: 14, border: '1.4px solid var(--ink-muted)', borderRadius: '50%' }}/>
+              <span style={{ fontSize: 12 }}>Paste API key</span>
+            </div>
+          </div>
+          <div style={{ marginTop: 10 }}><Btn variant="primary" size="sm">continue →</Btn></div>
+        </MiniFrame>
+        <p className="step-cap">Auth method is explicit (progressive complexity). Recommended path is obvious; power-user path is still there.</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">03</div>
+        <h4 className="step-title">Template offer vs blank canvas</h4>
+        <MiniFrame title="workflows · new">
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700 }}>What should this flow do?</div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6, marginTop: 8 }}>
+            <div className="frame inset" style={{ padding: 6, borderColor: 'var(--ink)' }}>
+              <Ph h={30} label="stripe → slack preview" />
+              <div style={{ fontSize: 11, fontWeight: 700, marginTop: 4 }}>High-value charge alert</div>
+              <div style={{ fontSize: 10, color: 'var(--ink-muted)' }}>template · 2min</div>
+            </div>
+            <div className="frame inset" style={{ padding: 6 }}>
+              <Ph h={30} label="blank" />
+              <div style={{ fontSize: 11, fontWeight: 700, marginTop: 4 }}>Start blank</div>
+              <div style={{ fontSize: 10, color: 'var(--ink-muted)' }}>build from scratch</div>
+            </div>
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Templates lower the first-workflow bar. "Start blank" is equally weighted — we don't force the path.</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">04</div>
+        <h4 className="step-title">First test run → deploy</h4>
+        <MiniFrame title="workflow · billing-sync · test">
+          <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
+            <div style={{ height: 22, flex: 1, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'color-mix(in oklab, var(--accent-3) 45%, var(--paper))', fontSize: 10, fontFamily: 'var(--font-mono)', padding: '4px 6px' }}>✓ trigger</div>
+            <div style={{ height: 22, flex: 1, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'color-mix(in oklab, var(--accent-3) 45%, var(--paper))', fontSize: 10, fontFamily: 'var(--font-mono)', padding: '4px 6px' }}>✓ fetch</div>
+            <div style={{ height: 22, flex: 1, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'color-mix(in oklab, var(--accent-3) 45%, var(--paper))', fontSize: 10, fontFamily: 'var(--font-mono)', padding: '4px 6px' }}>✓ transform</div>
+          </div>
+          <Ph h={40} label="output preview (json)" />
+          <div style={{ display: 'flex', gap: 6, marginTop: 8, justifyContent: 'flex-end' }}>
+            <Btn size="sm">re-test</Btn>
+            <Btn size="sm" variant="primary">deploy to prod →</Btn>
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Test-first builds trust. Green pills + a JSON preview so she sees what really came back before she deploys.</p>
+      </div>
+    </div>
+  );
+}
+
+/* -------- Flow 2 — incident -------- */
+function Flow2() {
+  return (
+    <div className="strip">
+      <div className="step">
+        <div className="step-num">01</div>
+        <h4 className="step-title">Notification (Slack / email)</h4>
+        <MiniFrame title="slack · #ops-alerts" height={170}>
+          <div className="frame" style={{ padding: 8, background: 'color-mix(in oklab, var(--accent-4) 15%, var(--paper))' }}>
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+              <div style={{ width: 20, height: 20, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'var(--accent)' }}/>
+              <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 14, fontWeight: 700 }}>VipsOS bot</span>
+              <span style={{ fontSize: 10, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>03:42</span>
+            </div>
+            <div style={{ fontSize: 12, marginTop: 4 }}><Pill kind="danger" dot>failed</Pill> <strong>salesforce-account-mirror</strong> · 11 runs in 8m</div>
+            <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginTop: 3 }}>error: 401 from SF · last ok 1h ago</div>
+            <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
+              <Btn size="sm">ack</Btn><Btn size="sm" variant="primary">open run →</Btn>
+            </div>
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Alert carries enough context to triage without opening the app — but the CTA is obvious when they do.</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">02</div>
+        <h4 className="step-title">Run detail — where it broke</h4>
+        <MiniFrame title="runs · r_7c4f · failed">
+          <div style={{ display: 'flex', gap: 4, marginBottom: 6 }}>
+            {['ok','ok','err','—','—'].map((s,i)=>(
+              <div key={i} style={{
+                flex: 1, height: 22, border: '1.2px solid var(--ink)', borderRadius: 4,
+                background: s==='ok' ? 'color-mix(in oklab, var(--accent-3) 45%, var(--paper))'
+                         : s==='err' ? 'color-mix(in oklab, var(--accent-4) 45%, var(--paper))'
+                         : 'var(--paper-2)',
+                fontSize: 10, fontFamily: 'var(--font-mono)', padding:'4px 6px',
+                color: s==='—' ? 'var(--ink-muted)' : 'var(--ink)',
+              }}>{['trig','fetch','upsert','log','ack'][i]}</div>
+            ))}
+          </div>
+          <div className="frame inset" style={{ padding: 6, fontFamily: 'var(--font-mono)', fontSize: 10 }}>
+            <div style={{ color: 'var(--ink-muted)' }}>03:41:58 POST /sobjects/Account</div>
+            <div>status 401 · INVALID_SESSION_ID</div>
+            <div style={{ color: 'var(--ink-muted)' }}>03:41:58 retry 1/3 …</div>
+            <div style={{ color: 'var(--ink-muted)' }}>03:42:02 retry 2/3 … 401</div>
+            <div style={{ color: 'var(--accent-4)' }}>03:42:06 aborted</div>
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Node strip shows exactly where it stopped. Log pane gives just enough to name the cause — no log archaeology needed.</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">03</div>
+        <h4 className="step-title">Root cause + suggested fix</h4>
+        <MiniFrame title="runs · r_7c4f · diagnose">
+          <div className="frame" style={{ padding: 8, background: 'color-mix(in oklab, var(--accent) 18%, var(--paper))' }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 15, fontWeight: 700 }}>Likely cause</div>
+            <div style={{ fontSize: 12, marginTop: 2 }}>Salesforce session expired. The OAuth refresh token for <strong>sf-prod</strong> failed to renew.</div>
+            <div style={{ marginTop: 8, display: 'flex', gap: 4, flexWrap: 'wrap' }}>
+              <Btn size="sm" variant="primary">re-authorize sf-prod</Btn>
+              <Btn size="sm">retry run</Btn>
+              <Btn size="sm">mute 1h</Btn>
+            </div>
+          </div>
+          <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginTop: 8 }}>
+            Similar: 3 other flows depend on <strong>sf-prod</strong>. Fix here applies to all.
+          </div>
+        </MiniFrame>
+        <p className="step-cap">"What failed / where / why / next action" — the design system's error principle made concrete. One fix can resolve many flows.</p>
+      </div>
+
+      <div className="step">
+        <div className="step-num">04</div>
+        <h4 className="step-title">Recovery confirmed</h4>
+        <MiniFrame title="runs · r_7c4f · resumed">
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, fontWeight: 700 }}>Back online</div>
+          <div style={{ fontSize: 11, color: 'var(--ink-muted)' }}>sf-prod re-authorized · 11 queued runs replayed</div>
+          <div style={{ display: 'flex', gap: 4, marginTop: 10 }}>
+            {['ok','ok','ok','ok','ok'].map((s,i)=>(
+              <div key={i} style={{ flex: 1, height: 22, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'color-mix(in oklab, var(--accent-3) 45%, var(--paper))', fontSize: 10, fontFamily: 'var(--font-mono)', padding:'4px 6px' }}>
+                {['trig','fetch','upsert','log','ack'][i]}
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 10, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Pill kind="success" dot>healthy</Pill>
+            <span style={{ fontSize: 10, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>no action needed</span>
+          </div>
+        </MiniFrame>
+        <p className="step-cap">Close the loop. The visible status — not just a toast — confirms it's really fixed. Trust restored.</p>
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Flow1, Flow2, MiniFrame });
+
+// ============ screens.jsx (inlined) ============
+
+// screens.jsx — VipsOS wireframes, sections 07+
+// Every screen uses Shell B chrome (icon rail + contextual sub-nav).
+// Relies on globals from the main file: Screen, NavItem, Pill, Btn,
+// InputMock, Note, Arrow, Ph, LineText, Squiggle, VariantHeader.
+
+/* ============================================================
+   ShellBFrame — reusable workspace chrome
+   Props:
+     title       → window chrome title (e.g. "workflows · list")
+     height      → Screen height
+     rail        → active icon-rail index (0..7)
+     section     → sub-nav heading ("Workflows", "Connections", ...)
+     subNav      → array of { label, active?, badge?, group? }
+     topRight    → node(s) shown in the top-bar right cluster
+     crumbs      → array of breadcrumb strings
+     children    → main area
+   ============================================================ */
+const RAIL_ICONS = ['◇', '⌘', '▷', '⚙︎', '⊕', '☰', '◉', '✦'];
+const RAIL_LABELS = ['Home', 'Workflows', 'Runs', 'Connections', 'Triggers', 'Templates', 'Secrets', 'Settings'];
+
+const ShellBFrame = ({
+  title = 'VipsOS',
+  height = 540,
+  rail = 1,
+  section = 'Workflows',
+  subNav = [],
+  topRight = null,
+  crumbs = [],
+  children,
+}) => (
+  <Screen title={title} height={height}>
+    <div style={{ display: 'grid', gridTemplateColumns: '48px 160px 1fr', gap: 10, minHeight: height - 40 }}>
+      {/* Icon rail */}
+      <div style={{
+        borderRight: '1.2px dashed var(--ink-muted)', padding: '0 6px',
+        display: 'flex', flexDirection: 'column', gap: 6, alignItems: 'center',
+      }}>
+        <div style={{ width: 28, height: 28, border: '1.4px solid var(--ink)', borderRadius: 6, background: 'var(--accent)', marginTop: 2 }} />
+        <div style={{ height: 6 }} />
+        {RAIL_ICONS.map((g, i) => (
+          <div key={i} title={RAIL_LABELS[i]} style={{
+            width: 32, height: 32, border: '1.4px solid var(--ink)', borderRadius: 6,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: i === rail ? 'var(--paper-2)' : 'var(--paper)',
+            fontFamily: 'var(--font-hand-alt)', fontSize: 16,
+            boxShadow: i === rail ? 'inset 2px 2px 0 rgba(30,26,20,0.1)' : 'none',
+          }}>{g}</div>
+        ))}
+        <div style={{ flex: 1 }} />
+        <div style={{ width: 26, height: 26, border: '1.2px solid var(--ink)', borderRadius: '50%' }} />
+      </div>
+
+      {/* Contextual sub-nav */}
+      <div style={{ borderRight: '1.2px dashed var(--ink-muted)', paddingRight: 8 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700, padding: '4px 6px 8px' }}>{section}</div>
+        {subNav.map((item, i) =>
+          item.group ? (
+            <div key={'g'+i} className="nav-section-title">{item.group}</div>
+          ) : (
+            <NavItem key={'n'+i} label={item.label} active={item.active} badge={item.badge} />
+          )
+        )}
+      </div>
+
+      {/* Main */}
+      <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, padding: '0 0 10px', borderBottom: '1.2px solid var(--ink-faint)', flexWrap: 'wrap' }}>
+          {crumbs.length ? (
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 11, color: 'var(--ink-muted)' }}>
+              {crumbs.map((c, i) => <React.Fragment key={i}>{i > 0 && <span style={{ margin: '0 6px', opacity: 0.5 }}>/</span>}{c}</React.Fragment>)}
+            </span>
+          ) : null}
+          <span style={{ marginLeft: 'auto', display: 'inline-flex', gap: 6, alignItems: 'center' }}>{topRight}</span>
+        </div>
+        <div style={{ padding: '14px 0', flex: 1, minWidth: 0 }}>{children}</div>
+      </div>
+    </div>
+  </Screen>
+);
+
+/* ============================================================
+   Reusable table row
+   ============================================================ */
+const TRow = ({ cells, dim = false, state = null }) => (
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: cells.map(c => c.w || '1fr').join(' '),
+    gap: 10, padding: '8px 6px',
+    borderBottom: '1px dashed var(--ink-faint)',
+    fontSize: 12, alignItems: 'center',
+    fontFamily: cells[0] && cells[0].mono ? 'var(--font-mono)' : 'inherit',
+    opacity: dim ? 0.6 : 1,
+  }}>
+    {cells.map((c, i) => (
+      <div key={i} style={{
+        fontFamily: c.mono ? 'var(--font-mono)' : 'inherit',
+        color: c.muted ? 'var(--ink-muted)' : 'var(--ink)',
+        fontWeight: c.bold ? 600 : 400,
+        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+      }}>{c.v}</div>
+    ))}
+  </div>
+);
+
+const THead = ({ cols }) => (
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: cols.map(c => c.w || '1fr').join(' '),
+    gap: 10, padding: '6px 6px',
+    borderBottom: '1.4px solid var(--ink)',
+    fontSize: 10, fontFamily: 'var(--font-mono)',
+    textTransform: 'uppercase', letterSpacing: '0.08em',
+    color: 'var(--ink-muted)',
+  }}>
+    {cols.map((c, i) => <div key={i}>{c.v}</div>)}
+  </div>
+);
+
+/* ============================================================
+   07 — WORKFLOWS LIST
+   ============================================================ */
+function Screen_WorkflowsList() {
+  const rows = [
+    { name: 'Billing sync', status: 'live', runs: '1,284', ok: '99.7%', owner: 'Priya', updated: '2m ago' },
+    { name: 'Zendesk triage', status: 'live', runs: '842', ok: '98.1%', owner: 'Jordan', updated: '14m ago' },
+    { name: 'Stripe → NetSuite', status: 'live', runs: '512', ok: '100%', owner: 'Priya', updated: '1h ago' },
+    { name: 'Refund approvals', status: 'paused', runs: '0', ok: '—', owner: 'Dev', updated: 'yesterday' },
+    { name: 'Daily KPI digest', status: 'live', runs: '7', ok: '100%', owner: 'Mira', updated: '08:00' },
+    { name: 'Slack onboarding', status: 'draft', runs: '0', ok: '—', owner: 'Priya', updated: '3d ago' },
+    { name: 'Churn flagger', status: 'error', runs: '33', ok: '87%', owner: 'Jordan', updated: '8m ago' },
+    { name: 'Calendar → HRIS', status: 'live', runs: '211', ok: '99.5%', owner: 'Mira', updated: '22m ago' },
+  ];
+  const stateKind = { live: 'success', paused: 'warn', draft: '', error: 'danger' };
+  return (
+    <ShellBFrame
+      title="workflows · list"
+      height={620}
+      rail={1}
+      section="Workflows"
+      crumbs={['workspace', 'acme-ops', 'workflows']}
+      subNav={[
+        { group: 'Views' },
+        { label: 'All flows', active: true, badge: '28' },
+        { label: 'Mine', badge: '7' },
+        { label: 'Scheduled' },
+        { label: 'Disabled' },
+        { label: 'With errors', badge: '2' },
+        { group: 'Folders' },
+        { label: 'Billing sync' },
+        { label: 'Support ops' },
+        { label: 'Data pipelines' },
+        { label: '+ new folder' },
+      ]}
+      topRight={<>
+        <InputMock placeholder="search workflows…" />
+        <Btn size="sm">filter</Btn>
+        <Btn size="sm">sort</Btn>
+        <Btn size="sm" variant="primary">+ workflow</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>All flows</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>28 total · 2 need attention</span>
+        <Note color="yellow" tilt="tilt-r" tag="Q">
+          Show folders here, or keep them sub-nav only? Users said they want fewer clicks to jump.
+        </Note>
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'name', w: '2fr' },
+          { v: 'status', w: '90px' },
+          { v: '7d runs', w: '80px' },
+          { v: 'success', w: '80px' },
+          { v: 'owner', w: '80px' },
+          { v: 'updated', w: '90px' },
+          { v: '', w: '28px' },
+        ]} />
+        {rows.map((r, i) => (
+          <TRow key={i} cells={[
+            { v: <span><span style={{ marginRight: 6, color: 'var(--ink-muted)' }}>◇</span><strong>{r.name}</strong></span>, w: '2fr' },
+            { v: <Pill kind={stateKind[r.status]} dot>{r.status}</Pill>, w: '90px' },
+            { v: r.runs, w: '80px', mono: true },
+            { v: r.ok, w: '80px', mono: true, muted: r.ok === '—' },
+            { v: r.owner, w: '80px' },
+            { v: r.updated, w: '90px', muted: true },
+            { v: '⋯', w: '28px', muted: true },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 12, marginTop: 14, alignItems: 'flex-start' }}>
+        <Note color="orange" tilt="tilt-l" tag="hover">
+          Row hover → peek card with last 5 runs + "open / edit / duplicate / disable".
+        </Note>
+        <Note color="blue" tag="why">
+          Status chip uses <strong>color + word + shape</strong>. No color alone.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   08 — WORKFLOW DETAIL · Runs tab
+   ============================================================ */
+function Screen_WorkflowRuns() {
+  const runs = [
+    { id: 'run_01JK9T…', started: '10:42:11', dur: '1.2s', trig: 'stripe.charge.succeeded', state: 'ok' },
+    { id: 'run_01JK9S…', started: '10:41:58', dur: '0.9s', trig: 'stripe.charge.succeeded', state: 'ok' },
+    { id: 'run_01JK9R…', started: '10:41:44', dur: '4.8s', trig: 'stripe.charge.refunded', state: 'retry' },
+    { id: 'run_01JK9Q…', started: '10:41:30', dur: '0.8s', trig: 'stripe.charge.succeeded', state: 'ok' },
+    { id: 'run_01JK9P…', started: '10:41:15', dur: '12.1s', trig: 'stripe.charge.succeeded', state: 'fail' },
+    { id: 'run_01JK9N…', started: '10:41:02', dur: '1.0s', trig: 'stripe.charge.succeeded', state: 'ok' },
+    { id: 'run_01JK9M…', started: '10:40:47', dur: '1.1s', trig: 'stripe.charge.succeeded', state: 'ok' },
+  ];
+  const stateKind = { ok: 'success', retry: 'warn', fail: 'danger' };
+  const stateLabel = { ok: 'ok', retry: 'retried', fail: 'failed' };
+
+  return (
+    <ShellBFrame
+      title="workflow · billing-sync · runs"
+      height={640}
+      rail={1}
+      section="Workflows"
+      crumbs={['workflows', 'billing-sync', 'runs']}
+      subNav={[
+        { group: 'Workflow' },
+        { label: 'Canvas' },
+        { label: 'Runs', active: true, badge: '1.2k' },
+        { label: 'Triggers' },
+        { label: 'Variables' },
+        { label: 'Versions' },
+        { label: 'Permissions' },
+        { label: 'Settings' },
+      ]}
+      topRight={<>
+        <Pill kind="success" dot>live · v12</Pill>
+        <Btn size="sm">test run</Btn>
+        <Btn size="sm">pause</Btn>
+        <Btn size="sm" variant="primary">edit</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 12 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>billing-sync</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Stripe → NetSuite, with Slack alerts on failure</span>
+      </div>
+
+      {/* Mini sparkline header */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1.6fr 1fr 1fr 1fr', gap: 10, marginBottom: 12 }}>
+        <div className="frame" style={{ padding: 10 }}>
+          <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>runs · last 24h</div>
+          <svg viewBox="0 0 240 44" style={{ width: '100%', height: 44, marginTop: 4 }}>
+            {Array.from({ length: 24 }).map((_, i) => {
+              const h = [10,14,18,22,26,32,36,28,18,12,10,16,22,28,30,26,20,16,24,32,38,30,22,18][i];
+              const fail = i === 14;
+              return <rect key={i} x={i*10} y={44-h} width={8} height={h} fill={fail ? 'var(--accent-4)' : 'var(--ink)'} />;
+            })}
+          </svg>
+        </div>
+        {[['success', '98.1%', 'success'], ['p95', '1.4s', ''], ['last fail', '3m ago', 'danger']].map(([k,v,kind],i) => (
+          <div key={i} className="frame" style={{ padding: 10 }}>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>{k}</div>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700, marginTop: 2 }}>{v}</div>
+            {kind && <Pill kind={kind} dot>{kind === 'success' ? 'healthy' : 'needs look'}</Pill>}
+          </div>
+        ))}
+      </div>
+
+      {/* Filter bar */}
+      <div style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 8, flexWrap: 'wrap' }}>
+        <InputMock placeholder="search by run id, input, error…" wide />
+        <Btn size="sm">status: all</Btn>
+        <Btn size="sm">trigger: all</Btn>
+        <Btn size="sm">time: 24h</Btn>
+        <span style={{ flex: 1 }} />
+        <Btn size="sm">export csv</Btn>
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'run id', w: '1.3fr' },
+          { v: 'started', w: '1fr' },
+          { v: 'duration', w: '80px' },
+          { v: 'trigger', w: '1.5fr' },
+          { v: 'status', w: '110px' },
+          { v: '', w: '24px' },
+        ]} />
+        {runs.map((r, i) => (
+          <TRow key={i} cells={[
+            { v: r.id, w: '1.3fr', mono: true, bold: i === 0 },
+            { v: r.started, w: '1fr', mono: true, muted: true },
+            { v: r.dur, w: '80px', mono: true },
+            { v: r.trig, w: '1.5fr', mono: true, muted: true },
+            { v: <Pill kind={stateKind[r.state]} dot>{stateLabel[r.state]}</Pill>, w: '110px' },
+            { v: '→', w: '24px' },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <Note color="yellow" tilt="tilt-r" tag="drill">
+          Clicking a row opens <strong>Run detail</strong> (section 09) in a side drawer first — cheap peek.
+          "Expand" opens full-page if they want to dig in.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+// Object.assign to expose
+Object.assign(window, {
+  ShellBFrame, TRow, THead,
+  Screen_WorkflowsList, Screen_WorkflowRuns,
+});
+
+
+// ============ screens2.jsx (inlined) ============
+
+// screens2.jsx — sections 09, 10, 11
+
+/* ============================================================
+   09 — RUN DETAIL
+   Timeline of steps · input/output · logs · retry controls
+   ============================================================ */
+function Screen_RunDetail() {
+  const steps = [
+    { t: '00.00', name: 'trigger · stripe.charge.succeeded', state: 'ok', dur: '—', note: 'webhook received' },
+    { t: '00.04', name: 'fetch customer', state: 'ok', dur: '42ms', note: 'stripe.customer.retrieve' },
+    { t: '00.08', name: 'transform payload', state: 'ok', dur: '3ms', note: 'map → invoice_v3' },
+    { t: '00.09', name: 'branch · amount > $100', state: 'ok', dur: '1ms', note: 'took "yes" path' },
+    { t: '00.12', name: 'upsert netsuite invoice', state: 'fail', dur: '4.2s', note: 'HTTP 503 · retried 2/3' },
+    { t: '04.32', name: 'upsert netsuite invoice', state: 'retry', dur: '520ms', note: 'attempt 3 → ok' },
+    { t: '04.84', name: 'append run log', state: 'ok', dur: '8ms', note: 'bigquery' },
+    { t: '04.86', name: 'slack · notify #billing', state: 'skipped', dur: '—', note: 'only on final failure' },
+  ];
+  const stateKind = { ok: 'success', fail: 'danger', retry: 'warn', skipped: '' };
+
+  return (
+    <ShellBFrame
+      title="run · 01JK9R2X · detail"
+      height={720}
+      rail={1}
+      section="Workflows"
+      crumbs={['workflows', 'billing-sync', 'runs', 'run_01JK9R2X']}
+      subNav={[
+        { group: 'Workflow' },
+        { label: 'Canvas' },
+        { label: 'Runs', active: true, badge: '1.2k' },
+        { label: 'Triggers' },
+        { label: 'Variables' },
+        { label: 'Versions' },
+        { label: 'Permissions' },
+        { label: 'Settings' },
+      ]}
+      topRight={<>
+        <Pill kind="warn" dot>retried · ok</Pill>
+        <Btn size="sm">copy run url</Btn>
+        <Btn size="sm">re-run with same input</Btn>
+        <Btn size="sm" variant="primary">open canvas ↗</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 4 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>run_01JK9R2X</div>
+        <span style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>billing-sync · v12 · 10:41:44 · 4.8s · Priya</span>
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--ink-2)', marginBottom: 14 }}>
+        NetSuite returned 503 once, succeeded on retry 3. No user impact — but worth watching: 3 retries today.
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1.1fr 1.2fr', gap: 14, minHeight: 380 }}>
+        {/* Timeline */}
+        <div className="frame" style={{ padding: 12 }}>
+          <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>timeline</div>
+          <div style={{ position: 'relative' }}>
+            {/* spine */}
+            <div style={{ position: 'absolute', left: 56, top: 4, bottom: 4, width: 1.4, background: 'var(--ink-faint)' }} />
+            {steps.map((s, i) => (
+              <div key={i} style={{ display: 'grid', gridTemplateColumns: '52px 18px 1fr', gap: 6, padding: '8px 0', alignItems: 'flex-start' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)', paddingTop: 2 }}>+{s.t}</div>
+                <div style={{
+                  width: 14, height: 14, borderRadius: '50%',
+                  border: '1.4px solid var(--ink)',
+                  marginTop: 2, marginLeft: 2,
+                  background: s.state === 'ok' ? 'var(--accent-3)'
+                    : s.state === 'fail' ? 'var(--accent-4)'
+                    : s.state === 'retry' ? 'var(--accent)'
+                    : 'var(--paper)',
+                }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, fontFamily: 'var(--font-mono)' }}>{s.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--ink-muted)', display: 'flex', gap: 8, marginTop: 2 }}>
+                    <span>{s.note}</span>
+                    <span style={{ marginLeft: 'auto' }}>{s.dur}</span>
+                  </div>
+                  {s.state !== 'ok' && s.state !== 'skipped' && (
+                    <div style={{ marginTop: 4 }}>
+                      <Pill kind={stateKind[s.state]} dot>{s.state}</Pill>
+                    </div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Right column — input/output/logs tabs */}
+        <div>
+          <div style={{ display: 'flex', gap: 4, marginBottom: 8 }}>
+            {['input', 'output', 'logs', 'variables'].map((t, i) => (
+              <div key={t} style={{
+                padding: '4px 10px',
+                border: '1.2px solid var(--ink)',
+                borderBottom: i === 2 ? '1.2px solid var(--paper)' : '1.2px solid var(--ink)',
+                background: i === 2 ? 'var(--paper)' : 'var(--paper-2)',
+                fontFamily: 'var(--font-mono)', fontSize: 11,
+                fontWeight: i === 2 ? 600 : 400,
+                borderTopLeftRadius: 4, borderTopRightRadius: 4,
+              }}>{t}</div>
+            ))}
+          </div>
+          <div className="frame inset" style={{ padding: 10, fontFamily: 'var(--font-mono)', fontSize: 11, lineHeight: 1.6, minHeight: 340 }}>
+            <div style={{ color: 'var(--ink-muted)' }}>[00.00] trigger received · stripe:charge.succeeded</div>
+            <div>[00.04] fetch customer cus_NxF9… <span style={{ color: 'var(--accent-3-ink, var(--ink))' }}>ok</span></div>
+            <div>[00.08] transform → invoice_v3 · 3 fields mapped</div>
+            <div>[00.09] branch amount=$248 → "yes" path</div>
+            <div style={{ color: 'var(--accent-4)' }}>[00.12] POST netsuite/invoice → 503 Service Unavailable</div>
+            <div style={{ color: 'var(--accent-4)' }}>        └ will retry (1/3) in 800ms</div>
+            <div style={{ color: 'var(--accent-4)' }}>[00.92] POST netsuite/invoice → 503</div>
+            <div style={{ color: 'var(--accent-4)' }}>        └ will retry (2/3) in 1.6s</div>
+            <div>[02.52] POST netsuite/invoice → 201 Created · id=inv_8821</div>
+            <div>[04.84] log append · bigquery:vips.ops.runs</div>
+            <div>[04.86] skip slack notify (final state = ok)</div>
+            <div style={{ color: 'var(--ink-muted)', marginTop: 6 }}>— end —</div>
+          </div>
+          <div style={{ marginTop: 10 }}>
+            <Note color="yellow" tilt="tilt-r" tag="Q">
+              Should logs stream live for in-progress runs, or only appear when run ends? I'd vote live — it's what ops people expect.
+            </Note>
+          </div>
+        </div>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   10 — CONNECTIONS LIST
+   ============================================================ */
+function Screen_ConnectionsList() {
+  const conns = [
+    { app: 'Stripe',    kind: 'OAuth',  acct: 'acme-prod',      by: 'Priya',  status: 'ok',    used: '18 flows' },
+    { app: 'NetSuite',  kind: 'API key',acct: 'NS-884421',       by: 'Dev',    status: 'expiring', used: '4 flows' },
+    { app: 'Slack',     kind: 'OAuth',  acct: 'acme.slack.com', by: 'Jordan', status: 'ok',    used: '11 flows' },
+    { app: 'PagerDuty', kind: 'token',  acct: 'oncall',          by: 'Jordan', status: 'ok',    used: '3 flows'  },
+    { app: 'Zendesk',   kind: 'OAuth',  acct: 'acme',            by: 'Mira',   status: 'error', used: '2 flows'  },
+    { app: 'Google Sheets', kind: 'OAuth', acct: 'priya@acme',   by: 'Priya',  status: 'ok',    used: '6 flows'  },
+    { app: 'BigQuery',  kind: 'svc acct', acct: 'vips-bq',       by: 'Dev',    status: 'ok',    used: '9 flows'  },
+  ];
+  const statusKind = { ok: 'success', expiring: 'warn', error: 'danger' };
+  const statusLabel = { ok: 'connected', expiring: 'expires 3d', error: 'auth failed' };
+
+  return (
+    <ShellBFrame
+      title="connections · list"
+      height={620}
+      rail={3}
+      section="Connections"
+      crumbs={['workspace', 'acme-ops', 'connections']}
+      subNav={[
+        { group: 'Views' },
+        { label: 'All', active: true, badge: '14' },
+        { label: 'Mine' },
+        { label: 'Expiring', badge: '1' },
+        { label: 'Errors', badge: '1' },
+        { group: 'By category' },
+        { label: 'Payments' },
+        { label: 'Comms' },
+        { label: 'Data' },
+        { label: 'Custom / HTTP' },
+      ]}
+      topRight={<>
+        <InputMock placeholder="search apps…" />
+        <Btn size="sm">sort</Btn>
+        <Btn size="sm" variant="primary">+ connect app</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Connected apps</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>14 active · 1 expiring · 1 error</span>
+      </div>
+
+      {/* Hero attention strip */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 12 }}>
+        <div className="frame" style={{ padding: 10, borderColor: 'var(--accent)', background: 'color-mix(in oklab, var(--accent) 10%, var(--paper))' }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <Pill kind="warn" dot>attention</Pill>
+            <strong>NetSuite API key expires in 3 days</strong>
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--ink-2)', marginTop: 4 }}>Affects 4 workflows including billing-sync.</div>
+          <div style={{ marginTop: 8 }}><Btn size="sm" variant="primary">rotate now</Btn> <Btn size="sm">remind me</Btn></div>
+        </div>
+        <div className="frame" style={{ padding: 10, borderColor: 'var(--accent-4)', background: 'color-mix(in oklab, var(--accent-4) 10%, var(--paper))' }}>
+          <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+            <Pill kind="danger" dot>broken</Pill>
+            <strong>Zendesk auth failed</strong>
+          </div>
+          <div style={{ fontSize: 12, color: 'var(--ink-2)', marginTop: 4 }}>Last good: 14m ago · 2 workflows paused automatically.</div>
+          <div style={{ marginTop: 8 }}><Btn size="sm" variant="primary">reconnect</Btn> <Btn size="sm">view logs</Btn></div>
+        </div>
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'app', w: '1.4fr' },
+          { v: 'auth', w: '90px' },
+          { v: 'account', w: '1.2fr' },
+          { v: 'added by', w: '90px' },
+          { v: 'used in', w: '90px' },
+          { v: 'status', w: '130px' },
+          { v: '', w: '24px' },
+        ]} />
+        {conns.map((c, i) => (
+          <TRow key={i} cells={[
+            { v: <span><span style={{ display: 'inline-block', width: 16, height: 16, border: '1.2px solid var(--ink)', marginRight: 8, verticalAlign: 'middle', borderRadius: 3 }} /><strong>{c.app}</strong></span>, w: '1.4fr' },
+            { v: c.kind, w: '90px', muted: true },
+            { v: c.acct, w: '1.2fr', mono: true },
+            { v: c.by, w: '90px' },
+            { v: c.used, w: '90px', muted: true },
+            { v: <Pill kind={statusKind[c.status]} dot>{statusLabel[c.status]}</Pill>, w: '130px' },
+            { v: '⋯', w: '24px' },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <Note color="blue" tag="why">
+          Credentials live at the <strong>workspace</strong> level, not per-workflow. One Stripe connection powers every flow that needs it.
+        </Note>
+        <Note color="yellow" tilt="tilt-r" tag="next">
+          Pre-empt expirations. A broken credential at 3am is the worst UX in the product.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   11 — ADD CONNECTION (modal over Connections)
+   ============================================================ */
+function Screen_AddConnection() {
+  return (
+    <ShellBFrame
+      title="connections · add"
+      height={640}
+      rail={3}
+      section="Connections"
+      crumbs={['workspace', 'acme-ops', 'connections', '+ add']}
+      subNav={[
+        { group: 'Views' },
+        { label: 'All', badge: '14' },
+        { label: 'Mine' },
+        { label: 'Expiring', badge: '1' },
+        { label: 'Errors', badge: '1' },
+        { group: 'By category' },
+        { label: 'Payments' },
+        { label: 'Comms' },
+        { label: 'Data' },
+      ]}
+      topRight={<>
+        <Pill dot>modal · step 1/3</Pill>
+      </>}
+    >
+      {/* Dimmed list behind */}
+      <div style={{ position: 'relative' }}>
+        <div style={{ opacity: 0.22, pointerEvents: 'none', filter: 'blur(0.4px)' }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>Connected apps</div>
+          <div className="frame" style={{ padding: 10 }}>
+            {['Stripe','NetSuite','Slack','PagerDuty','Zendesk'].map((n,i) => (
+              <div key={n} style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 2px', borderBottom: i<4 ? '1px dashed var(--ink-faint)' : 'none', fontSize: 12 }}>
+                <span>{n}</span><span style={{ color: 'var(--ink-muted)' }}>connected</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Modal */}
+        <div style={{
+          position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)',
+          width: 'min(640px, 92%)',
+          background: 'var(--paper)', border: '1.6px solid var(--ink)', borderRadius: 10,
+          padding: 18, boxShadow: '8px 10px 0 rgba(30,26,20,0.12)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700 }}>Connect an app</div>
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>step 1 of 3 · pick</span>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--ink-muted)', cursor: 'pointer' }}>✕</span>
+          </div>
+          <div style={{ marginBottom: 12 }}>
+            <InputMock placeholder="search 180+ apps…" wide />
+          </div>
+
+          {/* Category strip */}
+          <div style={{ display: 'flex', gap: 6, marginBottom: 10, flexWrap: 'wrap' }}>
+            {['popular','payments','comms','CRM','data','storage','devtools','custom'].map((c, i) => (
+              <span key={c} style={{
+                padding: '3px 10px', border: '1.2px solid var(--ink)', borderRadius: 999,
+                background: i === 0 ? 'var(--accent)' : 'var(--paper)',
+                fontFamily: 'var(--font-mono)', fontSize: 11,
+                fontWeight: i === 0 ? 600 : 400,
+              }}>{c}</span>
+            ))}
+          </div>
+
+          {/* App grid */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 8 }}>
+            {[
+              ['Stripe','payments', true],
+              ['NetSuite','erp', true],
+              ['Slack','comms', true],
+              ['HubSpot','crm', false],
+              ['Zendesk','support', true],
+              ['Salesforce','crm', false],
+              ['Intercom','support', false],
+              ['Shopify','commerce', false],
+              ['BigQuery','data', true],
+              ['Postgres','data', false],
+              ['S3','storage', false],
+              ['HTTP request','custom', false],
+            ].map(([n, cat, conn], i) => (
+              <div key={i} className="frame" style={{ padding: 8, textAlign: 'center', position: 'relative', background: i===8 ? 'color-mix(in oklab, var(--accent) 18%, var(--paper))' : 'var(--paper)', borderColor: i===8 ? 'var(--ink)' : undefined, borderWidth: i===8 ? 1.6 : 1.2 }}>
+                <div style={{ width: 28, height: 28, border: '1.4px solid var(--ink)', borderRadius: 6, margin: '2px auto', background: 'var(--paper-2)' }} />
+                <div style={{ fontSize: 12, fontWeight: 600, marginTop: 4 }}>{n}</div>
+                <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>{cat}</div>
+                {conn && <div style={{ position: 'absolute', top: 4, right: 4, fontSize: 9, fontFamily: 'var(--font-mono)', color: 'var(--accent-3)' }}>● in use</div>}
+              </div>
+            ))}
+          </div>
+
+          <div style={{ marginTop: 14, display: 'flex', gap: 8, alignItems: 'center' }}>
+            <span style={{ fontSize: 11, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>
+              Can't find it? <span style={{ textDecoration: 'underline' }}>request an integration</span> or use Custom HTTP.
+            </span>
+            <span style={{ flex: 1 }} />
+            <Btn size="sm">cancel</Btn>
+            <Btn size="sm" variant="primary">continue →</Btn>
+          </div>
+
+          <Arrow style={{ position: 'absolute', right: -140, top: 140 }}>
+            selected → opens OAuth popup → step 2 names the credential → step 3 test-probe.
+          </Arrow>
+        </div>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+Object.assign(window, {
+  Screen_RunDetail, Screen_ConnectionsList, Screen_AddConnection,
+});
+
+
+// ============ screens3.jsx (inlined) ============
+
+// screens3.jsx — sections 12, 13, 14
+
+/* ============================================================
+   12 — TRIGGERS & SCHEDULES
+   ============================================================ */
+function Screen_Triggers() {
+  const triggers = [
+    { name: 'stripe.charge.succeeded', kind: 'webhook', flow: 'billing-sync', last: '10s ago', state: 'ok' },
+    { name: 'daily 08:00 UTC', kind: 'cron', flow: 'KPI digest', last: '2h ago', state: 'ok' },
+    { name: 'zendesk.ticket.created', kind: 'webhook', flow: 'zendesk triage', last: '4m ago', state: 'ok' },
+    { name: 'every 15 min', kind: 'cron', flow: 'churn flagger', last: '3m ago', state: 'error' },
+    { name: 'calendar.event.created', kind: 'event', flow: 'HRIS sync', last: '22m ago', state: 'ok' },
+    { name: 'manual · run now', kind: 'manual', flow: 'refund approvals', last: 'never', state: 'idle' },
+  ];
+  const stateKind = { ok: 'success', error: 'danger', idle: '' };
+
+  return (
+    <ShellBFrame
+      title="triggers & schedules"
+      height={600}
+      rail={4}
+      section="Triggers"
+      crumbs={['workspace', 'acme-ops', 'triggers']}
+      subNav={[
+        { group: 'Kind' },
+        { label: 'All', active: true, badge: '24' },
+        { label: 'Webhooks', badge: '12' },
+        { label: 'Schedules', badge: '9' },
+        { label: 'Events', badge: '3' },
+        { group: 'Health' },
+        { label: 'Recent fires' },
+        { label: 'Failed deliveries', badge: '1' },
+        { label: 'Dead-letter queue' },
+      ]}
+      topRight={<>
+        <Btn size="sm">timezone · UTC</Btn>
+        <Btn size="sm" variant="primary">+ trigger</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Triggers</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>24 configured · 1 failing</span>
+      </div>
+
+      {/* Activity heatmap */}
+      <div className="frame" style={{ padding: 12, marginBottom: 12 }}>
+        <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 6 }}>
+          activity · last 24h · every square = 10 minutes
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(72, 1fr)', gap: 2, marginTop: 6 }}>
+          {Array.from({ length: 72 }).map((_, i) => {
+            const intensity = Math.abs(Math.sin(i * 0.7) + Math.cos(i * 0.3)) * 0.6;
+            const fail = i === 58;
+            return <div key={i} style={{
+              height: 14,
+              background: fail ? 'var(--accent-4)' : `color-mix(in oklab, var(--ink) ${Math.round(intensity * 70)}%, var(--paper))`,
+              border: '0.6px solid var(--ink-faint)',
+              borderRadius: 1,
+            }} />;
+          })}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', marginTop: 4 }}>
+          <span>-24h</span><span>-18h</span><span>-12h</span><span>-6h</span><span>now</span>
+        </div>
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'trigger', w: '1.6fr' },
+          { v: 'kind', w: '90px' },
+          { v: 'workflow', w: '1.2fr' },
+          { v: 'last fire', w: '100px' },
+          { v: 'state', w: '90px' },
+          { v: '', w: '24px' },
+        ]} />
+        {triggers.map((t, i) => (
+          <TRow key={i} cells={[
+            { v: t.name, w: '1.6fr', mono: t.kind === 'webhook' || t.kind === 'event', bold: true },
+            { v: t.kind, w: '90px', muted: true },
+            { v: <span style={{ color: 'var(--ink)' }}>{t.flow}</span>, w: '1.2fr' },
+            { v: t.last, w: '100px', muted: true, mono: true },
+            { v: <Pill kind={stateKind[t.state]} dot>{t.state}</Pill>, w: '90px' },
+            { v: '⋯', w: '24px' },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <Note color="yellow" tilt="tilt-l" tag="design">
+          Webhook URLs should be <strong>copyable in one click</strong> — Priya always has two windows open when wiring Stripe.
+        </Note>
+        <Note color="blue" tag="recovery">
+          Failed deliveries land in a DLQ. You can replay a batch, not just one at a time.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   13 — SECRETS / ENV VARS
+   ============================================================ */
+function Screen_Secrets() {
+  const secrets = [
+    { key: 'STRIPE_WEBHOOK_SECRET', scope: 'workspace', updated: '12d ago', by: 'Priya', used: '3 flows' },
+    { key: 'NETSUITE_API_TOKEN', scope: 'workspace', updated: '88d ago', by: 'Dev', used: '4 flows', warn: 'rotate due' },
+    { key: 'SLACK_SIGNING_SECRET', scope: 'workspace', updated: '4d ago', by: 'Jordan', used: '11 flows' },
+    { key: 'BQ_SERVICE_ACCOUNT_JSON', scope: 'workspace', updated: '1d ago', by: 'Dev', used: '9 flows' },
+    { key: 'PROD_DB_URL', scope: 'env · prod', updated: '6h ago', by: 'Dev', used: '2 flows' },
+    { key: 'STAGING_DB_URL', scope: 'env · staging', updated: '6h ago', by: 'Dev', used: '2 flows' },
+    { key: 'OPENAI_KEY', scope: 'folder · support-ops', updated: '34d ago', by: 'Mira', used: '1 flow' },
+  ];
+  return (
+    <ShellBFrame
+      title="secrets & env vars"
+      height={580}
+      rail={6}
+      section="Secrets"
+      crumbs={['workspace', 'acme-ops', 'secrets']}
+      subNav={[
+        { group: 'Scope' },
+        { label: 'Workspace', active: true, badge: '14' },
+        { label: 'Environments', badge: '8' },
+        { label: 'Per folder', badge: '3' },
+        { group: 'Hygiene' },
+        { label: 'Rotate due', badge: '2' },
+        { label: 'Unused', badge: '1' },
+        { label: 'Access log' },
+      ]}
+      topRight={<>
+        <Btn size="sm">import .env</Btn>
+        <Btn size="sm" variant="primary">+ secret</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Secrets</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>stored encrypted · never shown in logs</span>
+      </div>
+
+      <div style={{ fontSize: 12, color: 'var(--ink-2)', marginBottom: 12, display: 'flex', gap: 6, alignItems: 'center' }}>
+        <span style={{ display: 'inline-block', width: 12, height: 12, border: '1.2px solid var(--ink)', borderRadius: 2, background: 'var(--accent)' }} />
+        Values are write-only once saved — you can replace them but never re-read.
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'key', w: '1.6fr' },
+          { v: 'value', w: '1fr' },
+          { v: 'scope', w: '130px' },
+          { v: 'updated', w: '100px' },
+          { v: 'by', w: '70px' },
+          { v: 'used in', w: '90px' },
+          { v: '', w: '24px' },
+        ]} />
+        {secrets.map((s, i) => (
+          <TRow key={i} cells={[
+            { v: <span><span style={{ color: 'var(--ink-muted)', marginRight: 6 }}>⚿</span><strong style={{ fontFamily: 'var(--font-mono)' }}>{s.key}</strong></span>, w: '1.6fr' },
+            { v: <span style={{ fontFamily: 'var(--font-mono)', letterSpacing: 1, color: 'var(--ink-muted)' }}>••••••••••{' '}<span style={{ fontSize: 10, textDecoration: 'underline', cursor: 'pointer' }}>edit</span></span>, w: '1fr' },
+            { v: s.scope, w: '130px', mono: true, muted: true },
+            { v: <span style={{ color: s.warn ? 'var(--accent-4)' : 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>{s.warn || s.updated}</span>, w: '100px' },
+            { v: s.by, w: '70px' },
+            { v: s.used, w: '90px', muted: true },
+            { v: '⋯', w: '24px' },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <Note color="orange" tilt="tilt-r" tag="safety">
+          Once saved a secret is write-only. Replace to rotate — never "reveal."
+        </Note>
+        <Note color="yellow" tag="scope">
+          Three scopes: workspace (default), environment (prod/staging), folder (team-level). Per-workflow secrets would be one scope too many.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   14 — WORKSPACE SETTINGS
+   ============================================================ */
+function Screen_WorkspaceSettings() {
+  return (
+    <ShellBFrame
+      title="workspace settings"
+      height={620}
+      rail={7}
+      section="Settings"
+      crumbs={['workspace', 'acme-ops', 'settings', 'general']}
+      subNav={[
+        { group: 'Workspace' },
+        { label: 'General', active: true },
+        { label: 'Members', badge: '14' },
+        { label: 'Roles' },
+        { label: 'Environments' },
+        { label: 'Billing' },
+        { label: 'Audit log' },
+        { group: 'My account' },
+        { label: 'Profile' },
+        { label: 'API tokens' },
+        { label: 'Notifications' },
+      ]}
+      topRight={<>
+        <Pill dot>unsaved changes</Pill>
+        <Btn size="sm">discard</Btn>
+        <Btn size="sm" variant="primary">save</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 14 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>General</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Workspace: acme-ops · id wks_4412</span>
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 18 }}>
+        <div>
+          {/* Identity block */}
+          <SettingsBlock title="Identity" hint="How this workspace appears to members.">
+            <Field label="Workspace name" value="Acme Ops" />
+            <Field label="Slug" value="acme-ops" mono hint="Used in URLs and webhook paths."/>
+            <Field label="Icon" custom={
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <div style={{ width: 36, height: 36, border: '1.4px solid var(--ink)', borderRadius: 8, background: 'var(--accent)' }} />
+                <Btn size="sm">upload</Btn>
+                <Btn size="sm">remove</Btn>
+              </div>
+            } />
+          </SettingsBlock>
+
+          <SettingsBlock title="Runtime defaults" hint="Applied to new workflows unless overridden.">
+            <Field label="Default timezone" value="UTC" mono />
+            <Field label="Retry policy" value="3 attempts · exponential (1s → 4s)" />
+            <Field label="Run retention" value="90 days" />
+            <Field label="Log verbosity" value="normal" mono />
+          </SettingsBlock>
+
+          <SettingsBlock title="Danger zone" hint="These actions cannot be undone.">
+            <div style={{ display: 'flex', gap: 8, marginTop: 6 }}>
+              <Btn size="sm">transfer ownership</Btn>
+              <Btn size="sm">export workspace</Btn>
+              <span style={{
+                padding: '4px 10px', border: '1.4px solid var(--accent-4)', color: 'var(--accent-4)',
+                background: 'var(--paper)', borderRadius: 6, fontFamily: 'var(--font-mono)', fontSize: 11, cursor: 'pointer',
+              }}>delete workspace</span>
+            </div>
+          </SettingsBlock>
+        </div>
+
+        {/* Side meta */}
+        <div>
+          <div className="frame" style={{ padding: 12, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>plan</div>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 22, fontWeight: 700, marginTop: 2 }}>Team · $49/seat</div>
+            <div style={{ fontSize: 12, color: 'var(--ink-muted)', marginTop: 4 }}>14 seats · renews May 3</div>
+            <div style={{ marginTop: 8 }}><Btn size="sm">manage billing</Btn></div>
+          </div>
+          <Note color="yellow" tilt="tilt-r" tag="Q">
+            Is "environments" first-class enough to deserve its own rail icon? I left it in Settings for now — add once we see how often users switch.
+          </Note>
+        </div>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+const SettingsBlock = ({ title, hint, children }) => (
+  <div style={{
+    marginBottom: 14,
+    padding: 14,
+    border: '1.2px solid var(--ink)', borderRadius: 8,
+    background: 'var(--paper)',
+  }}>
+    <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>{title}</div>
+    {hint && <div style={{ fontSize: 12, color: 'var(--ink-muted)', marginBottom: 10 }}>{hint}</div>}
+    <div>{children}</div>
+  </div>
+);
+
+const Field = ({ label, value, mono = false, hint = '', custom = null }) => (
+  <div style={{ display: 'grid', gridTemplateColumns: '150px 1fr', gap: 10, padding: '8px 0', borderTop: '1px dashed var(--ink-faint)', alignItems: 'center' }}>
+    <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>{label}</div>
+    <div>
+      {custom || (
+        <div style={{
+          border: '1.2px solid var(--ink-faint)', borderRadius: 6, padding: '6px 10px',
+          background: 'var(--paper-2)', fontSize: 13,
+          fontFamily: mono ? 'var(--font-mono)' : 'inherit',
+        }}>{value}</div>
+      )}
+      {hint && <div style={{ fontSize: 11, color: 'var(--ink-muted)', marginTop: 4 }}>{hint}</div>}
+    </div>
+  </div>
+);
+
+Object.assign(window, {
+  Screen_Triggers, Screen_Secrets, Screen_WorkspaceSettings,
+  SettingsBlock, Field,
+});
+
+
+// ============ screens4.jsx (inlined) ============
+
+// screens4.jsx — sections 15, 16, 17
+
+/* ============================================================
+   15 — MEMBERS & ROLES
+   ============================================================ */
+function Screen_Members() {
+  const members = [
+    { name: 'Priya Shah', email: 'priya@acme.co', role: 'Admin', status: 'active', last: 'now', mfa: true },
+    { name: 'Jordan Kim', email: 'jordan@acme.co', role: 'Builder', status: 'active', last: '14m ago', mfa: true },
+    { name: 'Mira Okafor', email: 'mira@acme.co', role: 'Builder', status: 'active', last: '2h ago', mfa: true },
+    { name: 'Dev Patel', email: 'dev@acme.co', role: 'Admin', status: 'active', last: 'yesterday', mfa: false },
+    { name: 'Sam Rivera', email: 'sam@acme.co', role: 'Viewer', status: 'invited', last: '—', mfa: false },
+    { name: 'Finance Team', email: 'finance-ops@acme.co', role: 'Viewer', status: 'group', last: '—', mfa: null },
+  ];
+  const roleKind = { Admin: 'danger', Builder: 'success', Viewer: '' };
+
+  return (
+    <ShellBFrame
+      title="members & roles"
+      height={600}
+      rail={7}
+      section="Settings"
+      crumbs={['workspace', 'acme-ops', 'settings', 'members']}
+      subNav={[
+        { group: 'Workspace' },
+        { label: 'General' },
+        { label: 'Members', active: true, badge: '14' },
+        { label: 'Roles' },
+        { label: 'Environments' },
+        { label: 'Billing' },
+        { label: 'Audit log' },
+      ]}
+      topRight={<>
+        <InputMock placeholder="find member…" />
+        <Btn size="sm">SCIM sync</Btn>
+        <Btn size="sm" variant="primary">+ invite</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 10 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Members</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>14 people · 1 invite pending · 1 missing MFA</span>
+      </div>
+
+      {/* Role legend card */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 12 }}>
+        <RoleCard letter="A" name="Admin" who="2 people" can="Everything — billing, members, delete workspace." kind="danger" />
+        <RoleCard letter="B" name="Builder" who="9 people" can="Create, edit, publish workflows. Manage connections." kind="success" />
+        <RoleCard letter="V" name="Viewer" who="3 people" can="See runs and dashboards. No edits." kind="" />
+      </div>
+
+      <div className="frame" style={{ padding: '4px 8px' }}>
+        <THead cols={[
+          { v: 'member', w: '1.6fr' },
+          { v: 'role', w: '110px' },
+          { v: 'status', w: '100px' },
+          { v: 'last active', w: '110px' },
+          { v: 'mfa', w: '70px' },
+          { v: '', w: '24px' },
+        ]} />
+        {members.map((m, i) => (
+          <TRow key={i} cells={[
+            { v: <span style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+                <div style={{ width: 28, height: 28, borderRadius: '50%', border: '1.2px solid var(--ink)',
+                  background: m.status === 'group' ? 'var(--paper-2)' : 'color-mix(in oklab, var(--accent) 40%, var(--paper))',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 11, fontWeight: 700, fontFamily: 'var(--font-hand-alt)',
+                }}>{m.status === 'group' ? '◎' : m.name[0]}</div>
+                <div>
+                  <div style={{ fontWeight: 600 }}>{m.name}</div>
+                  <div style={{ fontSize: 11, color: 'var(--ink-muted)', fontFamily: 'var(--font-mono)' }}>{m.email}</div>
+                </div>
+              </span>, w: '1.6fr' },
+            { v: <Pill kind={roleKind[m.role]} dot>{m.role}</Pill>, w: '110px' },
+            { v: m.status === 'active' ? <Pill kind="success" dot>active</Pill>
+                : m.status === 'invited' ? <Pill kind="warn" dot>invited</Pill>
+                : <Pill>group</Pill>, w: '100px' },
+            { v: m.last, w: '110px', muted: true, mono: true },
+            { v: m.mfa === null ? <span style={{ color: 'var(--ink-muted)' }}>—</span>
+                : m.mfa ? <span style={{ color: 'var(--accent-3)' }}>✓</span>
+                : <span style={{ color: 'var(--accent-4)', fontWeight: 700 }}>✗</span>, w: '70px' },
+            { v: '⋯', w: '24px' },
+          ]} />
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 12 }}>
+        <Note color="yellow" tilt="tilt-l" tag="Q">
+          Do we need a 4th role (Deployer) who can publish but not edit? Common ask in enterprise — defer to after v1.
+        </Note>
+        <Note color="orange" tag="future">
+          SSO + SCIM are stubs. Priority: <strong>after self-serve 100 teams.</strong>
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+const RoleCard = ({ letter, name, who, can, kind }) => (
+  <div className="frame" style={{ padding: 10, display: 'flex', gap: 10, alignItems: 'flex-start' }}>
+    <div style={{
+      width: 32, height: 32, border: '1.4px solid var(--ink)', borderRadius: 6,
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: kind === 'danger' ? 'color-mix(in oklab, var(--accent-4) 30%, var(--paper))'
+        : kind === 'success' ? 'color-mix(in oklab, var(--accent-3) 40%, var(--paper))'
+        : 'var(--paper-2)',
+      fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700,
+      flexShrink: 0,
+    }}>{letter}</div>
+    <div>
+      <div style={{ display: 'flex', gap: 6, alignItems: 'baseline' }}>
+        <strong style={{ fontSize: 14 }}>{name}</strong>
+        <span style={{ fontSize: 11, color: 'var(--ink-muted)' }}>{who}</span>
+      </div>
+      <div style={{ fontSize: 12, color: 'var(--ink-2)', marginTop: 4 }}>{can}</div>
+    </div>
+  </div>
+);
+
+/* ============================================================
+   16 — NOTIFICATIONS CONFIG
+   ============================================================ */
+function Screen_Notifications() {
+  return (
+    <ShellBFrame
+      title="notifications"
+      height={600}
+      rail={7}
+      section="Settings"
+      crumbs={['my account', 'notifications']}
+      subNav={[
+        { group: 'Workspace' },
+        { label: 'General' },
+        { label: 'Members', badge: '14' },
+        { label: 'Roles' },
+        { group: 'My account' },
+        { label: 'Profile' },
+        { label: 'API tokens' },
+        { label: 'Notifications', active: true },
+        { label: 'Appearance' },
+      ]}
+      topRight={<>
+        <Btn size="sm">test · send me a sample</Btn>
+        <Btn size="sm" variant="primary">save</Btn>
+      </>}
+    >
+      <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700, marginBottom: 4 }}>Notifications</div>
+      <div style={{ fontSize: 12, color: 'var(--ink-muted)', marginBottom: 14 }}>
+        When to ping you and where. Workspace-wide alerts (e.g. a broken connection) still apply regardless.
+      </div>
+
+      {/* Channels */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10, marginBottom: 14 }}>
+        <ChannelCard name="Email" value="priya@acme.co" on />
+        <ChannelCard name="Slack DM" value="@priya on acme.slack.com" on note="connected" />
+        <ChannelCard name="SMS" value="+1 ••• ••• 4421" on={false} note="off — upgrade to Pro" />
+      </div>
+
+      {/* Event matrix */}
+      <div className="frame" style={{ padding: 0 }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1.8fr 100px 100px 100px',
+          padding: '8px 12px',
+          borderBottom: '1.4px solid var(--ink)',
+          background: 'var(--paper-2)',
+          fontSize: 10, fontFamily: 'var(--font-mono)',
+          textTransform: 'uppercase', letterSpacing: '0.08em',
+          color: 'var(--ink-muted)',
+        }}>
+          <div>event</div><div>email</div><div>slack</div><div>in-app</div>
+        </div>
+        {[
+          ['Workflow fails (final)', true, true, true, 'good default'],
+          ['Workflow fails (will retry)', false, false, true, ''],
+          ['Connection expires soon', true, true, true, '7 days warning'],
+          ['Connection broken', true, true, true, 'immediate'],
+          ['Workflow published by someone else', false, true, true, ''],
+          ['I was @mentioned in a comment', true, true, true, ''],
+          ['Weekly workspace digest', true, false, false, 'Monday 09:00'],
+          ['Trigger test event received', false, false, true, 'for 10 minutes after opening setup'],
+        ].map(([label, e, s, a, hint], i) => (
+          <div key={i} style={{
+            display: 'grid', gridTemplateColumns: '1.8fr 100px 100px 100px',
+            padding: '10px 12px',
+            borderBottom: i < 7 ? '1px dashed var(--ink-faint)' : 'none',
+            alignItems: 'center',
+          }}>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 500 }}>{label}</div>
+              {hint && <div style={{ fontSize: 11, color: 'var(--ink-muted)' }}>{hint}</div>}
+            </div>
+            <Check on={e} />
+            <Check on={s} />
+            <Check on={a} />
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <Note color="blue" tag="principle">
+          <strong>Quiet by default, loud when it matters.</strong> We only auto-enable the alerts that indicate <em>actual</em> user-impacting problems.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+const ChannelCard = ({ name, value, on, note = '' }) => (
+  <div className="frame" style={{ padding: 12, position: 'relative' }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <strong style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18 }}>{name}</strong>
+      <span style={{ marginLeft: 'auto' }}>
+        <span style={{
+          display: 'inline-block', width: 34, height: 20,
+          border: '1.2px solid var(--ink)', borderRadius: 999,
+          background: on ? 'var(--accent-3)' : 'var(--paper-2)',
+          position: 'relative', verticalAlign: 'middle',
+        }}>
+          <span style={{
+            position: 'absolute', top: 1, left: on ? 15 : 1,
+            width: 16, height: 16, borderRadius: '50%',
+            border: '1.2px solid var(--ink)', background: 'var(--paper)',
+          }} />
+        </span>
+      </span>
+    </div>
+    <div style={{ fontSize: 12, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', marginTop: 4 }}>{value}</div>
+    {note && <div style={{ fontSize: 11, color: on ? 'var(--accent-3)' : 'var(--accent-4)', marginTop: 4 }}>{note}</div>}
+  </div>
+);
+
+const Check = ({ on }) => (
+  <div style={{
+    width: 18, height: 18, border: '1.4px solid var(--ink)', borderRadius: 4,
+    background: on ? 'var(--accent)' : 'var(--paper)',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    fontSize: 12, fontWeight: 700,
+  }}>{on ? '✓' : ''}</div>
+);
+
+/* ============================================================
+   17 — TEMPLATES GALLERY
+   ============================================================ */
+function Screen_Templates() {
+  const templates = [
+    { name: 'Stripe → NetSuite invoicing', cat: 'Billing', uses: '1.2k', apps: ['Stripe', 'NetSuite', 'Slack'], featured: true },
+    { name: 'Zendesk ticket triage with AI', cat: 'Support', uses: '640', apps: ['Zendesk', 'OpenAI', 'Slack'] },
+    { name: 'Daily KPI digest', cat: 'Analytics', uses: '430', apps: ['BigQuery', 'Slack'] },
+    { name: 'New hire onboarding', cat: 'HR', uses: '280', apps: ['Calendar', 'Slack', 'Notion'] },
+    { name: 'Churn risk flagger', cat: 'Growth', uses: '210', apps: ['Postgres', 'Segment', 'Slack'] },
+    { name: 'Shopify → accounting', cat: 'Billing', uses: '188', apps: ['Shopify', 'QuickBooks'] },
+    { name: 'Calendar → HRIS sync', cat: 'HR', uses: '140', apps: ['Calendar', 'Workday'] },
+    { name: 'Incident escalation', cat: 'DevOps', uses: '96', apps: ['Sentry', 'PagerDuty', 'Slack'] },
+  ];
+
+  return (
+    <ShellBFrame
+      title="templates · gallery"
+      height={640}
+      rail={5}
+      section="Templates"
+      crumbs={['workspace', 'acme-ops', 'templates']}
+      subNav={[
+        { group: 'Gallery' },
+        { label: 'Featured', active: true, badge: '12' },
+        { label: 'All', badge: '140' },
+        { label: 'My bookmarks', badge: '3' },
+        { group: 'By category' },
+        { label: 'Billing' },
+        { label: 'Support' },
+        { label: 'HR' },
+        { label: 'Analytics' },
+        { label: 'DevOps' },
+      ]}
+      topRight={<>
+        <InputMock placeholder="search templates…" />
+        <Btn size="sm">submit template</Btn>
+      </>}
+    >
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 12 }}>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>Start from a template</div>
+        <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Built by the VipsOS team and community. 1-click fork into your workspace.</span>
+      </div>
+
+      {/* Featured hero */}
+      <div className="frame" style={{
+        padding: 18, marginBottom: 14,
+        background: 'color-mix(in oklab, var(--accent) 12%, var(--paper))',
+        borderWidth: 1.6,
+      }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 180px', gap: 20, alignItems: 'center' }}>
+          <div>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--ink-muted)' }}>featured · billing</div>
+            <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 28, fontWeight: 700, marginTop: 4 }}>Stripe → NetSuite invoicing</div>
+            <div style={{ fontSize: 13, color: 'var(--ink-2)', marginTop: 6, maxWidth: 520 }}>
+              The workflow 1.2k teams use on day one. Charges, refunds, failed payments, and Slack alerts on edge cases. Pre-wired retries and a dead-letter queue.
+            </div>
+            <div style={{ display: 'flex', gap: 6, marginTop: 10 }}>
+              {['Stripe', 'NetSuite', 'Slack'].map(a => (
+                <span key={a} style={{ padding: '2px 8px', border: '1.2px solid var(--ink)', borderRadius: 999, background: 'var(--paper)', fontFamily: 'var(--font-mono)', fontSize: 11 }}>{a}</span>
+              ))}
+            </div>
+            <div style={{ marginTop: 12, display: 'flex', gap: 8 }}>
+              <Btn size="sm" variant="primary">use template</Btn>
+              <Btn size="sm">preview canvas</Btn>
+              <Btn size="sm">bookmark</Btn>
+            </div>
+          </div>
+          {/* Sketch preview */}
+          <div style={{
+            border: '1.4px solid var(--ink)', borderRadius: 8, padding: 10,
+            background: 'var(--paper)', height: 140,
+            position: 'relative',
+          }}>
+            <svg viewBox="0 0 160 120" style={{ width: '100%', height: '100%' }}>
+              <rect x={6} y={20} width={36} height={22} fill="var(--paper-2)" stroke="var(--ink)" strokeWidth="1.4" rx="3"/>
+              <rect x={60} y={20} width={36} height={22} fill="var(--paper-2)" stroke="var(--ink)" strokeWidth="1.4" rx="3"/>
+              <rect x={114} y={8} width={36} height={22} fill="color-mix(in oklab, var(--accent-3) 40%, var(--paper))" stroke="var(--ink)" strokeWidth="1.4" rx="3"/>
+              <rect x={114} y={44} width={36} height={22} fill="color-mix(in oklab, var(--accent-4) 30%, var(--paper))" stroke="var(--ink)" strokeWidth="1.4" rx="3"/>
+              <rect x={60} y={80} width={36} height={22} fill="var(--paper-2)" stroke="var(--ink)" strokeWidth="1.4" rx="3"/>
+              <path d="M 42 31 Q 50 31 60 31" stroke="var(--ink)" strokeWidth="1.4" fill="none" markerEnd="url(#ah)"/>
+              <path d="M 96 31 Q 104 31 114 19" stroke="var(--ink)" strokeWidth="1.4" fill="none"/>
+              <path d="M 96 31 Q 104 31 114 55" stroke="var(--accent-4)" strokeWidth="1.4" fill="none"/>
+              <path d="M 114 55 Q 80 70 78 80" stroke="var(--ink)" strokeWidth="1.4" fill="none"/>
+              <defs><marker id="ah" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 8 4 L 0 8 z" fill="var(--ink)"/></marker></defs>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+        {templates.slice(1).map((t, i) => (
+          <div key={i} className="frame" style={{ padding: 10 }}>
+            <div style={{ height: 56, border: '1.2px dashed var(--ink-muted)', borderRadius: 4, background: 'var(--paper-2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>
+              canvas preview
+            </div>
+            <div style={{ fontWeight: 600, marginTop: 8, fontSize: 13 }}>{t.name}</div>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', marginTop: 2 }}>
+              {t.cat} · {t.uses} teams
+            </div>
+            <div style={{ display: 'flex', gap: 4, marginTop: 6, flexWrap: 'wrap' }}>
+              {t.apps.map(a => (
+                <span key={a} style={{ padding: '1px 6px', border: '1px solid var(--ink-faint)', borderRadius: 999, fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>{a}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ marginTop: 12 }}>
+        <Note color="yellow" tilt="tilt-r" tag="strategy">
+          Templates are the <strong>north star</strong> of time-to-first-run. Every empty-state CTA points here.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+Object.assign(window, {
+  Screen_Members, Screen_Notifications, Screen_Templates,
+  RoleCard, ChannelCard, Check,
+});
+
+
+// ============ screens5.jsx (inlined) ============
+
+// screens5.jsx — sections 18, 19, 20, 21
+
+/* ============================================================
+   18 — EMPTY STATE / ONBOARDING
+   ============================================================ */
+function Screen_EmptyState() {
+  return (
+    <ShellBFrame
+      title="new workspace · day 0"
+      height={640}
+      rail={0}
+      section="Home"
+      crumbs={['workspace', 'new-workspace']}
+      subNav={[
+        { group: 'Home' },
+        { label: 'Welcome', active: true },
+        { label: 'Templates', badge: 'new' },
+        { label: 'Tour' },
+        { group: 'Get started' },
+        { label: '1. Connect an app' },
+        { label: '2. Use a template' },
+        { label: '3. Invite teammates' },
+      ]}
+      topRight={<>
+        <Btn size="sm">skip tour</Btn>
+        <Btn size="sm" variant="primary">import from Zapier</Btn>
+      </>}
+    >
+      <div style={{ textAlign: 'center', padding: '20px 0 16px' }}>
+        <div style={{ fontFamily: 'var(--font-hand), cursive', fontSize: 14, color: 'var(--ink-muted)' }}>Welcome to VipsOS, Priya 👋</div>
+        <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 38, fontWeight: 700, marginTop: 4 }}>Let's ship your first workflow.</div>
+        <div style={{ fontSize: 14, color: 'var(--ink-2)', marginTop: 6, maxWidth: 560, margin: '6px auto 0' }}>
+          Three minutes to a running integration. You can use a template, start blank, or import something you built elsewhere.
+        </div>
+      </div>
+
+      {/* Three-lane starter */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 14, marginTop: 14 }}>
+        <StarterLane
+          letter="A"
+          title="Start from a template"
+          recommended
+          body="140+ ready-to-fork flows. Pre-wired retries, alerts, and sample inputs."
+          cta="browse templates"
+          accent="var(--accent)"
+        />
+        <StarterLane
+          letter="B"
+          title="Start blank"
+          body="Drag a trigger onto the canvas, then wire actions."
+          cta="new workflow"
+          accent="var(--accent-3)"
+        />
+        <StarterLane
+          letter="C"
+          title="Import existing"
+          body="Zapier, n8n, or paste a JSON spec. We'll match connectors automatically."
+          cta="choose source"
+          accent="var(--accent-2)"
+        />
+      </div>
+
+      {/* Progress checklist */}
+      <div className="frame" style={{ padding: 14, marginTop: 18 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: 10, marginBottom: 10 }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700 }}>Your setup</div>
+          <span style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>0 of 4 · ~6 min</span>
+          <span style={{ marginLeft: 'auto' }}>
+            <span style={{ display: 'inline-block', width: 120, height: 8, border: '1.2px solid var(--ink)', borderRadius: 4, background: 'var(--paper-2)' }}>
+              <span style={{ display: 'block', height: '100%', width: '0%', background: 'var(--accent)' }} />
+            </span>
+          </span>
+        </div>
+        {[
+          ['Connect your first app', 'Stripe, Slack, NetSuite or 170+ others', false, true],
+          ['Run a template', 'We\'ll walk you through a test run before publishing', false, false],
+          ['Invite a teammate', 'Free for viewers — great for Dev or Finance to peek', false, false],
+          ['Explore the canvas', '2-minute guided tour of the builder', false, false],
+        ].map(([t, sub, done, active], i) => (
+          <div key={i} style={{
+            display: 'grid', gridTemplateColumns: '28px 1fr auto', gap: 10, padding: '10px 4px',
+            borderTop: i > 0 ? '1px dashed var(--ink-faint)' : 'none',
+            alignItems: 'center',
+            background: active ? 'color-mix(in oklab, var(--accent) 10%, transparent)' : 'transparent',
+          }}>
+            <div style={{
+              width: 22, height: 22, borderRadius: '50%', border: '1.4px solid var(--ink)',
+              background: done ? 'var(--accent-3)' : active ? 'var(--accent)' : 'var(--paper)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--font-hand-alt)', fontSize: 12, fontWeight: 700,
+            }}>{done ? '✓' : i + 1}</div>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 600 }}>{t}</div>
+              <div style={{ fontSize: 11, color: 'var(--ink-muted)' }}>{sub}</div>
+            </div>
+            <Btn size="sm" variant={active ? 'primary' : ''}>{active ? 'start →' : 'do later'}</Btn>
+          </div>
+        ))}
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginTop: 14 }}>
+        <Note color="yellow" tilt="tilt-l" tag="why">
+          We let them <strong>escape the tour</strong> any time. Forced onboarding kills engineering users.
+        </Note>
+        <Note color="blue" tag="metric">
+          Goal: <strong>activated workspace</strong> = 1 successful run in first session. Template path is fastest.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+const StarterLane = ({ letter, title, body, cta, accent, recommended }) => (
+  <div className="frame" style={{
+    padding: 16, position: 'relative',
+    background: recommended ? 'color-mix(in oklab, var(--accent) 10%, var(--paper))' : 'var(--paper)',
+    borderWidth: recommended ? 1.6 : 1.2,
+  }}>
+    {recommended && <span style={{
+      position: 'absolute', top: -10, right: 10,
+      padding: '2px 10px', border: '1.4px solid var(--ink)', borderRadius: 999,
+      background: accent, fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 600,
+      textTransform: 'uppercase', letterSpacing: '0.08em',
+    }}>recommended</span>}
+    <div style={{
+      width: 36, height: 36, border: '1.4px solid var(--ink)', borderRadius: 8,
+      background: accent, display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: 'var(--font-hand-alt)', fontSize: 18, fontWeight: 700,
+    }}>{letter}</div>
+    <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 20, fontWeight: 700, marginTop: 10 }}>{title}</div>
+    <div style={{ fontSize: 12, color: 'var(--ink-2)', marginTop: 4 }}>{body}</div>
+    <div style={{ marginTop: 12 }}><Btn size="sm" variant={recommended ? 'primary' : ''}>{cta} →</Btn></div>
+  </div>
+);
+
+/* ============================================================
+   19 — COMMAND PALETTE (⌘K overlay)
+   ============================================================ */
+function Screen_CommandPalette() {
+  return (
+    <ShellBFrame
+      title="command palette · ⌘K"
+      height={620}
+      rail={1}
+      section="Workflows"
+      crumbs={['workflows', 'billing-sync', 'canvas']}
+      subNav={[
+        { group: 'Workflow' },
+        { label: 'Canvas', active: true },
+        { label: 'Runs', badge: '1.2k' },
+        { label: 'Triggers' },
+        { label: 'Variables' },
+        { label: 'Versions' },
+        { label: 'Settings' },
+      ]}
+      topRight={<>
+        <Pill dot>palette open</Pill>
+        <Btn size="sm">⌘K anywhere</Btn>
+      </>}
+    >
+      <div style={{ position: 'relative', minHeight: 420 }}>
+        {/* Dimmed canvas behind */}
+        <div style={{ opacity: 0.22, pointerEvents: 'none', filter: 'blur(0.5px)' }}>
+          <div style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 26, fontWeight: 700 }}>billing-sync</div>
+          <Ph h={300} label="workflow canvas" style={{ marginTop: 12 }} />
+        </div>
+
+        {/* Palette */}
+        <div style={{
+          position: 'absolute', top: 20, left: '50%', transform: 'translateX(-50%)',
+          width: 'min(560px, 92%)',
+          background: 'var(--paper)', border: '1.6px solid var(--ink)', borderRadius: 10,
+          boxShadow: '10px 12px 0 rgba(30,26,20,0.14)',
+          overflow: 'hidden',
+        }}>
+          <div style={{ padding: '14px 16px', borderBottom: '1.4px solid var(--ink)', display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 16, color: 'var(--ink-muted)' }}>⌕</span>
+            <span style={{ fontSize: 15, fontFamily: 'var(--font-mono)' }}>billing<span style={{ background: 'var(--accent)', padding: '0 2px' }}>|</span></span>
+            <span style={{ marginLeft: 'auto', fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>esc to close</span>
+          </div>
+
+          {/* Groups */}
+          <PaletteGroup label="Workflows">
+            <PaletteRow icon="◇" title="billing-sync" sub="open canvas" active />
+            <PaletteRow icon="◇" title="billing-sync · runs" sub="jump to history" kbd="↵" />
+            <PaletteRow icon="◇" title="billing-refunds" sub="in folder · Billing" />
+          </PaletteGroup>
+          <PaletteGroup label="Runs">
+            <PaletteRow icon="●" title="run_01JK9R2X" sub="10:41:44 · retried · ok" kind="warn" />
+            <PaletteRow icon="●" title="run_01JK9P4F" sub="10:41:15 · failed" kind="danger" />
+          </PaletteGroup>
+          <PaletteGroup label="Actions">
+            <PaletteRow icon="▷" title="Run billing-sync now" sub="with last input" kbd="⌘↵" />
+            <PaletteRow icon="⏸" title="Pause billing-sync" />
+            <PaletteRow icon="⌥" title="Duplicate billing-sync → draft" />
+          </PaletteGroup>
+          <PaletteGroup label="Jump">
+            <PaletteRow icon="⊕" title="Connections → Stripe" />
+            <PaletteRow icon="⚿" title="Secrets → STRIPE_WEBHOOK_SECRET" />
+          </PaletteGroup>
+
+          {/* Footer keys */}
+          <div style={{
+            display: 'flex', gap: 14, padding: '8px 14px',
+            borderTop: '1.2px solid var(--ink-faint)',
+            fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)',
+          }}>
+            <span>↑↓ navigate</span>
+            <span>↵ select</span>
+            <span>⌘↵ run</span>
+            <span>⌥ secondary</span>
+            <span style={{ marginLeft: 'auto' }}>powered by recent + fuzzy</span>
+          </div>
+        </div>
+
+        <Arrow style={{ position: 'absolute', right: 10, top: 50 }}>
+          ⌘K is the <strong>universal jump</strong>. Everything indexed: workflows, runs, connections, docs, actions.
+        </Arrow>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+const PaletteGroup = ({ label, children }) => (
+  <div>
+    <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--ink-muted)', padding: '8px 16px 4px' }}>{label}</div>
+    <div>{children}</div>
+  </div>
+);
+
+const PaletteRow = ({ icon, title, sub = '', kbd = '', kind = '', active = false }) => (
+  <div style={{
+    display: 'grid', gridTemplateColumns: '28px 1fr auto',
+    padding: '8px 16px', gap: 10, alignItems: 'center',
+    background: active ? 'color-mix(in oklab, var(--accent) 18%, var(--paper))' : 'transparent',
+    borderLeft: active ? '3px solid var(--ink)' : '3px solid transparent',
+    fontSize: 13,
+  }}>
+    <span style={{ fontFamily: 'var(--font-hand-alt)', fontSize: 16, color: kind === 'danger' ? 'var(--accent-4)' : kind === 'warn' ? 'var(--accent)' : 'var(--ink)' }}>{icon}</span>
+    <span>
+      <span style={{ fontWeight: 600 }}>{title}</span>
+      {sub && <span style={{ color: 'var(--ink-muted)', marginLeft: 8, fontSize: 12 }}>{sub}</span>}
+    </span>
+    {kbd && <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, border: '1.2px solid var(--ink-faint)', borderRadius: 3, padding: '1px 5px' }}>{kbd}</span>}
+  </div>
+);
+
+/* ============================================================
+   20 — WORKSPACE SWITCHER
+   ============================================================ */
+function Screen_WorkspaceSwitcher() {
+  const spaces = [
+    { name: 'Acme Ops', slug: 'acme-ops', members: 14, flows: 28, role: 'Admin', active: true },
+    { name: 'Acme Finance', slug: 'acme-fin', members: 6, flows: 9, role: 'Builder' },
+    { name: 'Acme Growth', slug: 'acme-growth', members: 3, flows: 4, role: 'Viewer' },
+    { name: 'Priya · personal', slug: 'priya', members: 1, flows: 2, role: 'Owner' },
+  ];
+
+  return (
+    <ShellBFrame
+      title="switch workspace"
+      height={600}
+      rail={0}
+      section="Home"
+      crumbs={['workspace', 'switch']}
+      subNav={[
+        { group: 'Home' },
+        { label: 'Welcome' },
+        { label: 'Templates' },
+        { group: 'Workspaces' },
+        { label: 'Switch', active: true, badge: '4' },
+        { label: 'Create new' },
+        { label: 'Join by invite' },
+      ]}
+      topRight={<>
+        <InputMock placeholder="filter…" />
+        <Btn size="sm" variant="primary">+ new workspace</Btn>
+      </>}
+    >
+      <div style={{ position: 'relative' }}>
+        {/* Panel styled as a drop-down that originated from the rail */}
+        <div style={{ position: 'absolute', top: -4, left: -14, fontFamily: 'var(--font-hand), cursive', fontSize: 12, color: 'var(--ink-muted)' }}>
+          ↙ anchored to workspace logo in rail
+        </div>
+
+        <div style={{
+          border: '1.6px solid var(--ink)', borderRadius: 10,
+          background: 'var(--paper)',
+          padding: 10,
+          boxShadow: '6px 8px 0 rgba(30,26,20,0.1)',
+          maxWidth: 520,
+        }}>
+          <div style={{ padding: '4px 8px 10px', borderBottom: '1.2px dashed var(--ink-faint)', display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div style={{ width: 24, height: 24, border: '1.4px solid var(--ink)', borderRadius: 4, background: 'var(--paper-2)' }} />
+            <div>
+              <div style={{ fontSize: 12, fontWeight: 600 }}>Priya Shah</div>
+              <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>priya@acme.co</div>
+            </div>
+            <span style={{ marginLeft: 'auto', fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>⌘⇧O switch</span>
+          </div>
+
+          <div style={{ padding: '8px 2px' }}>
+            {spaces.map((w, i) => (
+              <div key={i} style={{
+                display: 'grid', gridTemplateColumns: '28px 1fr auto',
+                gap: 10, padding: '10px 10px', alignItems: 'center',
+                borderRadius: 6,
+                background: w.active ? 'color-mix(in oklab, var(--accent) 18%, var(--paper))' : 'transparent',
+              }}>
+                <div style={{
+                  width: 24, height: 24, border: '1.4px solid var(--ink)', borderRadius: 5,
+                  background: ['var(--accent)', 'var(--accent-2)', 'var(--accent-3)', 'var(--paper-2)'][i],
+                }} />
+                <div>
+                  <div style={{ fontSize: 13, fontWeight: 600, display: 'flex', gap: 8, alignItems: 'center' }}>
+                    {w.name}
+                    {w.active && <span style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--accent-3)' }}>● current</span>}
+                  </div>
+                  <div style={{ fontSize: 11, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)' }}>
+                    {w.slug} · {w.members} members · {w.flows} flows · {w.role}
+                  </div>
+                </div>
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, color: 'var(--ink-muted)' }}>{i < 3 ? `⌘${i + 1}` : ''}</span>
+              </div>
+            ))}
+          </div>
+
+          <div style={{ padding: '6px 10px', borderTop: '1.2px dashed var(--ink-faint)', display: 'flex', gap: 10 }}>
+            <Btn size="sm">+ create workspace</Btn>
+            <Btn size="sm">join by invite code</Btn>
+            <span style={{ flex: 1 }} />
+            <Btn size="sm">sign out</Btn>
+          </div>
+        </div>
+
+        <Arrow style={{ position: 'absolute', right: 40, top: 40 }}>
+          Role chip reminds which permission level you're about to switch into. Stops accidental "why can't I edit?" confusion.
+        </Arrow>
+      </div>
+
+      <div style={{ marginTop: 20 }}>
+        <Note color="yellow" tilt="tilt-r" tag="decision">
+          Workspaces are <strong>hard boundaries</strong>: separate connections, secrets, runs, members. No cross-workspace workflows in v1.
+        </Note>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+/* ============================================================
+   21 — PROFILE / ACCOUNT
+   ============================================================ */
+function Screen_Profile() {
+  const tokens = [
+    { name: 'CLI · priya-laptop', created: '22d ago', last: '10m ago', scopes: 'read, run' },
+    { name: 'deploy-bot', created: '3mo ago', last: 'yesterday', scopes: 'publish' },
+  ];
+
+  return (
+    <ShellBFrame
+      title="profile & account"
+      height={620}
+      rail={7}
+      section="Settings"
+      crumbs={['my account', 'profile']}
+      subNav={[
+        { group: 'Workspace' },
+        { label: 'General' },
+        { label: 'Members', badge: '14' },
+        { label: 'Roles' },
+        { group: 'My account' },
+        { label: 'Profile', active: true },
+        { label: 'API tokens', badge: '2' },
+        { label: 'Notifications' },
+        { label: 'Appearance' },
+      ]}
+      topRight={<>
+        <Btn size="sm">sign out of all devices</Btn>
+        <Btn size="sm" variant="primary">save</Btn>
+      </>}
+    >
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 260px', gap: 18 }}>
+        <div>
+          <SettingsBlock title="Profile" hint="Visible to other workspace members.">
+            <Field label="Name" value="Priya Shah" />
+            <Field label="Email" value="priya@acme.co" mono />
+            <Field label="Handle" value="@priya" mono />
+            <Field label="Timezone" value="America/Los_Angeles" mono />
+            <Field label="Avatar" custom={
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <div style={{
+                  width: 44, height: 44, borderRadius: '50%',
+                  border: '1.4px solid var(--ink)', background: 'color-mix(in oklab, var(--accent) 40%, var(--paper))',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-hand-alt)', fontSize: 20, fontWeight: 700,
+                }}>P</div>
+                <Btn size="sm">upload</Btn>
+                <Btn size="sm">use initials</Btn>
+              </div>
+            } />
+          </SettingsBlock>
+
+          <SettingsBlock title="Security" hint="Multi-factor and login methods.">
+            <Field label="Password" value="•••••••• · changed 18d ago" mono />
+            <Field label="MFA" custom={
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <Pill kind="success" dot>enabled</Pill>
+                <span style={{ fontSize: 12, color: 'var(--ink-muted)' }}>Authenticator app · 3 backup codes</span>
+                <Btn size="sm">manage</Btn>
+              </div>
+            } />
+            <Field label="SSO" value="Google Workspace · acme.co" />
+          </SettingsBlock>
+
+          <SettingsBlock title="API tokens" hint="For CLI, automations, and integrations. Scoped to your permissions.">
+            <div className="frame inset" style={{ padding: '4px 8px' }}>
+              <THead cols={[
+                { v: 'name', w: '1.4fr' },
+                { v: 'created', w: '100px' },
+                { v: 'last used', w: '100px' },
+                { v: 'scopes', w: '120px' },
+                { v: '', w: '24px' },
+              ]} />
+              {tokens.map((t, i) => (
+                <TRow key={i} cells={[
+                  { v: <span><strong>{t.name}</strong></span>, w: '1.4fr' },
+                  { v: t.created, w: '100px', muted: true, mono: true },
+                  { v: t.last, w: '100px', muted: true, mono: true },
+                  { v: t.scopes, w: '120px', mono: true },
+                  { v: '⋯', w: '24px' },
+                ]} />
+              ))}
+            </div>
+            <div style={{ marginTop: 10 }}><Btn size="sm" variant="primary">+ new token</Btn></div>
+          </SettingsBlock>
+        </div>
+
+        <div>
+          <div className="frame" style={{ padding: 12, marginBottom: 10 }}>
+            <div style={{ fontSize: 10, fontFamily: 'var(--font-mono)', color: 'var(--ink-muted)', textTransform: 'uppercase', letterSpacing: '0.08em' }}>appearance</div>
+            <div style={{ marginTop: 8, display: 'flex', flexDirection: 'column', gap: 8 }}>
+              {[['Theme', 'system · paper'], ['Density', 'comfortable'], ['Reduce motion', 'off']].map(([k, v]) => (
+                <div key={k} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 12 }}>
+                  <span style={{ color: 'var(--ink-muted)' }}>{k}</span>
+                  <span style={{ fontFamily: 'var(--font-mono)' }}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <Note color="yellow" tilt="tilt-r" tag="later">
+            Appearance is lightweight for v1. Theme picker + density. Real custom theming after we ship.
+          </Note>
+        </div>
+      </div>
+    </ShellBFrame>
+  );
+}
+
+Object.assign(window, {
+  Screen_EmptyState, Screen_CommandPalette, Screen_WorkspaceSwitcher, Screen_Profile,
+  StarterLane, PaletteGroup, PaletteRow,
+});
+
+
+
+</script>
+
+
+
+
+
+<script type="text/babel">
+// Wait for all external babel-transpiled files to register their globals.
+window.__mountWireframes = function() {
+  const W = window;
+  const {
+    Pill, Note, Btn, InputMock, Squiggle, LineText, VariantHeader,
+    Screen, NavItem, Ph,
+    ShellA, ShellB, ShellC,
+    DashboardA, DashboardB, DashboardC,
+    BuilderCanvas,
+    Flow1, Flow2,
+    ShellBFrame, TRow, THead,
+    Screen_WorkflowsList, Screen_WorkflowRuns,
+    Screen_RunDetail, Screen_ConnectionsList, Screen_AddConnection,
+    Screen_Triggers, Screen_Secrets, Screen_WorkspaceSettings,
+    Screen_Members, Screen_Notifications, Screen_Templates,
+    Screen_EmptyState, Screen_CommandPalette, Screen_WorkspaceSwitcher, Screen_Profile,
+  } = W;
+
+// ============ Section mounts ============
+function ShellsSection() {
+  return (
+    <div className="section" id="s1" data-screen-label="01 Shells">
+      <p className="section-label">App shell · 3 variations</p>
+      <h2 className="section-title"><span className="num">01</span>The shell frames everything.</h2>
+      <p className="section-intro">
+        Three structural starting points. I drew the same dashboard inside each so you can feel the shell without
+        layout variance muddying it. Sidebar labels, sub-nav hierarchy, and workspace-switching are the axes I varied.
+      </p>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+        <div>
+          <VariantHeader letter="A" title="Classic left sidebar" sub="Retool-ish · grouped rail" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+            <ShellA />
+            <div className="margin-notes">
+              <Note tag="Pros">Every area one click away. Familiar. Great for power users who pin. Sections scale to 15+ items.</Note>
+              <Note color="red" tag="Cons" tilt="tilt-r">Left rail eats ~180px. Sub-nav requires second panel — drift toward a three-pane layout.</Note>
+              <Note color="green" tag="Best for">Ops-heavy teams who want everything surfaced. Default-good choice.</Note>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <VariantHeader letter="B" title="Icon rail + contextual sub-nav" sub="Linear-ish · focused" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+            <ShellB />
+            <div className="margin-notes">
+              <Note color="green" tag="Pros">Compact. Sub-nav adapts to the module, so Workflows can show folders + pinned while Runs shows filters.</Note>
+              <Note color="red" tag="Cons" tilt="tilt-r">Icons must be learnable. We owe a good tooltip + labels-on setting. A touch more clicks to module-switch.</Note>
+              <Note tag="Best for">Wide product surface. Scales to 15 areas without a scrolling rail.</Note>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <VariantHeader letter="C" title="Top nav + right drawer" sub="Stripe-settings-ish · canvas-first" />
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+            <ShellC />
+            <div className="margin-notes">
+              <Note tag="Pros">Maximum horizontal canvas (good for the builder). Workspace switcher is prominent — helpful for multi-tenant.</Note>
+              <Note color="red" tag="Cons" tilt="tilt-r">Top nav caps us around 7 items. The rest get dumped into "More ⌄" — a smell for a platform this wide.</Note>
+              <Note color="green" tag="Best for">Embedded surfaces + marketing bleed. Might be the right shell for customer-facing config.</Note>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function DashboardSection() {
+  const [tab, setTab] = React.useState('A');
+  return (
+    <div className="section" id="s2" data-screen-label="02 Dashboard">
+      <p className="section-label">Dashboard / Overview · 3 variations</p>
+      <h2 className="section-title"><span className="num">02</span>What should the home page be <em>for</em>?</h2>
+      <p className="section-intro">
+        Three answers to "what's the first thing you see when you open VipsOS?" — an operational status room,
+        a builder-friendly momentum view, and a progressive getting-started. Toggle between them below.
+      </p>
+
+      <div className="tabs" role="tablist">
+        {['A','B','C'].map(k => (
+          <button key={k} className={'tab ' + (tab===k?'active':'')} onClick={()=>setTab(k)}>
+            {k} · {{A:'Operational', B:'Builder / momentum', C:'Progressive / getting-started'}[k]}
+          </button>
+        ))}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+        {tab === 'A' && <DashboardA />}
+        {tab === 'B' && <DashboardB />}
+        {tab === 'C' && <DashboardC />}
+        <div className="margin-notes">
+          {tab === 'A' && <>
+            <Note tag="Answers">"Is anything on fire?" KPI row + connector health strip + needs-attention list on top of recent runs.</Note>
+            <Note color="blue" tag="Hierarchy" tilt="tilt-r">Numbers dominate. Charts stay subordinate. Status pills carry state, not color alone — per the system.</Note>
+            <Note color="green" tag="Use when">Workspace has real traffic. Ops team is the dominant user.</Note>
+          </>}
+          {tab === 'B' && <>
+            <Note tag="Answers">"What happened this week and what should I build next?" Hero greeting · momentum metrics · pinned flows · team activity.</Note>
+            <Note color="blue" tag="Hierarchy" tilt="tilt-r">Warmer top. Utility below. Activity feed reminds you this is a collaborative surface.</Note>
+            <Note color="green" tag="Use when">Platform eng is the dominant user. Team is small enough that the feed is interesting.</Note>
+          </>}
+          {tab === 'C' && <>
+            <Note tag="Answers">"How do I even use this thing?" Progress checklist · starter templates · learning rail.</Note>
+            <Note color="blue" tag="Hierarchy" tilt="tilt-r">The list is the hero. Everything else is subordinate to finishing the list.</Note>
+            <Note color="green" tag="Use when">New workspace. Auto-retire to B/A once ~3 workflows are shipped.</Note>
+          </>}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BuilderSection() {
+  return (
+    <div className="section" id="s3" data-screen-label="03 Workflow Builder">
+      <p className="section-label">Workflow builder · left-to-right DAG</p>
+      <h2 className="section-title"><span className="num">03</span>The canvas.</h2>
+      <p className="section-intro">
+        One primary layout: library left · DAG canvas center · config drawer right. Nodes flow L→R.
+        Branches fan vertically. Node state lives on the card (pill) so canvas scanning tells you health at a glance.
+      </p>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 20, alignItems: 'start' }}>
+        <BuilderCanvas />
+        <div className="margin-notes">
+          <Note tag="Node anatomy">Icon · title · subtype · state pill · port dots on both edges. Selected node gets accent ring + a glow-halo shadow.</Note>
+          <Note color="blue" tag="Why L→R" tilt="tilt-r">Matches reading direction. Branches stack vertically — downward = falsy/error path — intuitive on big flows.</Note>
+          <Note color="green" tag="Drawer principle">Tabs: Config · Input · Output · Runs. Same four for every node type. Operators memorize once.</Note>
+          <Note color="red" tag="Open">Do we want live data streaming into the drawer during test runs? Hi-fi decision.</Note>
+          <Note tag="Accessibility">Keyboard: tab-order follows topological sort. Node selection via arrow keys. Drag alternative: "connect to…" menu.</Note>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Flow1Section() {
+  return (
+    <div className="section" id="s4" data-screen-label="04 Flow Setup">
+      <p className="section-label">Storyboard · first-run happy path</p>
+      <h2 className="section-title"><span className="num">04</span>Priya ships her first workflow.</h2>
+      <p className="section-intro">
+        Four frames from empty workspace to first deploy. If this feels painful at low-fi, the hi-fi version won't save us.
+      </p>
+      <Flow1 />
+    </div>
+  );
+}
+
+function Flow2Section() {
+  return (
+    <div className="section" id="s5" data-screen-label="05 Flow Incident">
+      <p className="section-label">Storyboard · 3am incident</p>
+      <h2 className="section-title"><span className="num">05</span>Jordan wakes up to a red alert.</h2>
+      <p className="section-intro">
+        The design system lives or dies on this flow. If error states don't answer <em>what · where · why · next</em>, we failed.
+      </p>
+      <Flow2 />
+    </div>
+  );
+}
+
+function ScreensExtendedSection() {
+  return (
+    <>
+      <div className="section" id="s7" data-screen-label="07 Workflows list">
+        <p className="section-label">Product screens · Shell B · 07</p>
+        <h2 className="section-title"><span className="num">07</span>Workflows list.</h2>
+        <p className="section-intro">Sortable inventory of flows with status, traffic, and ownership — the ops command center.</p>
+        <Screen_WorkflowsList />
+      </div>
+      <div className="section" id="s8" data-screen-label="08 Workflow runs">
+        <p className="section-label">Product screens · 08</p>
+        <h2 className="section-title"><span className="num">08</span>Workflow runs tab.</h2>
+        <p className="section-intro">Per-workflow run history with sparkline health and filters.</p>
+        <Screen_WorkflowRuns />
+      </div>
+      <div className="section" id="s9" data-screen-label="09 Run detail">
+        <p className="section-label">Product screens · 09</p>
+        <h2 className="section-title"><span className="num">09</span>Run detail.</h2>
+        <p className="section-intro">Step timeline, I/O, logs, and recovery actions.</p>
+        <Screen_RunDetail />
+      </div>
+      <div className="section" id="s10" data-screen-label="10 Connections">
+        <p className="section-label">Product screens · 10</p>
+        <h2 className="section-title"><span className="num">10</span>Connections list.</h2>
+        <p className="section-intro">OAuth credentials and connector health across the workspace.</p>
+        <Screen_ConnectionsList />
+      </div>
+      <div className="section" id="s11" data-screen-label="11 Add connection">
+        <p className="section-label">Product screens · 11</p>
+        <h2 className="section-title"><span className="num">11</span>Add connection.</h2>
+        <p className="section-intro">Picker → OAuth → name → test probe.</p>
+        <Screen_AddConnection />
+      </div>
+      <div className="section" id="s12" data-screen-label="12 Triggers">
+        <p className="section-label">Product screens · 12</p>
+        <h2 className="section-title"><span className="num">12</span>Triggers &amp; schedules.</h2>
+        <p className="section-intro">Webhooks, crons, and delivery health.</p>
+        <Screen_Triggers />
+      </div>
+      <div className="section" id="s13" data-screen-label="13 Secrets">
+        <p className="section-label">Product screens · 13</p>
+        <h2 className="section-title"><span className="num">13</span>Secrets &amp; env.</h2>
+        <p className="section-intro">Scoped credentials with usage and rotation hints.</p>
+        <Screen_Secrets />
+      </div>
+      <div className="section" id="s14" data-screen-label="14 Workspace settings">
+        <p className="section-label">Product screens · 14</p>
+        <h2 className="section-title"><span className="num">14</span>Workspace settings.</h2>
+        <p className="section-intro">Identity, regions, and workspace-level toggles.</p>
+        <Screen_WorkspaceSettings />
+      </div>
+      <div className="section" id="s15" data-screen-label="15 Members">
+        <p className="section-label">Product screens · 15</p>
+        <h2 className="section-title"><span className="num">15</span>Members &amp; roles.</h2>
+        <p className="section-intro">People, invites, SCIM hooks, MFA posture.</p>
+        <Screen_Members />
+      </div>
+      <div className="section" id="s16" data-screen-label="16 Notifications">
+        <p className="section-label">Product screens · 16</p>
+        <h2 className="section-title"><span className="num">16</span>Notifications.</h2>
+        <p className="section-intro">Channels and routing rules per severity.</p>
+        <Screen_Notifications />
+      </div>
+      <div className="section" id="s17" data-screen-label="17 Templates">
+        <p className="section-label">Product screens · 17</p>
+        <h2 className="section-title"><span className="num">17</span>Templates.</h2>
+        <p className="section-intro">Starter flows and adoption funnel.</p>
+        <Screen_Templates />
+      </div>
+      <div className="section" id="s18" data-screen-label="18 Empty state">
+        <p className="section-label">Product screens · 18</p>
+        <h2 className="section-title"><span className="num">18</span>Empty state / onboarding.</h2>
+        <p className="section-intro">Day-zero workspace with three starter lanes.</p>
+        <Screen_EmptyState />
+      </div>
+      <div className="section" id="s19" data-screen-label="19 Command palette">
+        <p className="section-label">Product screens · 19</p>
+        <h2 className="section-title"><span className="num">19</span>Command palette.</h2>
+        <p className="section-intro">⌘K navigation and quick actions.</p>
+        <Screen_CommandPalette />
+      </div>
+      <div className="section" id="s20" data-screen-label="20 Workspace switcher">
+        <p className="section-label">Product screens · 20</p>
+        <h2 className="section-title"><span className="num">20</span>Workspace switcher.</h2>
+        <p className="section-intro">Multi-tenant context switch.</p>
+        <Screen_WorkspaceSwitcher />
+      </div>
+      <div className="section" id="s21" data-screen-label="21 Profile">
+        <p className="section-label">Product screens · 21</p>
+        <h2 className="section-title"><span className="num">21</span>Profile &amp; appearance.</h2>
+        <p className="section-intro">User settings and lightweight theming.</p>
+        <Screen_Profile />
+      </div>
+    </>
+  );
+}
+
+
+function mountAll() {
+  const needed = ['ShellA','ShellB','ShellC','DashboardA','DashboardB','DashboardC',
+                  'BuilderCanvas','Flow1','Flow2','VariantHeader','Note','Btn','Pill',
+                  'InputMock','LineText','Squiggle','Screen','NavItem','Ph','NodeCard',
+                  'MiniFrame',
+                  'ShellBFrame','Screen_WorkflowsList','Screen_Profile'];
+  const missing = needed.filter(n => !window[n]);
+  if (missing.length) { setTimeout(mountAll, 30); return; }
+  ReactDOM.createRoot(document.getElementById('root-shells')).render(<ShellsSection />);
+  ReactDOM.createRoot(document.getElementById('root-dashboard')).render(<DashboardSection />);
+  ReactDOM.createRoot(document.getElementById('root-builder')).render(<BuilderSection />);
+  ReactDOM.createRoot(document.getElementById('root-flow1')).render(<Flow1Section />);
+  ReactDOM.createRoot(document.getElementById('root-flow2')).render(<Flow2Section />);
+  ReactDOM.createRoot(document.getElementById('root-screens-extended')).render(<ScreensExtendedSection />);
+}
+mountAll();
+}; // close __mountWireframes
+
+// Poll for globals, then invoke
+(function boot() {
+  if (window.ShellA && window.DashboardA && window.BuilderCanvas && window.Flow1 && window.VariantHeader
+      && window.ShellBFrame && window.Screen_WorkflowsList) {
+    window.__mountWireframes();
+  } else {
+    setTimeout(boot, 40);
+  }
+})();
+</script>
+
+
+
+<!-- ============ Tweaks host-integration ============ -->
+<script>
+(function() {
+  let panelOpen = false;
+  const panel = document.getElementById('tweaks');
+
+  // seg buttons reflect body state
+  function sync() {
+    document.querySelectorAll('.tweaks-panel .seg').forEach(seg => {
+      const key = seg.dataset.key;
+      const val = document.body.getAttribute('data-' + key);
+      seg.querySelectorAll('button').forEach(b => {
+        b.classList.toggle('on', b.dataset.val === val);
+      });
+    });
+  }
+  sync();
+
+  // click handler
+  document.querySelectorAll('.tweaks-panel .seg button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const seg = btn.closest('.seg');
+      const key = seg.dataset.key;
+      const val = btn.dataset.val;
+      document.body.setAttribute('data-' + key, val);
+      sync();
+      // persist to disk via host
+      const edits = {}; edits[key] = val;
+      window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*');
+    });
+  });
+
+  // listen for host messages FIRST
+  window.addEventListener('message', (e) => {
+    if (!e.data || typeof e.data !== 'object') return;
+    if (e.data.type === '__activate_edit_mode')   { panel.classList.add('open'); panelOpen = true; }
+    if (e.data.type === '__deactivate_edit_mode') { panel.classList.remove('open'); panelOpen = false; }
+  });
+
+  // THEN announce availability
+  window.parent.postMessage({ type: '__edit_mode_available' }, '*');
+})();
+</script>
+
+</body>
+</html>

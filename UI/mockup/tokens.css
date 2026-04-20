@@ -1,0 +1,45 @@
+/* VipsOS mockups — design tokens (aligned with wireframe semantics, product UI) */
+
+:root {
+  --paper: #fbf8f4;
+  --paper-2: #f3efe6;
+  --paper-elevated: #ffffff;
+  --ink: #1a1714;
+  --ink-2: #3d3830;
+  --ink-muted: #6b655a;
+  --ink-faint: #c4bdb0;
+  --border: #e8e2d6;
+  --border-strong: #cfc7b8;
+
+  --accent: #e07a2f;
+  --accent-hover: #c96a24;
+  --accent-muted: color-mix(in oklab, var(--accent) 22%, var(--paper));
+
+  --accent-2: #3d7ea6;
+  --accent-3: #5a9a6e;
+  --accent-4: #c45c4a;
+
+  --success-bg: color-mix(in oklab, var(--accent-3) 18%, var(--paper));
+  --info-bg: color-mix(in oklab, var(--accent-2) 16%, var(--paper));
+  --warn-bg: color-mix(in oklab, var(--accent) 20%, var(--paper));
+  --danger-bg: color-mix(in oklab, var(--accent-4) 18%, var(--paper));
+
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --shadow-sm: 0 1px 2px rgba(26, 23, 20, 0.06);
+  --shadow-md: 0 4px 12px rgba(26, 23, 20, 0.08);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+
+  --rail-w: 52px;
+  --subnav-w: 200px;
+  --topbar-h: 48px;
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>VipsOS — Mockups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+  <style>
+    .hub { max-width: 960px; margin: 0 auto; padding: var(--space-6) var(--space-4) 80px; }
+    .hub h1 { font-size: 28px; margin: 0 0 8px; letter-spacing: -0.03em; }
+    .hub .lead { color: var(--ink-muted); margin: 0 0 28px; max-width: 62ch; }
+    .hub-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: var(--space-3); }
+    .hub-card { display: block; padding: var(--space-4); border-radius: var(--radius-md); border: 1px solid var(--border); background: var(--paper-elevated); box-shadow: var(--shadow-sm); text-decoration: none; color: inherit; transition: border-color 0.15s; }
+    .hub-card:hover { border-color: var(--accent); text-decoration: none; }
+    .hub-card h2 { font-size: 15px; margin: 0 0 6px; color: var(--ink); }
+    .hub-card p { font-size: 13px; color: var(--ink-muted); margin: 0; line-height: 1.45; }
+    .hub-card .tag { font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-bottom: 8px; display: block; }
+    .hub-section { margin-top: var(--space-6); }
+    .hub-section h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-muted); margin: 0 0 var(--space-3); }
+  </style>
+</head>
+<body>
+  <div class="hub">
+    <p class="shell-subnav__title" style="margin-bottom:8px">VipsOS · mid-fi mockups</p>
+    <h1>Product surface library</h1>
+    <p class="lead">
+      Static HTML mockups derived from the wireframe pack and <a href="../Vision.md">Vision</a> / <a href="../README.md">README</a>.
+      Shell B (icon rail + sub-nav) is used throughout. Open any page to review layout and IA without the hand-drawn wireframe runtime.
+    </p>
+    <p style="margin-bottom:24px;font-size:13px">
+      <a href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">← Low-fi wireframes (all.html)</a>
+    </p>
+
+    <div class="hub-section">
+      <h3>Core spine</h3>
+      <div class="hub-grid">
+        <a class="hub-card" href="dashboard.html"><span class="tag">Home</span><h2>Dashboard</h2><p>Operational overview — KPIs, connector health, recent runs, needs attention.</p></a>
+        <a class="hub-card" href="workflows.html"><span class="tag">Build</span><h2>Workflows list</h2><p>All flows with status, traffic, owner, and last update.</p></a>
+        <a class="hub-card" href="canvas.html"><span class="tag">Build</span><h2>Workflow canvas</h2><p>Library left · DAG center · config drawer right. L→R flow, branches fan vertically, state on node pills.</p></a>
+        <a class="hub-card" href="builder.html"><span class="tag">Build</span><h2>Workflow builder</h2><p>Compact single-screen variant of the canvas layout.</p></a>
+        <a class="hub-card" href="run-detail.html"><span class="tag">Operate</span><h2>Run detail</h2><p>Step timeline, logs tab, retry context — what / where / why / next.</p></a>
+        <a class="hub-card" href="connections.html"><span class="tag">Integrate</span><h2>Connections</h2><p>OAuth and API credentials with health and usage.</p></a>
+        <a class="hub-card" href="triggers.html"><span class="tag">Operate</span><h2>Triggers &amp; schedules</h2><p>Webhook and cron inventory with activity heatmap.</p></a>
+        <a class="hub-card" href="empty-state.html"><span class="tag">Onboard</span><h2>Empty state</h2><p>New workspace day-zero — starter lanes and checklist.</p></a>
+      </div>
+    </div>
+
+    <div class="hub-section">
+      <h3>Extended (wireframe parity)</h3>
+      <div class="hub-grid">
+        <a class="hub-card" href="workflow-runs.html"><span class="tag">Operate</span><h2>Workflow runs tab</h2><p>Per-workflow run history and sparkline health.</p></a>
+        <a class="hub-card" href="workspace-switcher.html"><span class="tag">System</span><h2>Workspace switcher</h2><p>Multi-tenant context menu.</p></a>
+        <a class="hub-card" href="workspace-settings.html"><span class="tag">Admin</span><h2>Workspace settings</h2><p>General identity and region toggles.</p></a>
+        <a class="hub-card" href="add-connection.html"><span class="tag">Integrate</span><h2>Add connection</h2><p>Connector picker and OAuth path.</p></a>
+        <a class="hub-card" href="secrets.html"><span class="tag">Admin</span><h2>Secrets</h2><p>Workspace secrets and env vars with scope and rotation hints.</p></a>
+        
+        <a class="hub-card" href="members.html"><span class="tag">Admin</span><h2>Members &amp; roles</h2><p>People, invites, MFA posture.</p></a>
+        <a class="hub-card" href="notifications.html"><span class="tag">Admin</span><h2>Notifications</h2><p>Channels and routing rules.</p></a>
+        <a class="hub-card" href="templates.html"><span class="tag">Build</span><h2>Templates</h2><p>Starter flows library.</p></a>
+        <a class="hub-card" href="command-palette.html"><span class="tag">System</span><h2>Command palette</h2><p>⌘K quick navigation overlay.</p></a>
+        
+        <a class="hub-card" href="profile.html"><span class="tag">Account</span><h2>Profile</h2><p>User settings and appearance.</p></a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

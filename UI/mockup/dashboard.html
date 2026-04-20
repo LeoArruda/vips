@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Overview — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo" title="VipsOS"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home" aria-current="page">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar" title="Account"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Home">
+        <div class="shell-subnav__title">Home</div>
+        <a class="shell-subnav__link" href="dashboard.html" aria-current="page">Overview</a>
+        <a class="shell-subnav__link" href="empty-state.html">Getting started</a>
+        <a class="shell-subnav__link" href="templates.html">Templates <span class="shell-subnav__badge">new</span></a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs" aria-label="Breadcrumb">Workspace<span>/</span>Dashboard<span>/</span>Overview</nav>
+          <div class="shell-main__actions">
+            <button type="button" class="btn btn--ghost">Last 24h ⌄</button>
+            <button type="button" class="btn">Refresh</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">Overview</h1>
+        <p class="shell-page-sub">Operational room — live status, connector health, and what needs attention.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:16px">
+          <div class="card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em">Runs · 24h</div><div style="font-size:26px;font-weight:700;margin:4px 0">12,482</div><span class="pill pill--success">+4.1%</span></div>
+          <div class="card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em">Success rate</div><div style="font-size:26px;font-weight:700;margin:4px 0">99.12%</div><span class="pill pill--success">+0.04</span></div>
+          <div class="card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em">P95 latency</div><div style="font-size:26px;font-weight:700;margin:4px 0">184 ms</div><span class="pill pill--info">—</span></div>
+          <div class="card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em">In-flight</div><div style="font-size:26px;font-weight:700;margin:4px 0">46</div><span class="pill pill--info">steady</span></div>
+          <div class="card"><div style="font-family:var(--font-mono);font-size:9px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em">Failing flows</div><div style="font-size:26px;font-weight:700;margin:4px 0">3</div><span class="pill pill--danger">↑ 1</span></div>
+        </div>
+
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px">
+            <span style="font-weight:700;font-size:16px">Connector health</span>
+            <span style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted)">24 connectors · 3 degraded</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:4px">
+            <div class="conn-cell" style="--c:var(--accent-3)">stripe</div><div class="conn-cell" style="--c:var(--accent-3)">zd</div><div class="conn-cell" style="--c:var(--accent)">sf</div><div class="conn-cell" style="--c:var(--accent-3)">slack</div><div class="conn-cell" style="--c:var(--accent-3)">s3</div><div class="conn-cell" style="--c:var(--accent-4)">pg</div><div class="conn-cell" style="--c:var(--accent-3)">ga</div><div class="conn-cell" style="--c:var(--accent-3)">nr</div><div class="conn-cell" style="--c:var(--accent-3)">gh</div><div class="conn-cell" style="--c:var(--accent-3)">jr</div><div class="conn-cell" style="--c:var(--accent-3)">hs</div><div class="conn-cell" style="--c:var(--accent-4)">nt</div>
+            <div class="conn-cell" style="--c:var(--accent-3)">in</div><div class="conn-cell" style="--c:var(--accent-3)">mg</div><div class="conn-cell" style="--c:var(--accent-3)">ok</div><div class="conn-cell" style="--c:var(--accent-3)">ln</div><div class="conn-cell" style="--c:var(--accent-3)">bq</div><div class="conn-cell" style="--c:var(--accent-3)">sn</div><div class="conn-cell" style="--c:var(--accent-3)">sg</div><div class="conn-cell" style="--c:var(--accent-4)">tw</div><div class="conn-cell" style="--c:var(--accent-3)">cb</div><div class="conn-cell" style="--c:var(--accent-3)">al</div><div class="conn-cell" style="--c:var(--accent-3)">md</div><div class="conn-cell" style="--c:var(--accent-3)">wb</div>
+          </div>
+          <style>.conn-cell{height:22px;border:1px solid var(--border);border-radius:4px;background:color-mix(in oklab,var(--c) 38%,var(--paper));font-size:9px;font-family:var(--font-mono);color:var(--ink-muted);display:flex;align-items:center;justify-content:center;padding:0 4px;overflow:hidden}</style>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-weight:700">Recent runs</span><span style="font-size:12px;color:var(--ink-muted)">View all →</span></div>
+            <table class="table">
+              <thead><tr><th>Status</th><th>Workflow</th><th>Trigger</th><th>When</th><th>Duration</th></tr></thead>
+              <tbody>
+                <tr><td><span class="pill pill--success"></span></td><td style="font-family:var(--font-mono);font-size:11px">stripe-invoice-sync</td><td style="color:var(--ink-muted)">cron · 5m</td><td style="color:var(--ink-muted)">2m ago</td><td style="font-family:var(--font-mono);font-size:11px">312ms</td></tr>
+                <tr><td><span class="pill pill--success"></span></td><td style="font-family:var(--font-mono);font-size:11px">zendesk-to-slack</td><td style="color:var(--ink-muted)">webhook</td><td style="color:var(--ink-muted)">2m ago</td><td style="font-family:var(--font-mono);font-size:11px">84ms</td></tr>
+                <tr><td><span class="pill pill--danger"></span></td><td style="font-family:var(--font-mono);font-size:11px">salesforce-account-mirror</td><td style="color:var(--ink-muted)">webhook</td><td style="color:var(--ink-muted)">3m ago</td><td style="color:var(--ink-muted)">—</td></tr>
+                <tr><td><span class="pill pill--success"></span></td><td style="font-family:var(--font-mono);font-size:11px">analytics-ingest</td><td style="color:var(--ink-muted)">cron · 15m</td><td style="color:var(--ink-muted)">4m ago</td><td style="font-family:var(--font-mono);font-size:11px">1.2s</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card card--muted">
+            <div style="font-weight:700;margin-bottom:10px">Needs attention</div>
+            <div style="border-bottom:1px dashed var(--border);padding-bottom:10px;margin-bottom:10px">
+              <span class="pill pill--danger">salesforce mirror</span>
+              <p style="font-size:12px;color:var(--ink-muted);margin:6px 0">11 failures in the last hour</p>
+              <button type="button" class="btn btn--ghost" style="font-size:12px">Investigate →</button>
+            </div>
+            <div style="border-bottom:1px dashed var(--border);padding-bottom:10px;margin-bottom:10px">
+              <span class="pill pill--warn">stripe webhook</span>
+              <p style="font-size:12px;color:var(--ink-muted);margin:6px 0">P95 latency above SLA</p>
+              <button type="button" class="btn btn--ghost" style="font-size:12px">View →</button>
+            </div>
+            <div>
+              <span class="pill pill--info">rotate secret</span>
+              <p style="font-size:12px;color:var(--ink-muted);margin:6px 0">GitHub token expires in 3d</p>
+              <button type="button" class="btn btn--ghost" style="font-size:12px">Rotate →</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

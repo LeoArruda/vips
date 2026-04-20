@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Welcome — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">new workspace</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home" aria-current="page">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Home">
+        <div class="shell-subnav__title">Home</div>
+        <div class="shell-subnav__group">Get started</div>
+        <a class="shell-subnav__link" href="empty-state.html" aria-current="page">Welcome</a>
+        <a class="shell-subnav__link" href="templates.html">Templates <span class="shell-subnav__badge">new</span></a>
+        <a class="shell-subnav__link" href="dashboard.html">Tour</a>
+        <a class="shell-subnav__link" href="connections.html">1. Connect an app</a>
+        <a class="shell-subnav__link" href="templates.html">2. Use a template</a>
+        <a class="shell-subnav__link" href="members.html">3. Invite teammates</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">workspace<span>/</span>new-workspace</nav>
+          <div class="shell-main__actions">
+            <button type="button" class="btn btn--ghost">Skip tour</button>
+            <button type="button" class="btn btn--primary">Import from Zapier</button>
+          </div>
+        </div>
+
+        <div style="text-align:center;max-width:640px;margin:0 auto 28px">
+          <p style="font-size:13px;color:var(--ink-muted);margin:0 0 8px">Welcome to VipsOS, Priya</p>
+          <h1 class="shell-page-title" style="text-align:center;font-size:28px">Let's ship your first workflow.</h1>
+          <p class="shell-page-sub" style="text-align:center;margin:0 auto">Three minutes to a running integration. Use a template, start blank, or import something you built elsewhere.</p>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
+          <div class="card" style="border-top:3px solid var(--accent)">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent);margin-bottom:6px">RECOMMENDED · A</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Start from a template</h2>
+            <p style="font-size:13px;color:var(--ink-muted);margin:0 0 12px;line-height:1.45">140+ ready-to-fork flows. Pre-wired retries, alerts, and sample inputs.</p>
+            <a href="templates.html" class="btn btn--primary" style="width:100%;display:block;text-align:center;box-sizing:border-box;text-decoration:none">Browse templates</a>
+          </div>
+          <div class="card" style="border-top:3px solid var(--accent-3)">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent-3);margin-bottom:6px">B</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Start blank</h2>
+            <p style="font-size:13px;color:var(--ink-muted);margin:0 0 12px;line-height:1.45">Drag a trigger onto the canvas, then wire actions.</p>
+            <a href="builder.html" class="btn" style="width:100%;display:block;text-align:center;box-sizing:border-box;text-decoration:none">New workflow</a>
+          </div>
+          <div class="card" style="border-top:3px solid var(--accent-2)">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--accent-2);margin-bottom:6px">C</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Import existing</h2>
+            <p style="font-size:13px;color:var(--ink-muted);margin:0 0 12px;line-height:1.45">Zapier, n8n, or paste a JSON spec. We'll match connectors.</p>
+            <button type="button" class="btn" style="width:100%">Choose source</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap">
+            <span style="font-weight:700">Your setup</span>
+            <span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">0 of 4 · ~6 min</span>
+            <span style="margin-left:auto;width:120px;height:8px;border:1px solid var(--border);border-radius:4px;background:var(--paper-2)"></span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;border:1px solid var(--accent);border-radius:8px;background:var(--accent-muted)">
+              <span class="pill pill--info">1</span>
+              <div><strong>Connect your first app</strong><div style="font-size:12px;color:var(--ink-muted)">Stripe, Slack, NetSuite or 170+ others</div></div>
+              <span style="margin-left:auto"><a href="add-connection.html" class="btn btn--primary" style="font-size:12px">Start</a></span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;opacity:.65"><span class="pill">2</span><div><strong>Run a template</strong><div style="font-size:12px;color:var(--ink-muted)">Test run before publishing</div></div></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;opacity:.65"><span class="pill">3</span><div><strong>Invite a teammate</strong></div></div>
+            <div style="display:flex;align-items:center;gap:10px;padding:8px;opacity:.65"><span class="pill">4</span><div><strong>Explore the canvas</strong></div></div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

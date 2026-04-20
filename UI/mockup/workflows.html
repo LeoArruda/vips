@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workflows — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows" aria-current="page">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Workflows">
+        <div class="shell-subnav__title">Workflows</div>
+        <div class="shell-subnav__group">Views</div>
+        <a class="shell-subnav__link" href="workflows.html" aria-current="page">All flows <span class="shell-subnav__badge">28</span></a>
+        <a class="shell-subnav__link" href="workflows.html">Mine <span class="shell-subnav__badge">7</span></a>
+        <a class="shell-subnav__link" href="workflows.html">Scheduled</a>
+        <a class="shell-subnav__link" href="workflows.html">Disabled</a>
+        <a class="shell-subnav__link" href="workflows.html">With errors <span class="shell-subnav__badge">2</span></a>
+        <div class="shell-subnav__group">Folders</div>
+        <a class="shell-subnav__link" href="workflows.html">Billing sync</a>
+        <a class="shell-subnav__link" href="workflows.html">Support ops</a>
+        <a class="shell-subnav__link" href="workflows.html">Data pipelines</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">Workspace<span>/</span>All<span>/</span>Workflows</nav>
+          <div class="shell-main__actions">
+            <input type="search" class="input input--wide" placeholder="Search workflows…" />
+            <button type="button" class="btn btn--ghost">Filter</button>
+            <button type="button" class="btn btn--ghost">Sort</button>
+            <button type="button" class="btn btn--primary">+ Workflow</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">All flows</h1>
+        <p class="shell-page-sub">28 total · 2 need attention</p>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="table">
+            <thead>
+              <tr><th>Name</th><th>Status</th><th>7d runs</th><th>Success</th><th>Owner</th><th>Updated</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Billing sync</strong></td><td><span class="pill pill--success">live</span></td><td style="font-family:var(--font-mono)">1,284</td><td style="font-family:var(--font-mono)">99.7%</td><td>Priya</td><td style="color:var(--ink-muted)">2m ago</td><td>⋯</td></tr>
+              <tr><td><strong>Zendesk triage</strong></td><td><span class="pill pill--success">live</span></td><td style="font-family:var(--font-mono)">842</td><td style="font-family:var(--font-mono)">98.1%</td><td>Jordan</td><td style="color:var(--ink-muted)">14m ago</td><td>⋯</td></tr>
+              <tr><td><strong>Stripe → NetSuite</strong></td><td><span class="pill pill--success">live</span></td><td style="font-family:var(--font-mono)">512</td><td style="font-family:var(--font-mono)">100%</td><td>Priya</td><td style="color:var(--ink-muted)">1h ago</td><td>⋯</td></tr>
+              <tr><td><strong>Refund approvals</strong></td><td><span class="pill pill--warn">paused</span></td><td style="font-family:var(--font-mono)">0</td><td style="color:var(--ink-muted)">—</td><td>Dev</td><td style="color:var(--ink-muted)">yesterday</td><td>⋯</td></tr>
+              <tr><td><strong>Daily KPI digest</strong></td><td><span class="pill pill--success">live</span></td><td style="font-family:var(--font-mono)">7</td><td style="font-family:var(--font-mono)">100%</td><td>Mira</td><td style="color:var(--ink-muted)">08:00</td><td>⋯</td></tr>
+              <tr><td><strong>Slack onboarding</strong></td><td><span class="pill">draft</span></td><td style="font-family:var(--font-mono)">0</td><td style="color:var(--ink-muted)">—</td><td>Priya</td><td style="color:var(--ink-muted)">3d ago</td><td>⋯</td></tr>
+              <tr><td><strong>Churn flagger</strong></td><td><span class="pill pill--danger">error</span></td><td style="font-family:var(--font-mono)">33</td><td style="font-family:var(--font-mono)">87%</td><td>Jordan</td><td style="color:var(--ink-muted)">8m ago</td><td>⋯</td></tr>
+              <tr><td><strong>Calendar → HRIS</strong></td><td><span class="pill pill--success">live</span></td><td style="font-family:var(--font-mono)">211</td><td style="font-family:var(--font-mono)">99.5%</td><td>Mira</td><td style="color:var(--ink-muted)">22m ago</td><td>⋯</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

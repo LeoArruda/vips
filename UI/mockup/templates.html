@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Templates — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates" aria-current="page">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Templates">
+        <div class="shell-subnav__title">Templates</div>
+        <div class="shell-subnav__group">Gallery</div>
+        <a class="shell-subnav__link" href="templates.html" aria-current="page">All</a>
+        <a class="shell-subnav__link" href="templates.html">Official</a>
+        <a class="shell-subnav__link" href="templates.html">Community</a>
+        <div class="shell-subnav__group">Categories</div>
+        <a class="shell-subnav__link" href="templates.html">Billing</a>
+        <a class="shell-subnav__link" href="templates.html">Support</a>
+        <a class="shell-subnav__link" href="templates.html">HR</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">workspace<span>/</span>acme-ops<span>/</span>templates</nav>
+          <div class="shell-main__actions">
+            <input type="search" class="input input--wide" placeholder="Search templates…" />
+            <button type="button" class="btn btn--primary">+ Submit template</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">Template gallery</h1>
+        <p class="shell-page-sub">North star for time-to-first-run — every empty state CTA points here.</p>
+
+        <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
+          <div class="card" style="border-top:3px solid var(--accent)">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--accent);margin-bottom:6px">FEATURED · BILLING</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Stripe → NetSuite invoicing</h2>
+            <p style="font-size:12px;color:var(--ink-muted);margin:0 0 10px">1.2k teams · Stripe, NetSuite, Slack</p>
+            <div style="display:flex;gap:4px;flex-wrap:wrap"><span style="font-size:10px;font-family:var(--font-mono);padding:2px 8px;border:1px solid var(--border);border-radius:999px">Stripe</span><span style="font-size:10px;font-family:var(--font-mono);padding:2px 8px;border:1px solid var(--border);border-radius:999px">NetSuite</span></div>
+            <div style="margin-top:12px"><a href="builder.html" class="btn btn--primary" style="text-decoration:none">Use template</a></div>
+          </div>
+          <div class="card">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:6px">SUPPORT</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Zendesk ticket triage with AI</h2>
+            <p style="font-size:12px;color:var(--ink-muted);margin:0 0 10px">640 teams</p>
+            <div style="display:flex;gap:4px;flex-wrap:wrap"><span style="font-size:10px;font-family:var(--font-mono);padding:2px 8px;border:1px solid var(--border);border-radius:999px">Zendesk</span><span style="font-size:10px;font-family:var(--font-mono);padding:2px 8px;border:1px solid var(--border);border-radius:999px">OpenAI</span></div>
+          </div>
+          <div class="card">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:6px">ANALYTICS</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Daily KPI digest</h2>
+            <p style="font-size:12px;color:var(--ink-muted);margin:0">430 teams · BigQuery, Slack</p>
+          </div>
+          <div class="card">
+            <div style="font-size:10px;font-family:var(--font-mono);color:var(--ink-muted);margin-bottom:6px">DEVOPS</div>
+            <h2 style="font-size:16px;margin:0 0 8px">Incident escalation</h2>
+            <p style="font-size:12px;color:var(--ink-muted);margin:0">96 teams · Sentry, PagerDuty, Slack</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

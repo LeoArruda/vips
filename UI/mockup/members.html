@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Members — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings" aria-current="page">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Settings">
+        <div class="shell-subnav__title">Settings</div>
+        <a class="shell-subnav__link" href="workspace-settings.html">General</a>
+        <a class="shell-subnav__link" href="members.html" aria-current="page">Members <span class="shell-subnav__badge">14</span></a>
+        <a class="shell-subnav__link" href="members.html">Roles</a>
+        <a class="shell-subnav__link" href="workspace-settings.html">Billing</a>
+        <a class="shell-subnav__link" href="workspace-settings.html">Audit log</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">workspace<span>/</span>acme-ops<span>/</span>settings<span>/</span>members</nav>
+          <div class="shell-main__actions">
+            <input type="search" class="input" placeholder="Find member…" />
+            <button type="button" class="btn">SCIM sync</button>
+            <button type="button" class="btn btn--primary">+ Invite</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">Members</h1>
+        <p class="shell-page-sub">14 people · 1 invite pending · 1 missing MFA</p>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px">
+          <div class="card" style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:color-mix(in oklab,var(--accent-4) 25%,var(--paper));display:flex;align-items:center;justify-content:center;font-weight:700">A</div>
+            <div><strong>Admin</strong><div style="font-size:11px;color:var(--ink-muted)">2 people</div><p style="font-size:12px;color:var(--ink-2);margin:4px 0 0">Everything — billing, members, delete workspace.</p></div>
+          </div>
+          <div class="card" style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:color-mix(in oklab,var(--accent-3) 30%,var(--paper));display:flex;align-items:center;justify-content:center;font-weight:700">B</div>
+            <div><strong>Builder</strong><div style="font-size:11px;color:var(--ink-muted)">9 people</div><p style="font-size:12px;color:var(--ink-2);margin:4px 0 0">Create, edit, publish workflows.</p></div>
+          </div>
+          <div class="card" style="display:flex;gap:10px;align-items:flex-start">
+            <div style="width:32px;height:32px;border:1px solid var(--border);border-radius:6px;background:var(--paper-2);display:flex;align-items:center;justify-content:center;font-weight:700">V</div>
+            <div><strong>Viewer</strong><div style="font-size:11px;color:var(--ink-muted)">3 people</div><p style="font-size:12px;color:var(--ink-2);margin:4px 0 0">See runs and dashboards. No edits.</p></div>
+          </div>
+        </div>
+
+        <div class="card" style="padding:0;overflow:hidden">
+          <table class="table">
+            <thead><tr><th>Member</th><th>Role</th><th>Status</th><th>Last active</th><th>MFA</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Priya Shah</strong><br/><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">priya@acme.co</span></td><td><span class="pill pill--danger">Admin</span></td><td><span class="pill pill--success">active</span></td><td style="color:var(--ink-muted)">now</td><td style="color:var(--accent-3)">✓</td></tr>
+              <tr><td><strong>Jordan Kim</strong><br/><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">jordan@acme.co</span></td><td><span class="pill pill--success">Builder</span></td><td><span class="pill pill--success">active</span></td><td style="color:var(--ink-muted)">14m ago</td><td style="color:var(--accent-3)">✓</td></tr>
+              <tr><td><strong>Sam Rivera</strong><br/><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">sam@acme.co</span></td><td><span class="pill">Viewer</span></td><td><span class="pill pill--warn">invited</span></td><td style="color:var(--ink-muted)">—</td><td style="color:var(--accent-4)">✗</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

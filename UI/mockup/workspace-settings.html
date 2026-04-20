@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Workspace settings — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings" aria-current="page">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Settings">
+        <div class="shell-subnav__title">Settings</div>
+        <div class="shell-subnav__group">Workspace</div>
+        <a class="shell-subnav__link" href="workspace-settings.html" aria-current="page">General</a>
+        <a class="shell-subnav__link" href="members.html">Members <span class="shell-subnav__badge">14</span></a>
+        <a class="shell-subnav__link" href="members.html">Roles</a>
+        <div class="shell-subnav__group">My account</div>
+        <a class="shell-subnav__link" href="profile.html">Profile</a>
+        <a class="shell-subnav__link" href="profile.html">API tokens</a>
+        <a class="shell-subnav__link" href="notifications.html">Notifications</a>
+      </aside>
+      <main class="shell-main">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">Workspace<span>/</span>Workflows<span>/</span>Settings<span>/</span>general</nav>
+          <div class="shell-main__actions">
+            <span class="pill pill--warn">Unsaved</span>
+            <button type="button" class="btn btn--ghost">Discard</button>
+            <button type="button" class="btn btn--primary">Save</button>
+          </div>
+        </div>
+        <h1 class="shell-page-title">General</h1>
+        <p class="shell-page-sub">Workspace: acme-ops · id wks_4412</p>
+
+        <div style="display:grid;grid-template-columns:1fr 260px;gap:20px;align-items:start">
+          <div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="font-weight:700;font-size:17px;margin-bottom:4px">Identity</div>
+              <p style="font-size:12px;color:var(--ink-muted);margin:0 0 12px">How this workspace appears to members.</p>
+              <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--border);align-items:center"><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">Name</span><div style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;background:var(--paper-2)">Acme Ops</div></div>
+              <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--border);align-items:center"><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">Slug</span><div style="font-family:var(--font-mono);font-size:13px;border:1px solid var(--border);border-radius:6px;padding:8px 10px;background:var(--paper-2)">acme-ops</div></div>
+              <p style="font-size:11px;color:var(--ink-muted);margin:4px 0 0 150px">Used in URLs and webhook paths.</p>
+            </div>
+            <div class="card" style="margin-bottom:16px">
+              <div style="font-weight:700;font-size:17px;margin-bottom:4px">Runtime defaults</div>
+              <p style="font-size:12px;color:var(--ink-muted);margin:0 0 12px">Applied to new workflows unless overridden.</p>
+              <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--border);align-items:center"><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">Timezone</span><div style="font-family:var(--font-mono);font-size:13px;border:1px solid var(--border);border-radius:6px;padding:8px 10px">UTC</div></div>
+              <div style="display:grid;grid-template-columns:140px 1fr;gap:10px;padding:8px 0;border-top:1px dashed var(--border);align-items:center"><span style="font-family:var(--font-mono);font-size:11px;color:var(--ink-muted)">Retry policy</span><div style="border:1px solid var(--border);border-radius:6px;padding:8px 10px;background:var(--paper-2)">3 attempts · exponential (1s → 4s)</div></div>
+            </div>
+            <div class="card" style="border-color:color-mix(in oklab,var(--accent-4) 40%,var(--border))">
+              <div style="font-weight:700;font-size:17px;margin-bottom:8px">Danger zone</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap">
+                <button type="button" class="btn btn--ghost">Transfer ownership</button>
+                <button type="button" class="btn btn--ghost">Export workspace</button>
+                <button type="button" class="btn" style="border-color:var(--accent-4);color:var(--accent-4)">Delete workspace</button>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.08em">Plan</div>
+            <div style="font-size:20px;font-weight:700;margin:4px 0">Team · $49/seat</div>
+            <p style="font-size:12px;color:var(--ink-muted);margin:0 0 10px">14 seats · renews May 3</p>
+            <button type="button" class="btn">Manage billing</button>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>

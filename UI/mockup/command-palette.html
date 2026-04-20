@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Command palette — VipsOS mockup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="layout.css" />
+  <link rel="stylesheet" href="components.css" />
+  <style>
+    .pal-row{display:grid;grid-template-columns:28px 1fr auto;gap:10px;padding:8px 16px;align-items:center;font-size:13px;border-left:3px solid transparent}
+    .pal-row--active{background:var(--accent-muted);border-left-color:var(--ink)}
+    .pal-group{font-family:var(--font-mono);font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-muted);padding:8px 16px 4px}
+    .kbd{font-family:var(--font-mono);font-size:10px;border:1px solid var(--border);border-radius:3px;padding:1px 6px}
+  </style>
+</head>
+<body>
+  <div class="mockup-root">
+    <header class="shell-top">
+      <div class="shell-top__brand">Vips<span>OS</span></div>
+      <span class="shell-top__meta">acme / prod</span>
+      <div class="shell-top__spacer"></div>
+      <a class="shell-top__link" href="index.html">All mockups</a>
+      <span class="shell-top__meta">·</span>
+      <a class="shell-top__link" href="../VipsOS%20Wireframes%20%E2%80%94%20all.html">Wireframes</a>
+    </header>
+    <div class="shell-body">
+      <aside class="shell-rail" aria-label="Primary navigation">
+        <div class="shell-rail__logo"></div>
+        <a href="dashboard.html" class="shell-rail__item" title="Home">◇</a>
+        <a href="workflows.html" class="shell-rail__item" title="Workflows" aria-current="page">⌘</a>
+        <a href="workflow-runs.html" class="shell-rail__item" title="Runs">▷</a>
+        <a href="connections.html" class="shell-rail__item" title="Connections">⚙︎</a>
+        <a href="triggers.html" class="shell-rail__item" title="Triggers">⊕</a>
+        <a href="templates.html" class="shell-rail__item" title="Templates">☰</a>
+        <a href="secrets.html" class="shell-rail__item" title="Secrets">◉</a>
+        <a href="workspace-settings.html" class="shell-rail__item" title="Settings">✦</a>
+        <div class="shell-rail__filler"></div>
+        <a href="profile.html" class="shell-rail__avatar"></a>
+      </aside>
+      <aside class="shell-subnav" aria-label="Workflow">
+        <div class="shell-subnav__title">Workflow</div>
+        <a class="shell-subnav__link" href="builder.html">Canvas</a>
+        <a class="shell-subnav__link" href="workflow-runs.html">Runs</a>
+        <a class="shell-subnav__link" href="triggers.html">Triggers</a>
+      </aside>
+      <main class="shell-main" style="position:relative;min-height:520px">
+        <div class="shell-main__bar">
+          <nav class="shell-breadcrumbs">workflows<span>/</span>billing-sync<span>/</span>canvas</nav>
+          <span class="pill">Palette open</span>
+        </div>
+        <div style="opacity:.2;pointer-events:none;filter:blur(1px)">
+          <h1 class="shell-page-title">billing-sync</h1>
+          <div class="canvas-wrap" style="min-height:320px"></div>
+        </div>
+
+        <div style="position:absolute;inset:0;top:52px;background:rgba(26,23,20,.35);align-items:flex-start;padding-top:32px;justify-content:center;display:flex">
+          <div class="palette-panel" style="pointer-events:auto;position:relative;z-index:1">
+            <div style="padding:14px 16px;border-bottom:1px solid var(--ink);display:flex;align-items:center;gap:10px">
+              <span style="font-family:var(--font-mono);color:var(--ink-muted)">⌕</span>
+              <span style="font-family:var(--font-mono);font-size:15px">billing<span style="background:var(--accent);color:#fff;padding:0 2px">|</span></span>
+              <span style="margin-left:auto;font-family:var(--font-mono);font-size:10px;color:var(--ink-muted)">esc to close</span>
+            </div>
+            <div class="pal-group">Workflows</div>
+            <div class="pal-row pal-row--active"><span>◇</span><strong>billing-sync</strong><span style="color:var(--ink-muted);font-size:12px">open canvas</span></div>
+            <div class="pal-row"><span>◇</span><span><strong>billing-sync · runs</strong> <span style="color:var(--ink-muted)">history</span></span><span class="kbd">↵</span></div>
+            <div class="pal-group">Runs</div>
+            <div class="pal-row"><span style="color:var(--accent)">●</span><span><strong>run_01JK9R2X</strong> <span style="color:var(--ink-muted)">retried · ok</span></span></div>
+            <div class="pal-row"><span style="color:var(--accent-4)">●</span><span><strong>run_01JK9P4F</strong> <span style="color:var(--ink-muted)">failed</span></span></div>
+            <div class="pal-group">Actions</div>
+            <div class="pal-row"><span>▷</span><span><strong>Run billing-sync now</strong></span><span class="kbd">⌘↵</span></div>
+            <div class="pal-group">Jump</div>
+            <div class="pal-row"><span>⊕</span><span>Connections → Stripe</span></div>
+            <div style="display:flex;gap:14px;padding:8px 14px;border-top:1px solid var(--border);font-family:var(--font-mono);font-size:10px;color:var(--ink-muted)">
+              <span>↑↓ navigate</span><span>↵ select</span><span style="margin-left:auto">fuzzy + recent</span>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+</body>
+</html>
