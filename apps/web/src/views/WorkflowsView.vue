@@ -33,7 +33,7 @@ function openBuilder(wf: WorkflowSummary) {
 </script>
 
 <template>
-  <div>
+  <div class="h-full overflow-y-auto p-6">
     <div class="mb-5 flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold tracking-tight">Workflows</h1>

@@ -8,7 +8,7 @@ import AppTopBar from './AppTopBar.vue'
     <AppSidebar />
     <div class="flex flex-1 flex-col overflow-hidden">
       <AppTopBar />
-      <main class="flex-1 overflow-auto">
+      <main class="flex-1 overflow-hidden">
         <slot />
       </main>
     </div>

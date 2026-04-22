@@ -33,6 +33,11 @@ const router = createRouter({
       component: () => import('@/views/ConnectorDetailView.vue'),
     },
     {
+      path: '/runs',
+      name: 'runs',
+      component: () => import('@/views/RunsView.vue'),
+    },
+    {
       path: '/runs/:id',
       name: 'run-detail',
       component: () => import('@/views/RunDetailView.vue'),
