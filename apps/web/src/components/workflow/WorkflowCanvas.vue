@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, markRaw } from 'vue'
-import { VueFlow, useVueFlow } from '@vue-flow/core'
+import { VueFlow, MarkerType, useVueFlow } from '@vue-flow/core'
 import { Controls } from '@vue-flow/controls'
 import { MiniMap } from '@vue-flow/minimap'
+import { Background, BackgroundVariant } from '@vue-flow/background'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/controls/dist/style.css'
 import '@vue-flow/minimap/dist/style.css'
@@ -24,6 +25,12 @@ const nodeTypes: Record<string, any> = {
   transformNode: markRaw(TransformNode),
   destinationNode: markRaw(DestinationNode),
   logicNode: markRaw(LogicNode),
+}
+
+const defaultEdgeOptions = {
+  type: 'smoothstep',
+  markerEnd: { type: MarkerType.ArrowClosed, color: '#6b7280', width: 16, height: 16 },
+  style: { stroke: '#9ca3af', strokeWidth: 2 },
 }
 
 const hasWorkflow = computed(() => store.nodes.length > 0)
@@ -64,18 +71,20 @@ function onDrop(event: DragEvent) {
       :nodes="store.nodes"
       :edges="store.edges"
       :node-types="nodeTypes"
+      :default-edge-options="defaultEdgeOptions"
       fit-view-on-init
       class="h-full w-full"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
     >
+      <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1" color="#d1d5db" />
       <Controls />
-      <MiniMap />
+      <MiniMap node-color="#e5e7eb" mask-color="rgba(255,255,255,0.7)" />
     </VueFlow>
 
     <div
       v-else
-      class="flex h-full flex-col items-center justify-center gap-3 text-muted-foreground"
+      class="flex h-full flex-col items-center justify-center gap-3 bg-gray-50 text-muted-foreground"
     >
       <div class="text-5xl opacity-20">⬡</div>
       <p class="text-sm">No workflow loaded. Select one from Workflows.</p>
