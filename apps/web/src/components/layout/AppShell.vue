@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import AppSidebar from './AppSidebar.vue'
 import AppTopBar from './AppTopBar.vue'
+import NotificationsPanel from './NotificationsPanel.vue'
+import WorkspaceSwitcher from './WorkspaceSwitcher.vue'
+import CommandPalette from './CommandPalette.vue'
 </script>
 
 <template>
@@ -12,5 +15,8 @@ import AppTopBar from './AppTopBar.vue'
         <slot />
       </main>
     </div>
+    <NotificationsPanel />
+    <WorkspaceSwitcher />
+    <CommandPalette />
   </div>
 </template>
