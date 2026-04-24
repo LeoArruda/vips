@@ -1,7 +1,8 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useWorkflowsStore } from '@/stores/workflows'
-import { GitBranch, Clock, Webhook, Play, Plus } from 'lucide-vue-next'
+import { GitBranch, Clock, Webhook, Play, Plus, MoreHorizontal, Copy, Archive, Download } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { WorkflowSummary } from '@/types'
 
@@ -30,10 +31,44 @@ const runStatusColors: Record<string, string> = {
 function openBuilder(wf: WorkflowSummary) {
   router.push(`/workflows/${wf.workflowId}/builder`)
 }
+
+const openMenuId = ref<string | null>(null)
+
+function duplicate(workflowId: string) {
+  const source = store.summaries.find(s => s.workflowId === workflowId)
+  if (!source) return
+  store.summaries.push({
+    ...source,
+    workflowId: `wf_${Date.now()}`,
+    name: source.name + ' (copy)',
+    status: 'draft' as const,
+    updatedAt: new Date().toISOString(),
+  })
+  openMenuId.value = null
+}
+
+function archive(workflowId: string) {
+  const w = store.summaries.find(s => s.workflowId === workflowId)
+  if (w) w.status = 'archived' as const
+  openMenuId.value = null
+}
+
+function exportWorkflow(workflowId: string) {
+  const def = store.getDefinition(workflowId)
+  if (!def) return
+  const blob = new Blob([JSON.stringify(def, null, 2)], { type: 'application/json' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `workflow-${workflowId}.json`
+  a.click()
+  URL.revokeObjectURL(url)
+  openMenuId.value = null
+}
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-6" @click="openMenuId = null">
     <div class="mb-5 flex items-center justify-between">
       <div>
         <h1 class="text-2xl font-semibold tracking-tight">Workflows</h1>
@@ -91,6 +126,28 @@ function openBuilder(wf: WorkflowSummary) {
         >
           Open
         </button>
+
+        <div class="relative">
+          <button class="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+            @click.stop="openMenuId = openMenuId === wf.workflowId ? null : wf.workflowId">
+            <MoreHorizontal class="h-4 w-4" />
+          </button>
+          <div v-if="openMenuId === wf.workflowId"
+            class="absolute right-0 top-10 z-10 w-40 rounded-lg border bg-background shadow-md py-1">
+            <button class="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
+              @click="duplicate(wf.workflowId)">
+              <Copy class="h-3.5 w-3.5" /> Duplicate
+            </button>
+            <button class="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
+              @click="exportWorkflow(wf.workflowId)">
+              <Download class="h-3.5 w-3.5" /> Export JSON
+            </button>
+            <button class="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-muted"
+              @click="archive(wf.workflowId)">
+              <Archive class="h-3.5 w-3.5" /> Archive
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
