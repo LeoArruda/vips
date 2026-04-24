@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRunsStore } from '@/stores/runs'
 import NodeStatusBadge from '@/components/runs/NodeStatusBadge.vue'
-import { ArrowLeft, ChevronDown, ChevronRight } from 'lucide-vue-next'
+import { ArrowLeft, ChevronDown, ChevronRight, RotateCw } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
@@ -104,6 +104,13 @@ function formatDuration(ms?: number): string {
             />
             <span class="flex-1 text-sm font-medium">{{ node.nodeLabel }}</span>
             <NodeStatusBadge :status="node.status" />
+            <button
+              v-if="node.status === 'failed'"
+              class="ml-auto flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium hover:bg-muted"
+              @click.stop="store.retryNode(detail.runId, node.nodeId)"
+            >
+              <RotateCw class="h-3.5 w-3.5" /> Retry node
+            </button>
             <span class="ml-2 text-xs tabular-nums text-muted-foreground">
               {{ formatDuration(node.durationMs) }}
             </span>
@@ -126,6 +133,23 @@ function formatDuration(ms?: number): string {
                 <span class="text-foreground">{{ log.message }}</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schema drift panel -->
+      <div v-if="detail && detail.nodes.some(n => n.logs.some(l => l.message.toLowerCase().includes('schema')))"
+        class="m-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+        <h3 class="mb-2 text-sm font-semibold text-amber-800">Schema drift detected</h3>
+        <p class="mb-3 text-xs text-amber-700">One or more nodes received unexpected fields. Review the diff below.</p>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="rounded-md border bg-background p-3">
+            <p class="mb-1.5 text-xs font-semibold text-muted-foreground">Expected schema</p>
+            <pre class="text-xs text-green-700">{ "id": "string", "email": "string", "name": "string" }</pre>
+          </div>
+          <div class="rounded-md border bg-background p-3">
+            <p class="mb-1.5 text-xs font-semibold text-muted-foreground">Actual schema</p>
+            <pre class="text-xs text-red-600">{ "id": "string", "email": "string", "full_name": "string" }</pre>
           </div>
         </div>
       </div>
