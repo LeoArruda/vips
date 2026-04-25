@@ -43,7 +43,7 @@ function formatDuration(ms?: number): string {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-[18px]">
     <!-- Not found -->
     <div v-if="!detail" class="py-12 text-center text-muted-foreground">
       <p class="text-sm">Run not found.</p>
@@ -63,11 +63,11 @@ function formatDuration(ms?: number): string {
       </button>
 
       <!-- Run header -->
-      <div class="mb-6 rounded-lg border bg-background p-4">
+      <div class="mb-6 rounded-[7px] border bg-background p-[11px]">
         <div class="flex items-start justify-between">
           <div>
-            <h1 class="text-xl font-semibold">{{ detail.workflowName }}</h1>
-            <p class="mt-0.5 text-sm text-muted-foreground">
+            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.workflowName }}</h1>
+            <p class="mt-0.5 text-[11.5px] text-muted-foreground">
               Run ID: {{ detail.runId }} · Triggered by {{ detail.triggeredBy }}
             </p>
           </div>
@@ -78,7 +78,7 @@ function formatDuration(ms?: number): string {
             {{ detail.status }}
           </span>
         </div>
-        <div class="mt-3 flex flex-wrap gap-6 text-sm text-muted-foreground">
+        <div class="mt-3 flex flex-wrap gap-6 text-[11.5px] text-muted-foreground">
           <span>Started: {{ detail.startedAt.replace('T', ' ').slice(0, 19) }}Z</span>
           <span v-if="detail.durationMs">Duration: {{ formatDuration(detail.durationMs) }}</span>
           <span>Nodes: {{ detail.nodeCount }} ({{ detail.failedNodeCount }} failed)</span>
@@ -86,27 +86,27 @@ function formatDuration(ms?: number): string {
       </div>
 
       <!-- Node timeline -->
-      <h2 class="mb-3 text-sm font-semibold">Execution Timeline</h2>
+      <h2 class="mb-3 text-[11.5px] font-semibold">Execution Timeline</h2>
       <div class="space-y-2">
         <div
           v-for="node in detail.nodes"
           :key="node.nodeId"
-          class="rounded-lg border bg-background"
+          class="rounded-[7px] border bg-background"
         >
           <!-- Node header -->
           <button
-            class="flex w-full items-center gap-3 px-4 py-3 text-left"
+            class="flex w-full items-center gap-3 px-3 py-[7px] text-left"
             @click="toggleNode(node.nodeId)"
           >
             <component
               :is="expandedNodes.has(node.nodeId) ? ChevronDown : ChevronRight"
               class="h-4 w-4 flex-shrink-0 text-muted-foreground"
             />
-            <span class="flex-1 text-sm font-medium">{{ node.nodeLabel }}</span>
+            <span class="flex-1 text-[11.5px] font-medium">{{ node.nodeLabel }}</span>
             <NodeStatusBadge :status="node.status" />
             <button
               v-if="node.status === 'failed'"
-              class="ml-auto flex items-center gap-1 rounded-md border px-2.5 py-1 text-xs font-medium hover:bg-muted"
+              class="ml-auto flex items-center gap-1 rounded-[5px] bg-indigo-500 text-white hover:bg-indigo-600 border-0 px-2.5 py-1 text-xs font-medium"
               @click.stop="store.retryNode(detail.runId, node.nodeId)"
             >
               <RotateCw class="h-3.5 w-3.5" /> Retry node
@@ -117,7 +117,7 @@ function formatDuration(ms?: number): string {
           </button>
 
           <!-- Log entries -->
-          <div v-if="expandedNodes.has(node.nodeId)" class="border-t bg-muted/30 px-4 py-3">
+          <div v-if="expandedNodes.has(node.nodeId)" class="border-t bg-muted/30 px-3 py-[7px]">
             <div v-if="node.logs.length === 0" class="text-xs text-muted-foreground">No logs.</div>
             <div v-else class="space-y-1.5 font-mono text-xs">
               <div v-for="(log, i) in node.logs" :key="i" class="flex gap-3">
@@ -139,7 +139,7 @@ function formatDuration(ms?: number): string {
 
       <!-- Schema drift panel -->
       <div v-if="detail && detail.nodes.some(n => n.logs.some(l => l.message.toLowerCase().includes('schema')))"
-        class="m-6 rounded-lg border border-amber-200 bg-amber-50 p-4">
+        class="m-[18px] rounded-[7px] border border-amber-200 bg-amber-50 p-[11px]">
         <h3 class="mb-2 text-sm font-semibold text-amber-800">Schema drift detected</h3>
         <p class="mb-3 text-xs text-amber-700">One or more nodes received unexpected fields. Review the diff below.</p>
         <div class="grid grid-cols-2 gap-3">

@@ -37,17 +37,17 @@ function formatDuration(ms?: number): string {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-[18px]">
     <div class="mb-5">
-      <h1 class="text-2xl font-semibold tracking-tight">Runs</h1>
-      <p class="mt-1 text-sm text-muted-foreground">{{ store.records.length }} recent runs</p>
+      <h1 class="text-[15px] font-semibold tracking-tight">Runs</h1>
+      <p class="mt-1 text-[11.5px] text-muted-foreground">{{ store.records.length }} recent runs</p>
     </div>
 
-    <div class="divide-y rounded-lg border">
+    <div class="divide-y rounded-[7px] border">
       <div
         v-for="run in store.records"
         :key="run.runId"
-        class="flex cursor-pointer items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/50"
+        class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-muted/50"
         @click="router.push(`/runs/${run.runId}`)"
       >
         <component
@@ -56,7 +56,7 @@ function formatDuration(ms?: number): string {
           :class="statusColors[run.status] ?? 'text-muted-foreground'"
         />
         <div class="min-w-0 flex-1">
-          <p class="truncate text-sm font-medium">{{ run.workflowName }}</p>
+          <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
           <p class="text-xs text-muted-foreground">
             {{ run.triggeredBy }} · {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z
           </p>

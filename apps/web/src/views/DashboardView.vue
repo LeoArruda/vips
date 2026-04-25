@@ -32,14 +32,14 @@ function formatDuration(ms?: number): string {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-[18px]">
     <div class="mb-5">
-      <h1 class="text-2xl font-semibold tracking-tight">Dashboard</h1>
-      <p class="mt-1 text-sm text-muted-foreground">Platform health and activity overview</p>
+      <h1 class="text-[15px] font-semibold tracking-tight">Dashboard</h1>
+      <p class="mt-1 text-[11.5px] text-muted-foreground">Platform health and activity overview</p>
     </div>
 
     <!-- Stat tiles -->
-    <div class="mb-6 grid grid-cols-2 gap-4 sm:grid-cols-3 xl:grid-cols-6">
+    <div class="mb-6 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-6">
       <StatTile
         label="Total Workflows"
         :value="dashboardStats.totalWorkflows"
@@ -80,12 +80,12 @@ function formatDuration(ms?: number): string {
 
     <!-- Recent runs -->
     <div class="mb-6">
-      <h2 class="mb-3 text-sm font-semibold">Recent Runs</h2>
-      <div class="divide-y rounded-lg border">
+      <h2 class="mb-3 text-[11.5px] font-semibold">Recent Runs</h2>
+      <div class="divide-y rounded-[7px] border">
         <div
           v-for="run in runsStore.records"
           :key="run.runId"
-          class="flex cursor-pointer items-center gap-4 px-4 py-3 transition-colors hover:bg-muted/50"
+          class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-muted/50"
           @click="router.push(`/runs/${run.runId}`)"
         >
           <span
@@ -95,7 +95,7 @@ function formatDuration(ms?: number): string {
             {{ run.status }}
           </span>
           <div class="min-w-0 flex-1">
-            <p class="truncate text-sm font-medium">{{ run.workflowName }}</p>
+            <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
             <p class="text-xs text-muted-foreground">
               {{ run.triggeredBy }} · {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z
             </p>
@@ -109,17 +109,17 @@ function formatDuration(ms?: number): string {
 
     <!-- Failed runs -->
     <div v-if="dashboardStats.failedRuns.length > 0">
-      <h2 class="mb-3 text-sm font-semibold text-red-600">Failed Runs</h2>
-      <div class="divide-y rounded-lg border border-red-200">
+      <h2 class="mb-3 text-[11.5px] font-semibold text-red-600">Failed Runs</h2>
+      <div class="divide-y rounded-[7px] border border-red-200">
         <div
           v-for="run in dashboardStats.failedRuns"
           :key="run.runId"
-          class="flex cursor-pointer items-center gap-4 px-4 py-3 transition-colors hover:bg-red-50/50"
+          class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-red-50/50"
           @click="router.push(`/runs/${run.runId}`)"
         >
           <XCircle class="h-4 w-4 flex-shrink-0 text-red-500" />
           <div class="min-w-0 flex-1">
-            <p class="truncate text-sm font-medium">{{ run.workflowName }}</p>
+            <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
             <p class="text-xs text-muted-foreground">
               {{ run.failedNodeCount }} node(s) failed ·
               {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z

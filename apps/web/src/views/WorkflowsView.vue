@@ -68,27 +68,27 @@ function exportWorkflow(workflowId: string) {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6" @click="openMenuId = null">
+  <div class="h-full overflow-y-auto p-[18px]" @click="openMenuId = null">
     <div class="mb-5 flex items-center justify-between">
       <div>
-        <h1 class="text-2xl font-semibold tracking-tight">Workflows</h1>
-        <p class="mt-1 text-sm text-muted-foreground">
+        <h1 class="text-[15px] font-semibold tracking-tight">Workflows</h1>
+        <p class="mt-1 text-[11.5px] text-muted-foreground">
           {{ store.summaries.length }} workflows · {{ store.publishedCount }} published
         </p>
       </div>
       <button
-        class="flex items-center gap-1.5 rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+        class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-600"
       >
         <Plus class="h-4 w-4" />
         New Workflow
       </button>
     </div>
 
-    <div class="divide-y rounded-lg border">
+    <div class="divide-y rounded-[7px] border">
       <div
         v-for="wf in store.summaries"
         :key="wf.workflowId"
-        class="flex items-center gap-4 px-4 py-3"
+        class="flex items-center gap-4 px-3 py-[7px]"
       >
         <div class="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-md bg-muted">
           <GitBranch class="h-4 w-4 text-muted-foreground" />
@@ -96,7 +96,7 @@ function exportWorkflow(workflowId: string) {
 
         <div class="min-w-0 flex-1">
           <div class="flex items-center gap-2">
-            <span class="truncate text-sm font-medium">{{ wf.name }}</span>
+            <span class="truncate text-[11.5px] font-medium">{{ wf.name }}</span>
             <span
               class="rounded-full px-2 py-0.5 text-xs font-medium capitalize"
               :class="statusColors[wf.status]"
@@ -121,19 +121,19 @@ function exportWorkflow(workflowId: string) {
         </div>
 
         <button
-          class="rounded-md border px-3 py-1.5 text-sm font-medium transition-colors hover:bg-muted"
+          class="rounded-[5px] border px-3 py-1.5 text-[11.5px] font-medium transition-colors hover:bg-muted"
           @click="openBuilder(wf)"
         >
           Open
         </button>
 
         <div class="relative">
-          <button class="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
+          <button class="rounded-[5px] p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground"
             @click.stop="openMenuId = openMenuId === wf.workflowId ? null : wf.workflowId">
             <MoreHorizontal class="h-4 w-4" />
           </button>
           <div v-if="openMenuId === wf.workflowId"
-            class="absolute right-0 top-10 z-10 w-40 rounded-lg border bg-background shadow-md py-1">
+            class="absolute right-3 top-9 z-10 w-40 rounded-[7px] border bg-background shadow-md py-1">
             <button class="flex w-full items-center gap-2 px-3 py-2 text-sm hover:bg-muted"
               @click="duplicate(wf.workflowId)">
               <Copy class="h-3.5 w-3.5" /> Duplicate
