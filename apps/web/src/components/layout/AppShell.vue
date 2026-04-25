@@ -9,9 +9,9 @@ import CommandPalette from './CommandPalette.vue'
 <template>
   <div class="flex h-screen overflow-hidden bg-background text-foreground">
     <AppSidebar />
-    <div class="flex flex-1 flex-col overflow-hidden">
+    <div class="flex flex-1 flex-col overflow-hidden min-w-0 transition-all duration-[220ms] ease-[cubic-bezier(0.4,0,0.2,1)]">
       <AppTopBar />
-      <main class="flex-1 overflow-hidden">
+      <main class="flex-1 overflow-hidden bg-background">
         <slot />
       </main>
     </div>
