@@ -51,17 +51,17 @@ function onDragStart(event: DragEvent, type: NodeType) {
 
 <template>
   <aside class="flex w-52 flex-shrink-0 flex-col border-r bg-background">
-    <div class="border-b px-4 py-3">
+    <div class="border-b px-3 py-[7px]">
       <h2 class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
         Node Types
       </h2>
     </div>
-    <div class="flex-1 space-y-1.5 overflow-y-auto p-3">
+    <div class="flex-1 space-y-1.5 overflow-y-auto p-[11px]">
       <div
         v-for="item in paletteItems"
         :key="item.type"
         draggable="true"
-        class="flex cursor-grab items-center gap-3 rounded-md border bg-background p-2.5 shadow-sm transition-colors hover:bg-muted active:cursor-grabbing"
+        class="flex cursor-grab items-center gap-3 rounded-[5px] border bg-background p-2.5 shadow-sm transition-colors hover:bg-muted active:cursor-grabbing"
         @dragstart="onDragStart($event, item.type)"
       >
         <div
@@ -71,12 +71,12 @@ function onDragStart(event: DragEvent, type: NodeType) {
           <component :is="item.icon" class="h-4 w-4" />
         </div>
         <div>
-          <div class="text-sm font-medium leading-tight">{{ item.label }}</div>
+          <div class="text-[11.5px] font-medium leading-tight">{{ item.label }}</div>
           <div class="text-xs text-muted-foreground">{{ item.description }}</div>
         </div>
       </div>
     </div>
-    <div class="border-t px-4 py-3">
+    <div class="border-t px-3 py-[7px]">
       <p class="text-xs text-muted-foreground">Drag a node onto the canvas</p>
     </div>
   </aside>

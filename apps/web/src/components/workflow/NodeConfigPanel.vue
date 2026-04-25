@@ -40,14 +40,14 @@ const inspectorComponent = computed(() => {
 <template>
   <aside v-if="node" class="flex w-80 flex-shrink-0 flex-col border-l bg-background">
     <!-- Header with node type color -->
-    <div class="flex items-center justify-between border-b px-4 py-3">
+    <div class="flex items-center justify-between border-b px-3 py-[7px]">
       <div class="flex items-center gap-2">
         <span class="h-3 w-3 rounded-full" :class="nodeColor[node.data.nodeType] ?? 'bg-muted'" />
         <div>
           <p class="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
             {{ nodeLabel[node.data.nodeType] ?? node.data.nodeType }}
           </p>
-          <h2 class="text-sm font-semibold leading-tight">{{ node.data.label }}</h2>
+          <h2 class="text-[11.5px] font-semibold leading-tight">{{ node.data.label }}</h2>
         </div>
       </div>
       <button class="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
@@ -59,7 +59,7 @@ const inspectorComponent = computed(() => {
     <!-- Context-sensitive inspector -->
     <div class="flex-1 overflow-y-auto">
       <component :is="inspectorComponent" v-if="inspectorComponent" :data="node.data" />
-      <p v-else class="p-4 text-sm text-muted-foreground">No inspector available for this node type.</p>
+      <p v-else class="p-[11px] text-[11.5px] text-muted-foreground">No inspector available for this node type.</p>
     </div>
   </aside>
 </template>

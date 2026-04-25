@@ -23,7 +23,7 @@ const statusColors: Record<string, string> = {
 <template>
   <div class="flex h-12 flex-shrink-0 items-center justify-between border-b bg-background px-4">
     <div class="flex items-center gap-2.5">
-      <span class="text-sm font-semibold">
+      <span class="text-[11.5px] font-semibold">
         {{ workflow?.name ?? 'Workflow Builder' }}
       </span>
       <span
@@ -37,21 +37,21 @@ const statusColors: Record<string, string> = {
 
     <div class="flex items-center gap-2">
       <button
-        class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted"
         title="Save (demo)"
       >
         <Save class="h-3.5 w-3.5" />
         Save
       </button>
       <button
-        class="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted"
+        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted"
         title="Publish (demo)"
       >
         <Rocket class="h-3.5 w-3.5" />
         Publish
       </button>
       <button
-        class="flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90 disabled:opacity-50"
+        class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-[5px] text-[11.5px] font-medium text-white transition-opacity hover:bg-indigo-600 disabled:opacity-50"
         :disabled="builderStore.isRunning || builderStore.nodes.length === 0"
         @click="builderStore.simulateRun()"
       >
