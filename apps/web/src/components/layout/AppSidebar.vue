@@ -84,7 +84,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
             <component :is="item.icon" class="nav-icon" :size="13" stroke-width="2" />
             <span class="nav-label">{{ item.label }}</span>
           </RouterLink>
-          <span v-if="shell.sidebarCollapsed" class="nav-tooltip">{{ item.label }}</span>
+          <span class="nav-tooltip">{{ item.label }}</span>
         </div>
       </template>
     </nav>
@@ -96,7 +96,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
           <Globe class="nav-icon" :size="13" stroke-width="2" />
           <span class="nav-label">Settings</span>
         </RouterLink>
-        <span v-if="shell.sidebarCollapsed" class="nav-tooltip">Settings</span>
+        <span class="nav-tooltip">Settings</span>
       </div>
     </div>
   </aside>
