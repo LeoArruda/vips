@@ -1,0 +1,82 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]: vipsOS
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - text: Dashboard
+      - paragraph [ref=e14]: BUILD
+      - link "Workflows" [ref=e15] [cursor=pointer]:
+        - /url: /workflows
+        - img [ref=e16]
+        - text: Workflows
+      - link "Connectors" [ref=e20] [cursor=pointer]:
+        - /url: /connectors
+        - img [ref=e21]
+        - text: Connectors
+      - link "Templates" [ref=e23] [cursor=pointer]:
+        - /url: /templates
+        - img [ref=e24]
+        - text: Templates
+      - link "Secrets" [ref=e27] [cursor=pointer]:
+        - /url: /secrets
+        - img [ref=e28]
+        - text: Secrets
+      - paragraph [ref=e31]: OPERATE
+      - link "Runs" [ref=e32] [cursor=pointer]:
+        - /url: /runs
+        - img [ref=e33]
+        - text: Runs
+      - link "Monitoring" [ref=e36] [cursor=pointer]:
+        - /url: /monitoring
+        - img [ref=e37]
+        - text: Monitoring
+      - link "Alerts" [ref=e39] [cursor=pointer]:
+        - /url: /alerts
+        - img [ref=e40]
+        - text: Alerts
+      - paragraph [ref=e43]: ECOSYSTEM
+      - link "Marketplace" [ref=e44] [cursor=pointer]:
+        - /url: /marketplace
+        - img [ref=e45]
+        - text: Marketplace
+      - paragraph [ref=e48]: PLATFORM
+      - link "Environments" [ref=e49] [cursor=pointer]:
+        - /url: /environments
+        - img [ref=e50]
+        - text: Environments
+      - link "Audit" [ref=e53] [cursor=pointer]:
+        - /url: /audit
+        - img [ref=e54]
+        - text: Audit
+    - link "Settings" [ref=e58] [cursor=pointer]:
+      - /url: /settings
+      - img [ref=e59]
+      - text: Settings
+  - generic [ref=e62]:
+    - banner [ref=e63]:
+      - button "Workspace" [ref=e64]:
+        - generic [ref=e65]: Workspace
+        - img [ref=e66]
+      - generic [ref=e69]:
+        - button [ref=e70]:
+          - img [ref=e71]
+        - link "?" [ref=e75] [cursor=pointer]:
+          - /url: /profile
+    - main [ref=e76]:
+      - generic [ref=e78]:
+        - generic [ref=e79]:
+          - generic [ref=e81]: DemoApp
+          - generic [ref=e82]: ·
+          - generic [ref=e83]: Powered by vipsOS
+        - generic [ref=e84]:
+          - heading "Connect your app" [level=2] [ref=e85]
+          - paragraph [ref=e86]: Choose a provider to get started.
+          - generic [ref=e87]:
+            - button "Salesforce" [ref=e88]
+            - button "HubSpot" [ref=e89]
+            - button "Stripe" [ref=e90]
+            - button "Slack" [ref=e91]
+            - button "Postgres" [ref=e92]
+            - button "Google Sheets" [ref=e93]

@@ -221,6 +221,12 @@ The control plane owns platform coordination and product state.
 - marketplace catalog management
 - API surface for frontend and SDKs
 
+### Recommended Stack
+- Bun
+- TypeScript
+- SQlite for Phase 1
+- Postgres for MVP Phase
+
 ### Recommended Service Domains
 
 #### 7.1 Identity and Access Service
