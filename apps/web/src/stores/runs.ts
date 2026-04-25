@@ -15,5 +15,17 @@ export const useRunsStore = defineStore('runs', () => {
     return records.value.filter((r) => r.workflowId === workflowId)
   }
 
-  return { records, details, getDetail, getByWorkflow }
+  function retryNode(runId: string, nodeId: string) {
+    const run = details.value.find(r => r.runId === runId)
+    if (!run) return
+    const node = run.nodes.find(n => n.nodeId === nodeId)
+    if (node) {
+      node.status = 'running'
+      setTimeout(() => {
+        if (node) node.status = 'success'
+      }, 1500)
+    }
+  }
+
+  return { records, details, getDetail, getByWorkflow, retryNode }
 })

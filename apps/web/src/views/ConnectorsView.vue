@@ -3,7 +3,7 @@ import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useConnectorsStore } from '@/stores/connectors'
 import ConnectorCard from '@/components/connectors/ConnectorCard.vue'
-import { Search } from 'lucide-vue-next'
+import { Search, AlertTriangle } from 'lucide-vue-next'
 
 const router = useRouter()
 const store = useConnectorsStore()
@@ -40,6 +40,15 @@ const filteredConnectors = computed(() => {
       <p class="mt-1 text-sm text-muted-foreground">
         {{ store.cards.length }} connectors · {{ store.installedCount }} installed
       </p>
+    </div>
+
+    <!-- Expired auth warning -->
+    <div class="mb-4 flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+      <AlertTriangle class="h-4 w-4 shrink-0" />
+      <span><strong>Salesforce OAuth token</strong> has expired. Your workflows using this connector may fail.</span>
+      <button class="ml-auto rounded-md border border-amber-300 bg-amber-100 px-3 py-1 text-xs font-medium hover:bg-amber-200">
+        Reconnect
+      </button>
     </div>
 
     <!-- Search + filter -->

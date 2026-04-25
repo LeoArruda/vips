@@ -1,0 +1,12 @@
+import type { MarketplaceListing } from '@/types/operations'
+
+export const stubListings: MarketplaceListing[] = [
+  { listingId: 'ml_001', name: 'Salesforce CRM', publisher: 'Salesforce Inc.', domain: 'salesforce.com', category: 'CRM', description: 'Sync contacts, leads, and opportunities bidirectionally.', pricing: 'per-use', priceLabel: '$0.02 / 1k records', certification: 'certified', installs: 14200, type: 'connector' },
+  { listingId: 'ml_002', name: 'HubSpot', publisher: 'HubSpot Inc.', domain: 'hubspot.com', category: 'CRM', description: 'Contacts, deals, forms, and email campaigns.', pricing: 'subscription', priceLabel: '$15 / month', certification: 'certified', installs: 9800, type: 'connector' },
+  { listingId: 'ml_003', name: 'BigQuery', publisher: 'Google LLC', domain: 'google.com', category: 'Analytics', description: 'Read and write large-scale analytical datasets.', pricing: 'free', priceLabel: 'Free', certification: 'certified', installs: 22100, type: 'connector' },
+  { listingId: 'ml_004', name: 'Slack', publisher: 'Slack Technologies', domain: 'slack.com', category: 'Communication', description: 'Send messages, manage channels, react to events.', pricing: 'free', priceLabel: 'Free', certification: 'certified', installs: 31400, type: 'connector' },
+  { listingId: 'ml_005', name: 'Snowflake', publisher: 'Snowflake Inc.', domain: 'snowflake.com', category: 'Databases', description: 'Cloud data warehouse with high-performance queries.', pricing: 'per-use', priceLabel: '$0.05 / 1k rows', certification: 'certified', installs: 7600, type: 'connector' },
+  { listingId: 'ml_006', name: 'Stripe', publisher: 'Stripe Inc.', domain: 'stripe.com', category: 'Finance', description: 'Capture payment events and reconcile transactions.', pricing: 'free', priceLabel: 'Free', certification: 'certified', installs: 18700, type: 'connector' },
+  { listingId: 'ml_007', name: 'CRM Contact Sync', publisher: 'vipsOS Templates', domain: 'vipsos.io', category: 'CRM', description: 'Sync contacts from any CRM to your data warehouse.', pricing: 'free', priceLabel: 'Free', certification: 'certified', installs: 2340, type: 'template' },
+  { listingId: 'ml_008', name: 'Payment Pipeline', publisher: 'vipsOS Templates', domain: 'vipsos.io', category: 'Finance', description: 'Capture Stripe events and route to analytics.', pricing: 'free', priceLabel: 'Free', certification: 'certified', installs: 1870, type: 'template' },
+]
