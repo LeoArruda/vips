@@ -1,0 +1,15 @@
+- generic [ref=e4]:
+  - generic [ref=e5]:
+    - generic [ref=e7]: DemoApp
+    - generic [ref=e8]: ·
+    - generic [ref=e9]: Powered by vipsOS
+  - generic [ref=e10]:
+    - heading "Connect your app" [level=2] [ref=e11]
+    - paragraph [ref=e12]: Choose a provider to get started.
+    - generic [ref=e13]:
+      - button "Salesforce" [ref=e14]
+      - button "HubSpot" [ref=e15]
+      - button "Stripe" [ref=e16]
+      - button "Slack" [ref=e17]
+      - button "Postgres" [ref=e18]
+      - button "Google Sheets" [ref=e19]

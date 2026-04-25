@@ -1,0 +1,108 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]: vipsOS
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - text: Dashboard
+      - paragraph [ref=e14]: BUILD
+      - link "Workflows" [ref=e15] [cursor=pointer]:
+        - /url: /workflows
+        - img [ref=e16]
+        - text: Workflows
+      - link "Connectors" [ref=e20] [cursor=pointer]:
+        - /url: /connectors
+        - img [ref=e21]
+        - text: Connectors
+      - link "Templates" [ref=e23] [cursor=pointer]:
+        - /url: /templates
+        - img [ref=e24]
+        - text: Templates
+      - link "Secrets" [ref=e27] [cursor=pointer]:
+        - /url: /secrets
+        - img [ref=e28]
+        - text: Secrets
+      - paragraph [ref=e31]: OPERATE
+      - link "Runs" [ref=e32] [cursor=pointer]:
+        - /url: /runs
+        - img [ref=e33]
+        - text: Runs
+      - link "Monitoring" [ref=e36] [cursor=pointer]:
+        - /url: /monitoring
+        - img [ref=e37]
+        - text: Monitoring
+      - link "Alerts" [ref=e39] [cursor=pointer]:
+        - /url: /alerts
+        - img [ref=e40]
+        - text: Alerts
+      - paragraph [ref=e43]: ECOSYSTEM
+      - link "Marketplace" [ref=e44] [cursor=pointer]:
+        - /url: /marketplace
+        - img [ref=e45]
+        - text: Marketplace
+      - paragraph [ref=e48]: PLATFORM
+      - link "Environments" [ref=e49] [cursor=pointer]:
+        - /url: /environments
+        - img [ref=e50]
+        - text: Environments
+      - link "Audit" [active] [ref=e53] [cursor=pointer]:
+        - /url: /audit
+        - img [ref=e54]
+        - text: Audit
+    - link "Settings" [ref=e58] [cursor=pointer]:
+      - /url: /settings
+      - img [ref=e59]
+      - text: Settings
+  - generic [ref=e62]:
+    - banner [ref=e63]:
+      - button "Production" [ref=e97]:
+        - generic [ref=e65]: Production
+        - img [ref=e66]
+      - generic [ref=e69]:
+        - button [ref=e70]:
+          - img [ref=e71]
+        - link "A" [ref=e98] [cursor=pointer]:
+          - /url: /profile
+    - main [ref=e76]:
+      - generic [ref=e228]:
+        - generic [ref=e229]:
+          - heading "Audit & Activity" [level=1] [ref=e230]
+          - paragraph [ref=e231]: Governance trail for all platform actions
+        - generic [ref=e232]:
+          - textbox "Search by actor, action, or resource…" [ref=e234]
+          - table [ref=e236]:
+            - rowgroup [ref=e237]:
+              - row "Timestamp Actor Action Resource" [ref=e238]:
+                - columnheader [ref=e239]
+                - columnheader "Timestamp" [ref=e240]
+                - columnheader "Actor" [ref=e241]
+                - columnheader "Action" [ref=e242]
+                - columnheader "Resource" [ref=e243]
+            - rowgroup [ref=e244]:
+              - 'row "4/24/2026, 9:53:41 PM alex@acme.io published workflow: Salesforce → BigQuery Sync" [ref=e245]':
+                - cell [ref=e246]
+                - cell "4/24/2026, 9:53:41 PM" [ref=e247]
+                - cell "alex@acme.io" [ref=e248]
+                - cell "published" [ref=e249]
+                - 'cell "workflow: Salesforce → BigQuery Sync" [ref=e250]'
+              - 'row "4/24/2026, 9:23:41 PM alex@acme.io rotated secret: postgres-prod-creds" [ref=e251] [cursor=pointer]':
+                - cell [ref=e252]:
+                  - img [ref=e253]
+                - cell "4/24/2026, 9:23:41 PM" [ref=e255]
+                - cell "alex@acme.io" [ref=e256]
+                - cell "rotated" [ref=e257]
+                - 'cell "secret: postgres-prod-creds" [ref=e258]'
+              - 'row "4/23/2026, 10:23:41 PM jordan@acme.io invited member: casey@acme.io" [ref=e259]':
+                - cell [ref=e260]
+                - cell "4/23/2026, 10:23:41 PM" [ref=e261]
+                - cell "jordan@acme.io" [ref=e262]
+                - cell "invited" [ref=e263]
+                - 'cell "member: casey@acme.io" [ref=e264]'
+              - 'row "4/22/2026, 10:23:41 PM alex@acme.io updated_role member: sam@acme.io" [ref=e265] [cursor=pointer]':
+                - cell [ref=e266]:
+                  - img [ref=e267]
+                - cell "4/22/2026, 10:23:41 PM" [ref=e269]
+                - cell "alex@acme.io" [ref=e270]
+                - cell "updated_role" [ref=e271]
+                - 'cell "member: sam@acme.io" [ref=e272]'

@@ -26,26 +26,26 @@ function resolve(incidentId: string) {
 
 <template>
   <div class="flex h-full flex-col overflow-auto">
-    <div class="flex items-center justify-between border-b px-6 py-4">
+    <div class="flex items-center justify-between border-b px-[18px] py-[11px]">
       <div>
-        <h1 class="text-xl font-semibold">Alerts</h1>
-        <p class="mt-0.5 text-sm text-muted-foreground">
+        <h1 class="text-[15px] font-semibold tracking-tight">Alerts</h1>
+        <p class="mt-0.5 text-[11.5px] text-muted-foreground">
           {{ incidents.filter(i => !i.resolvedAt).length }} open incident(s)
         </p>
       </div>
-      <button class="flex items-center gap-2 rounded-md bg-foreground px-3 py-2 text-sm font-medium text-background hover:bg-foreground/90"
+      <button class="flex items-center gap-2 rounded-[5px] bg-indigo-500 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-600"
         @click="showCreate = true">
         <Plus class="h-4 w-4" /> New rule
       </button>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+    <div class="flex-1 overflow-y-auto p-[18px] space-y-3">
       <!-- Open incidents -->
       <div v-if="incidents.some(i => !i.resolvedAt)">
         <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Open Incidents</h2>
         <div class="space-y-2">
           <div v-for="inc in incidents.filter(i => !i.resolvedAt)" :key="inc.incidentId"
-            class="flex items-center gap-3 rounded-lg border p-4">
+            class="flex items-center gap-3 rounded-[7px] border p-[11px]">
             <AlertTriangle class="h-4 w-4 shrink-0"
               :class="inc.severity === 'critical' ? 'text-red-500' : 'text-amber-500'" />
             <div class="flex-1">
@@ -70,27 +70,27 @@ function resolve(incidentId: string) {
       <!-- Alert rules -->
       <div>
         <h2 class="mb-3 text-sm font-semibold uppercase tracking-wider text-muted-foreground">Alert Rules</h2>
-        <div class="overflow-hidden rounded-lg border">
+        <div class="overflow-hidden rounded-[7px] border">
           <table class="w-full text-sm">
             <thead class="bg-muted/50">
               <tr>
-                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Name</th>
-                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Condition</th>
-                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Destinations</th>
-                <th class="px-4 py-3 text-left font-medium text-muted-foreground">Enabled</th>
+                <th class="px-3 py-2 text-left text-[10.5px] font-medium text-muted-foreground">Name</th>
+                <th class="px-3 py-2 text-left text-[10.5px] font-medium text-muted-foreground">Condition</th>
+                <th class="px-3 py-2 text-left text-[10.5px] font-medium text-muted-foreground">Destinations</th>
+                <th class="px-3 py-2 text-left text-[10.5px] font-medium text-muted-foreground">Enabled</th>
               </tr>
             </thead>
             <tbody class="divide-y">
               <tr v-for="rule in rules" :key="rule.ruleId" class="hover:bg-muted/30">
-                <td class="px-4 py-3 font-medium">{{ rule.name }}</td>
-                <td class="px-4 py-3 text-muted-foreground text-xs">{{ rule.condition }} ({{ rule.threshold }})</td>
-                <td class="px-4 py-3">
+                <td class="px-3 py-[7px] text-[11.5px] font-medium">{{ rule.name }}</td>
+                <td class="px-3 py-[7px] text-[11.5px] text-muted-foreground text-xs">{{ rule.condition }} ({{ rule.threshold }})</td>
+                <td class="px-3 py-[7px] text-[11.5px]">
                   <div class="flex gap-1">
                     <span v-for="d in rule.destinations" :key="d"
                       class="rounded-full bg-muted px-2 py-0.5 text-xs capitalize">{{ d }}</span>
                   </div>
                 </td>
-                <td class="px-4 py-3">
+                <td class="px-3 py-[7px] text-[11.5px]">
                   <ToggleRight v-if="rule.enabled" class="h-5 w-5 text-green-500" />
                   <ToggleLeft v-else class="h-5 w-5 text-muted-foreground" />
                 </td>
@@ -104,7 +104,7 @@ function resolve(incidentId: string) {
     <!-- Create rule modal -->
     <div v-if="showCreate" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
       @click.self="showCreate = false">
-      <div class="w-full max-w-md rounded-xl border bg-background p-6 shadow-lg">
+      <div class="w-full max-w-md rounded-[7px] border bg-background p-[18px] shadow-lg">
         <h2 class="text-lg font-semibold">Create Alert Rule</h2>
         <div class="mt-4 space-y-3">
           <div>
@@ -132,7 +132,7 @@ function resolve(incidentId: string) {
         <div class="mt-4 flex gap-2">
           <button class="flex-1 rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted"
             @click="showCreate = false">Cancel</button>
-          <button class="flex-1 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90"
+          <button class="flex-1 rounded-[5px] bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600"
             @click="showCreate = false">Create rule</button>
         </div>
       </div>

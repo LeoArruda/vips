@@ -27,7 +27,7 @@ function submit() {
 
 <template>
   <div class="flex min-h-screen items-center justify-center bg-muted/40">
-    <div class="w-full max-w-sm rounded-xl border bg-background p-8 shadow-sm">
+    <div class="w-full max-w-sm rounded-[7px] border bg-background p-8 shadow-sm">
       <div class="mb-6 text-center">
         <h1 class="text-2xl font-bold tracking-tight">Create your account</h1>
         <p class="mt-1 text-sm text-muted-foreground">Get started with vipsOS</p>
@@ -59,7 +59,7 @@ function submit() {
         <p v-if="error" class="text-sm text-red-500">{{ error }}</p>
 
         <button type="submit"
-          class="w-full rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90">
+          class="w-full rounded-[5px] bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600">
           Create account
         </button>
       </form>

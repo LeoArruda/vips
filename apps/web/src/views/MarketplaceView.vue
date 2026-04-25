@@ -37,13 +37,13 @@ function goToListing(listingId: string) {
 
 <template>
   <div class="flex h-full flex-col overflow-auto">
-    <div class="border-b px-6 py-4">
-      <h1 class="text-xl font-semibold">Marketplace</h1>
-      <p class="mt-0.5 text-sm text-muted-foreground">Certified connectors and workflow templates</p>
+    <div class="border-b px-[18px] py-[11px]">
+      <h1 class="text-[15px] font-semibold tracking-tight">Marketplace</h1>
+      <p class="mt-0.5 text-[11.5px] text-muted-foreground">Certified connectors and workflow templates</p>
     </div>
 
     <!-- Tabs -->
-    <div class="border-b px-6">
+    <div class="border-b px-[18px]">
       <div class="flex gap-1">
         <button v-for="[key, label] in [['connector', 'Connectors'], ['template', 'Templates'], ['publisher', 'Publisher Portal']]"
           :key="key"
@@ -55,12 +55,12 @@ function goToListing(listingId: string) {
       </div>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-6">
+    <div class="flex-1 overflow-y-auto p-[18px]">
       <!-- Publisher portal placeholder -->
       <div v-if="activeTab === 'publisher'" class="max-w-lg">
         <h2 class="text-lg font-semibold mb-2">Publisher Portal</h2>
-        <p class="text-sm text-muted-foreground mb-4">Manage your listings, track revenue, and submit for certification.</p>
-        <button class="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90">
+        <p class="text-[11.5px] text-muted-foreground mb-4">Manage your listings, track revenue, and submit for certification.</p>
+        <button class="rounded-[5px] bg-indigo-500 px-4 py-2 text-[11.5px] font-medium text-white hover:bg-indigo-600">
           Submit new listing
         </button>
       </div>
@@ -81,8 +81,8 @@ function goToListing(listingId: string) {
           </div>
           <div class="flex gap-2 flex-wrap">
             <button v-for="cat in categories" :key="cat"
-              class="rounded-full px-3 py-1 text-sm font-medium transition-colors"
-              :class="selectedCategory === cat ? 'bg-foreground text-background' : 'border hover:bg-muted'"
+              class="rounded-full px-3 py-1 text-[11.5px] font-medium transition-colors"
+              :class="selectedCategory === cat ? 'bg-indigo-500 text-white' : 'border hover:bg-muted'"
               @click="selectedCategory = cat">
               {{ cat }}
             </button>
@@ -90,7 +90,7 @@ function goToListing(listingId: string) {
         </div>
 
         <!-- Card grid -->
-        <div v-if="filtered.length > 0" class="grid grid-cols-3 gap-4">
+        <div v-if="filtered.length > 0" class="grid grid-cols-3 gap-2">
           <MarketplaceCard v-for="listing in filtered" :key="listing.listingId"
             :listing="listing" @click="goToListing(listing.listingId)" />
         </div>

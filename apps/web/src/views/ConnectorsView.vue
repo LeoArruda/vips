@@ -34,16 +34,16 @@ const filteredConnectors = computed(() => {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-[18px]">
     <div class="mb-5">
-      <h1 class="text-2xl font-semibold tracking-tight">Connectors</h1>
-      <p class="mt-1 text-sm text-muted-foreground">
+      <h1 class="text-[15px] font-semibold tracking-tight">Connectors</h1>
+      <p class="mt-1 text-[11.5px] text-muted-foreground">
         {{ store.cards.length }} connectors · {{ store.installedCount }} installed
       </p>
     </div>
 
     <!-- Expired auth warning -->
-    <div class="mb-4 flex items-center gap-3 rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+    <div class="mb-4 flex items-center gap-3 rounded-[7px] border border-amber-200 bg-amber-50 px-3 py-[7px] text-[11.5px] text-amber-800">
       <AlertTriangle class="h-4 w-4 shrink-0" />
       <span><strong>Salesforce OAuth token</strong> has expired. Your workflows using this connector may fail.</span>
       <button class="ml-auto rounded-md border border-amber-300 bg-amber-100 px-3 py-1 text-xs font-medium hover:bg-amber-200">
@@ -59,14 +59,14 @@ const filteredConnectors = computed(() => {
           v-model="searchQuery"
           type="text"
           placeholder="Search connectors…"
-          class="w-full rounded-md border bg-background py-2 pl-9 pr-3 text-sm outline-none focus:ring-2 focus:ring-primary/20"
+          class="w-full rounded-[5px] border bg-background py-2 pl-9 pr-3 text-[11.5px] outline-none focus:ring-2 focus:ring-primary/20"
         />
       </div>
       <div class="flex flex-wrap gap-1.5">
         <button
           v-for="cat in categories"
           :key="cat"
-          class="rounded-full px-3 py-1 text-xs font-medium transition-colors"
+          class="rounded-full px-3 py-1 text-[10.5px] font-medium transition-colors"
           :class="
             selectedCategory === cat
               ? 'bg-primary text-primary-foreground'
@@ -81,13 +81,13 @@ const filteredConnectors = computed(() => {
 
     <!-- Empty state -->
     <div v-if="filteredConnectors.length === 0" class="py-12 text-center text-muted-foreground">
-      <p class="text-sm">No connectors match your search.</p>
+      <p class="text-[11.5px]">No connectors match your search.</p>
     </div>
 
     <!-- Card grid -->
     <div
       v-else
-      class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+      class="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
       <div
         v-for="connector in filteredConnectors"

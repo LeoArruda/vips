@@ -1,0 +1,19 @@
+[   93030ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login?redirect=/dashboard:0
+[  141064ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/salesforce.com:0
+[  141065ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/hubspot.com:0
+[  141065ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/google.com:0
+[  141066ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/slack.com:0
+[  141066ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/snowflake.com:0
+[  141066ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/stripe.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/salesforce.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/hubspot.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/google.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/slack.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/snowflake.com:0
+[  241286ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/stripe.com:0
+[  244295ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/snowflake.com:0
+[  246946ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/stripe.com:0
+[  247802ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/google.com:0
+[  248875ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/slack.com:0
+[  507500ms] [LOG] [vite] server connection lost. Polling for restart... @ http://localhost:5173/@vite/client:968
+[  575072ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login?redirect=/settings:0

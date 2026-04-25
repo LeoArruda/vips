@@ -1,0 +1,93 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e6]: vipsOS
+    - navigation [ref=e7]:
+      - link "Dashboard" [ref=e8] [cursor=pointer]:
+        - /url: /dashboard
+        - img [ref=e9]
+        - text: Dashboard
+      - paragraph [ref=e14]: BUILD
+      - link "Workflows" [ref=e15] [cursor=pointer]:
+        - /url: /workflows
+        - img [ref=e16]
+        - text: Workflows
+      - link "Connectors" [ref=e20] [cursor=pointer]:
+        - /url: /connectors
+        - img [ref=e21]
+        - text: Connectors
+      - link "Templates" [ref=e23] [cursor=pointer]:
+        - /url: /templates
+        - img [ref=e24]
+        - text: Templates
+      - link "Secrets" [ref=e27] [cursor=pointer]:
+        - /url: /secrets
+        - img [ref=e28]
+        - text: Secrets
+      - paragraph [ref=e31]: OPERATE
+      - link "Runs" [ref=e32] [cursor=pointer]:
+        - /url: /runs
+        - img [ref=e33]
+        - text: Runs
+      - link "Monitoring" [ref=e36] [cursor=pointer]:
+        - /url: /monitoring
+        - img [ref=e37]
+        - text: Monitoring
+      - link "Alerts" [ref=e39] [cursor=pointer]:
+        - /url: /alerts
+        - img [ref=e40]
+        - text: Alerts
+      - paragraph [ref=e43]: ECOSYSTEM
+      - link "Marketplace" [ref=e44] [cursor=pointer]:
+        - /url: /marketplace
+        - img [ref=e45]
+        - text: Marketplace
+      - paragraph [ref=e48]: PLATFORM
+      - link "Environments" [active] [ref=e49] [cursor=pointer]:
+        - /url: /environments
+        - img [ref=e50]
+        - text: Environments
+      - link "Audit" [ref=e53] [cursor=pointer]:
+        - /url: /audit
+        - img [ref=e54]
+        - text: Audit
+    - link "Settings" [ref=e58] [cursor=pointer]:
+      - /url: /settings
+      - img [ref=e59]
+      - text: Settings
+  - generic [ref=e62]:
+    - banner [ref=e63]:
+      - button "Production" [ref=e97]:
+        - generic [ref=e65]: Production
+        - img [ref=e66]
+      - generic [ref=e69]:
+        - button [ref=e70]:
+          - img [ref=e71]
+        - link "A" [ref=e98] [cursor=pointer]:
+          - /url: /profile
+    - main [ref=e76]:
+      - generic [ref=e195]:
+        - generic [ref=e196]:
+          - heading "Environments" [level=1] [ref=e197]
+          - paragraph [ref=e198]: Manage execution data planes
+        - generic [ref=e200]:
+          - generic [ref=e201] [cursor=pointer]:
+            - generic [ref=e202]:
+              - img [ref=e203]
+              - generic [ref=e206]: cloud
+            - heading "Cloud (default)" [level=3] [ref=e207]
+            - paragraph [ref=e208]: us-east-1
+            - generic [ref=e209]:
+              - generic [ref=e211]: healthy
+              - generic [ref=e212]: 3 workers
+          - generic [ref=e213] [cursor=pointer]:
+            - generic [ref=e214]:
+              - img [ref=e215]
+              - generic [ref=e218]: agent
+            - heading "On-Premise EU" [level=3] [ref=e219]
+            - paragraph [ref=e220]: eu-west-1
+            - generic [ref=e221]:
+              - generic [ref=e223]: degraded
+              - generic [ref=e224]: 2 workers
+          - generic [ref=e225] [cursor=pointer]:
+            - img [ref=e226]
+            - generic [ref=e227]: Add Environment

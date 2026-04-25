@@ -27,11 +27,11 @@ const categoryColors: Record<string, string> = {
 </script>
 
 <template>
-  <div class="h-full overflow-y-auto p-6">
+  <div class="h-full overflow-y-auto p-[18px]">
     <!-- Not found -->
     <div v-if="!detail" class="py-12 text-center text-muted-foreground">
-      <p class="text-sm">Connector not found.</p>
-      <button class="mt-3 text-sm text-primary underline" @click="router.push('/connectors')">
+      <p class="text-[11.5px]">Connector not found.</p>
+      <button class="mt-3 text-[11.5px] text-primary underline" @click="router.push('/connectors')">
         Back to connectors
       </button>
     </div>
@@ -39,14 +39,14 @@ const categoryColors: Record<string, string> = {
     <!-- Detail -->
     <div v-else>
       <button
-        class="mb-4 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+        class="mb-4 flex items-center gap-1.5 text-[11.5px] text-muted-foreground hover:text-foreground"
         @click="router.push('/connectors')"
       >
         <ArrowLeft class="h-4 w-4" />
         Connectors
       </button>
 
-      <div class="mb-6 flex items-start gap-4">
+      <div class="mb-6 flex items-start gap-2">
         <div
           class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-muted text-lg font-bold text-muted-foreground"
         >
@@ -54,7 +54,7 @@ const categoryColors: Record<string, string> = {
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <h1 class="text-2xl font-semibold tracking-tight">{{ detail.name }}</h1>
+            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.name }}</h1>
             <span
               v-if="detail.installed"
               class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700"
@@ -62,7 +62,7 @@ const categoryColors: Record<string, string> = {
               Installed
             </span>
           </div>
-          <div class="mt-1 flex items-center gap-2 text-sm text-muted-foreground">
+          <div class="mt-1 flex items-center gap-2 text-[11.5px] text-muted-foreground">
             <span>v{{ detail.version }}</span>
             <span>·</span>
             <span
@@ -74,23 +74,23 @@ const categoryColors: Record<string, string> = {
             <span>·</span>
             <span>{{ authLabels[detail.authMethod] ?? detail.authMethod }}</span>
           </div>
-          <p class="mt-2 text-sm text-muted-foreground">{{ detail.description }}</p>
+          <p class="mt-2 text-[11.5px] text-muted-foreground">{{ detail.description }}</p>
         </div>
       </div>
 
-      <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+      <div class="grid grid-cols-1 gap-2 lg:grid-cols-2">
         <!-- Supported actions -->
         <div>
-          <h2 class="mb-3 text-sm font-semibold">Supported Actions</h2>
-          <div class="divide-y rounded-lg border">
+          <h2 class="mb-3 text-[10.5px] font-semibold">Supported Actions</h2>
+          <div class="divide-y rounded-[7px] border">
             <div
               v-for="action in detail.actions"
               :key="action.actionId"
-              class="flex items-start gap-3 px-4 py-3"
+              class="flex items-start gap-3 px-3 py-[7px]"
             >
               <CheckCircle2 class="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
               <div>
-                <p class="text-sm font-medium">{{ action.name }}</p>
+                <p class="text-[11.5px] font-medium">{{ action.name }}</p>
                 <p class="text-xs text-muted-foreground">{{ action.description }}</p>
               </div>
             </div>
@@ -99,15 +99,15 @@ const categoryColors: Record<string, string> = {
 
         <!-- Auth requirements -->
         <div>
-          <h2 class="mb-3 text-sm font-semibold">Auth Requirements</h2>
-          <div class="divide-y rounded-lg border">
+          <h2 class="mb-3 text-[10.5px] font-semibold">Auth Requirements</h2>
+          <div class="divide-y rounded-[7px] border">
             <div
               v-for="(req, i) in detail.authRequirements"
               :key="i"
-              class="flex items-center gap-3 px-4 py-2.5"
+              class="flex items-center gap-3 px-3 py-[7px]"
             >
               <div class="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
-              <span class="text-sm">{{ req }}</span>
+              <span class="text-[11.5px]">{{ req }}</span>
             </div>
           </div>
 
@@ -116,7 +116,7 @@ const categoryColors: Record<string, string> = {
               :href="detail.docsUrl"
               target="_blank"
               rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
+              class="inline-flex items-center gap-1.5 text-[11.5px] text-primary hover:underline"
             >
               <ExternalLink class="h-3.5 w-3.5" />
               View Documentation
@@ -127,7 +127,7 @@ const categoryColors: Record<string, string> = {
 
       <div class="mt-6 border-t pt-6">
         <button
-          class="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90"
+          class="rounded-[5px] bg-indigo-500 px-4 py-2 text-[11.5px] font-medium text-white hover:bg-indigo-600"
         >
           {{ detail.installed ? 'Configure Connector' : 'Install Connector' }}
         </button>

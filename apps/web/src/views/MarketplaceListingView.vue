@@ -20,8 +20,8 @@ function avatarColor(domain: string): string {
 
 <template>
   <div class="flex h-full flex-col overflow-auto">
-    <div class="border-b px-6 py-4">
-      <button class="mb-3 flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground"
+    <div class="border-b px-[18px] py-[11px]">
+      <button class="mb-3 flex items-center gap-1.5 text-[11.5px] text-muted-foreground hover:text-foreground"
         @click="router.back()">
         <ArrowLeft class="h-4 w-4" /> Back to Marketplace
       </button>
@@ -29,32 +29,32 @@ function avatarColor(domain: string): string {
         <div class="h-12 w-12 rounded-xl overflow-hidden shrink-0">
           <img v-if="!logoError" :src="logoUrl" :alt="listing.name"
             class="h-full w-full object-contain" @error="logoError = true" />
-          <div v-else class="h-full w-full flex items-center justify-center text-white text-sm font-bold"
+          <div v-else class="h-full w-full flex items-center justify-center text-white text-[11.5px] font-bold"
             :class="avatarColor(listing.domain)">
             {{ listing.name.substring(0, 2).toUpperCase() }}
           </div>
         </div>
         <div>
-          <h1 class="text-xl font-semibold">{{ listing.name }}</h1>
-          <p class="text-sm text-muted-foreground">{{ listing.publisher }} · {{ listing.category }}</p>
+          <h1 class="text-[15px] font-semibold tracking-tight">{{ listing.name }}</h1>
+          <p class="text-[11.5px] text-muted-foreground">{{ listing.publisher }} · {{ listing.category }}</p>
         </div>
         <div class="ml-auto flex gap-2">
-          <button class="rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted">View docs</button>
-          <button class="rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90">
+          <button class="rounded-[5px] border px-4 py-2 text-[11.5px] font-medium hover:bg-muted">View docs</button>
+          <button class="rounded-[5px] bg-indigo-500 px-4 py-2 text-[11.5px] font-medium text-white hover:bg-indigo-600">
             {{ listing.type === 'connector' ? 'Install' : 'Use template' }}
           </button>
         </div>
       </div>
     </div>
 
-    <div v-if="listing" class="flex-1 overflow-y-auto p-6">
-      <div class="grid grid-cols-3 gap-6">
+    <div v-if="listing" class="flex-1 overflow-y-auto p-[18px]">
+      <div class="grid grid-cols-3 gap-2">
         <div class="col-span-2 space-y-5">
-          <div class="rounded-lg border p-5">
+          <div class="rounded-[7px] border p-5">
             <h2 class="mb-2 font-semibold">Overview</h2>
-            <p class="text-sm text-muted-foreground">{{ listing.description }}</p>
+            <p class="text-[11.5px] text-muted-foreground">{{ listing.description }}</p>
           </div>
-          <div class="rounded-lg border p-5">
+          <div class="rounded-[7px] border p-5">
             <h2 class="mb-3 font-semibold">Screenshots</h2>
             <div class="grid grid-cols-2 gap-3">
               <div v-for="i in 2" :key="i"
@@ -65,14 +65,14 @@ function avatarColor(domain: string): string {
           </div>
         </div>
         <div class="space-y-4">
-          <div class="rounded-lg border p-4">
+          <div class="rounded-[7px] border p-[11px]">
             <p class="mb-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Pricing</p>
             <p class="text-lg font-bold"
               :class="listing.pricing === 'free' ? 'text-green-600' : 'text-foreground'">
               {{ listing.priceLabel }}
             </p>
           </div>
-          <div class="rounded-lg border p-4 space-y-2 text-sm">
+          <div class="rounded-[7px] border p-[11px] space-y-2 text-[11.5px]">
             <div class="flex justify-between">
               <span class="text-muted-foreground">Certification</span>
               <span class="capitalize">{{ listing.certification }}</span>

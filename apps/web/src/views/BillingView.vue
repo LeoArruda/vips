@@ -11,18 +11,18 @@ function usagePercent(used: number, limit: number): number {
 
 <template>
   <div class="flex h-full flex-col overflow-auto">
-    <div class="border-b px-6 py-4">
-      <h1 class="text-xl font-semibold">Billing & Usage</h1>
+    <div class="border-b px-[18px] py-[11px]">
+      <h1 class="text-[15px] font-semibold tracking-tight">Billing & Usage</h1>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-6 space-y-6 max-w-2xl">
-      <div class="rounded-lg border p-5">
+    <div class="flex-1 overflow-y-auto p-[18px] space-y-3 max-w-2xl">
+      <div class="rounded-[7px] border p-[11px]">
         <div class="flex items-start justify-between">
           <div>
             <p class="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Current Plan</p>
             <p class="mt-1 text-2xl font-bold">{{ billing.plan }}</p>
           </div>
-          <button class="rounded-md bg-foreground px-3 py-1.5 text-sm font-medium text-background hover:bg-foreground/90">
+          <button class="rounded-[5px] bg-indigo-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-600">
             Upgrade
           </button>
         </div>

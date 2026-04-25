@@ -36,14 +36,14 @@ function skip() {
 
 <template>
   <div class="flex min-h-screen items-center justify-center bg-muted/40">
-    <div class="w-full max-w-lg rounded-xl border bg-background p-8 shadow-sm">
+    <div class="w-full max-w-lg rounded-[7px] border bg-background p-8 shadow-sm">
 
       <!-- Stepper -->
       <div class="mb-8 flex items-center gap-2">
         <template v-for="n in 4" :key="n">
           <div
             class="flex h-7 w-7 items-center justify-center rounded-full text-xs font-semibold"
-            :class="n <= step ? 'bg-foreground text-background' : 'border text-muted-foreground'"
+            :class="n <= step ? 'bg-indigo-500 text-white' : 'border text-muted-foreground'"
           >{{ n }}</div>
           <div v-if="n < 4" class="flex-1 border-t" :class="n < step ? 'border-foreground' : ''" />
         </template>
@@ -68,7 +68,7 @@ function skip() {
           </div>
         </div>
         <button :disabled="!org.name"
-          class="mt-6 w-full rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background disabled:opacity-50 hover:bg-foreground/90"
+          class="mt-6 w-full rounded-[5px] bg-indigo-500 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 hover:bg-indigo-600"
           @click="nextStep">Continue</button>
       </div>
 
@@ -96,7 +96,7 @@ function skip() {
         </div>
         <div class="mt-6 flex gap-2">
           <button class="flex-1 rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted" @click="skip">Skip</button>
-          <button class="flex-1 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90" @click="nextStep">Continue</button>
+          <button class="flex-1 rounded-[5px] bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600" @click="nextStep">Continue</button>
         </div>
       </div>
 
@@ -118,7 +118,7 @@ function skip() {
         </div>
         <div class="mt-6 flex gap-2">
           <button class="flex-1 rounded-md border px-4 py-2 text-sm font-medium hover:bg-muted" @click="skip">Skip</button>
-          <button class="flex-1 rounded-md bg-foreground px-4 py-2 text-sm font-medium text-background hover:bg-foreground/90" @click="nextStep">Send invites</button>
+          <button class="flex-1 rounded-[5px] bg-indigo-500 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-600" @click="nextStep">Send invites</button>
         </div>
       </div>
 

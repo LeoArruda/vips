@@ -13,6 +13,8 @@ vipsOS is a pre-implementation project (documentation only, no code yet) buildin
 | Layer | Choice | Notes |
 |-------|--------|-------|
 | Framework | Vue 3 + TypeScript | Per Architecture.md |
+| Backend | Bun + TypeScript | Per Architecture.md |
+| Worker | Rust | Per Architecture.md |
 | Build tool | Vite | Standard for Vue 3 |
 | State | Pinia | One store per domain |
 | Routing | Vue Router | One route per major screen |

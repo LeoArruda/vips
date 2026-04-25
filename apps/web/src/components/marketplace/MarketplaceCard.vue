@@ -22,7 +22,7 @@ const certBadge: Record<string, string> = {
 </script>
 
 <template>
-  <div class="cursor-pointer rounded-lg border p-4 hover:shadow-sm transition-shadow"
+  <div class="cursor-pointer rounded-[7px] border p-[11px] hover:shadow-sm transition-shadow"
     @click="emit('click')">
     <div class="flex items-center gap-3 mb-3">
       <div class="h-9 w-9 flex-shrink-0 rounded-lg overflow-hidden">
@@ -49,7 +49,7 @@ const certBadge: Record<string, string> = {
         :class="listing.pricing === 'free' ? 'text-green-600' : 'text-purple-600'">
         {{ listing.priceLabel }}
       </span>
-      <button class="rounded-md bg-foreground px-2.5 py-1 text-xs font-medium text-background hover:bg-foreground/90"
+      <button class="rounded-[5px] bg-indigo-500 px-2.5 py-1 text-xs font-medium text-white hover:bg-indigo-600"
         @click.stop>
         {{ listing.type === 'connector' ? 'Install' : 'Use' }}
       </button>

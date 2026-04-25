@@ -1,0 +1,7 @@
+[     164ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login?redirect=/marketplace:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/salesforce.com:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/hubspot.com:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/google.com:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/slack.com:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/snowflake.com:0
+[   39114ms] [ERROR] Failed to load resource: net::ERR_NAME_NOT_RESOLVED @ https://logo.clearbit.com/stripe.com:0
