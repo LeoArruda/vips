@@ -28,15 +28,15 @@ const healthColor: Record<string, string> = {
 
 <template>
   <div class="flex h-full flex-col overflow-auto">
-    <div class="border-b px-6 py-4">
-      <h1 class="text-xl font-semibold">Environments</h1>
-      <p class="mt-0.5 text-sm text-muted-foreground">Manage execution data planes</p>
+    <div class="border-b px-[18px] py-[11px]">
+      <h1 class="text-[15px] font-semibold tracking-tight">Environments</h1>
+      <p class="mt-0.5 text-[11.5px] text-muted-foreground">Manage execution data planes</p>
     </div>
 
-    <div class="flex-1 overflow-y-auto p-6">
-      <div class="grid grid-cols-3 gap-4">
+    <div class="flex-1 overflow-y-auto p-[18px]">
+      <div class="grid grid-cols-3 gap-2">
         <div v-for="env in store.environments" :key="env.envId"
-          class="cursor-pointer rounded-lg border-2 p-4 hover:shadow-sm transition-shadow"
+          class="cursor-pointer rounded-[7px] border-2 p-[11px] hover:shadow-sm transition-shadow"
           :class="healthBorder[env.health]"
           @click="selectedEnv = env">
           <div class="flex items-start justify-between mb-2">
@@ -54,7 +54,7 @@ const healthColor: Record<string, string> = {
           </div>
         </div>
 
-        <div class="cursor-pointer rounded-lg border-2 border-dashed p-4 flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-muted/30 hover:text-foreground transition-colors">
+        <div class="cursor-pointer rounded-[7px] border-2 border-dashed p-[11px] flex flex-col items-center justify-center gap-2 text-muted-foreground hover:bg-muted/30 hover:text-foreground transition-colors">
           <Plus class="h-6 w-6" />
           <span class="text-sm font-medium">Add Environment</span>
         </div>
@@ -64,14 +64,14 @@ const healthColor: Record<string, string> = {
     <!-- Environment detail slide-over -->
     <div v-if="selectedEnv" class="fixed inset-0 z-40 flex justify-end" @click.self="selectedEnv = null">
       <div class="h-full w-96 overflow-y-auto border-l bg-background shadow-xl">
-        <div class="flex items-center justify-between border-b px-4 py-3">
-          <h2 class="font-semibold">{{ selectedEnv.name }}</h2>
+        <div class="flex items-center justify-between border-b px-3 py-[7px]">
+          <h2 class="text-[11.5px] font-semibold">{{ selectedEnv.name }}</h2>
           <button class="rounded-md p-1 hover:bg-muted" @click="selectedEnv = null">
             <X class="h-4 w-4" />
           </button>
         </div>
 
-        <div class="p-4 space-y-5">
+        <div class="p-[11px] space-y-3">
           <div>
             <p class="mb-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Status</p>
             <div class="flex items-center gap-2">
