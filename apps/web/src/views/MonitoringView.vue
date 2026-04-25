@@ -4,6 +4,8 @@ import { Activity, AlertTriangle, Server } from 'lucide-vue-next'
 
 const store = useMonitoringStore()
 
+const throughputBars = Array.from({ length: 24 }, () => Math.floor(Math.random() * 80) + 20)
+
 const healthDot: Record<string, string> = {
   healthy: 'bg-green-500',
   degraded: 'bg-amber-500',
@@ -67,7 +69,7 @@ function elapsed(startedAt: string, durationMs?: number): string {
         <div class="col-span-2 rounded-[7px] border p-[11px]">
           <p class="mb-2 text-[11.5px] font-semibold">Throughput (24h)</p>
           <div class="flex h-20 items-end gap-0.5">
-            <div v-for="(h, i) in Array.from({ length: 24 }, (_, i) => Math.floor(Math.random() * 80) + 20)"
+            <div v-for="(h, i) in throughputBars"
               :key="i"
               class="flex-1 rounded-t bg-indigo-200"
               :style="{ height: h + '%' }" />

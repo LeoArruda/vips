@@ -66,7 +66,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
     <!-- Header: logo + toggle (toggle always visible) -->
     <div class="sidebar-header">
       <span class="sidebar-logo">vipsOS</span>
-      <button class="toggle-btn" :title="shell.sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'"
+      <button class="toggle-btn" :aria-expanded="!shell.sidebarCollapsed" aria-label="Toggle sidebar"
         @click="shell.toggleSidebar()">
         <ChevronLeft class="chevron" :size="13" stroke-width="2.5" />
       </button>
@@ -84,7 +84,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
             <component :is="item.icon" class="nav-icon" :size="13" stroke-width="2" />
             <span class="nav-label">{{ item.label }}</span>
           </RouterLink>
-          <span class="nav-tooltip">{{ item.label }}</span>
+          <span class="nav-tooltip" aria-hidden="true">{{ item.label }}</span>
         </div>
       </template>
     </nav>
@@ -96,7 +96,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
           <Globe class="nav-icon" :size="13" stroke-width="2" />
           <span class="nav-label">Settings</span>
         </RouterLink>
-        <span class="nav-tooltip">Settings</span>
+        <span class="nav-tooltip" aria-hidden="true">Settings</span>
       </div>
     </div>
   </aside>
@@ -233,7 +233,7 @@ onUnmounted(() => document.removeEventListener('keydown', handleKeydown))
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
   z-index: 50;
 }
-.nav-item-wrapper:hover .nav-tooltip { opacity: 1; }
+.collapsed .nav-item-wrapper:hover .nav-tooltip { opacity: 1; }
 
 .sidebar-footer {
   border-top: 1px solid var(--sidebar-border);
