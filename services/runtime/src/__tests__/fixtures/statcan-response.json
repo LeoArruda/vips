@@ -1,0 +1,30 @@
+{
+  "productId": 14100287,
+  "DECIMALS": "1",
+  "frequencyCode": "12",
+  "uom": "Percent",
+  "scalar": "units",
+  "object": [
+    {
+      "refPer": "2024-01",
+      "refPerRaw": "2024-01-01",
+      "value": "5.7",
+      "symbols": "",
+      "status": ""
+    },
+    {
+      "refPer": "2024-02",
+      "refPerRaw": "2024-02-01",
+      "value": "5.8",
+      "symbols": "",
+      "status": ""
+    },
+    {
+      "refPer": "2024-03",
+      "refPerRaw": "2024-03-01",
+      "value": "6.1",
+      "symbols": "",
+      "status": ""
+    }
+  ]
+}
