@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRunsStore } from '@/stores/runs'
 import { CheckCircle2, XCircle, Clock } from 'lucide-vue-next'
@@ -28,27 +29,30 @@ const statusBg: Record<string, string> = {
   pending: 'bg-muted text-muted-foreground',
 }
 
-function formatDuration(ms?: number): string {
-  if (!ms) return '—'
+function formatDuration(start?: string, end?: string): string {
+  if (!start || !end) return '—'
+  const ms = new Date(end).getTime() - new Date(start).getTime()
   if (ms < 1000) return `${ms}ms`
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`
   return `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s`
 }
+
+onMounted(() => store.fetchAll())
 </script>
 
 <template>
   <div class="h-full overflow-y-auto p-[18px]">
     <div class="mb-5">
       <h1 class="text-[15px] font-semibold tracking-tight">Runs</h1>
-      <p class="mt-1 text-[11.5px] text-muted-foreground">{{ store.records.length }} recent runs</p>
+      <p class="mt-1 text-[11.5px] text-muted-foreground">{{ store.runs.length }} recent runs</p>
     </div>
 
     <div class="divide-y rounded-[7px] border">
       <div
-        v-for="run in store.records"
-        :key="run.runId"
+        v-for="run in store.runs"
+        :key="run.id"
         class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-muted/50"
-        @click="router.push(`/runs/${run.runId}`)"
+        @click="router.push(`/runs/${run.id}`)"
       >
         <component
           :is="statusIcons[run.status] ?? Clock"
@@ -56,9 +60,9 @@ function formatDuration(ms?: number): string {
           :class="statusColors[run.status] ?? 'text-muted-foreground'"
         />
         <div class="min-w-0 flex-1">
-          <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
+          <p class="truncate text-[11.5px] font-medium">{{ run.workflow_id }}</p>
           <p class="text-xs text-muted-foreground">
-            {{ run.triggeredBy }} · {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z
+            {{ run.triggered_by }} · {{ run.started_at.replace('T', ' ').slice(0, 16) }}Z
           </p>
         </div>
         <span
@@ -68,8 +72,11 @@ function formatDuration(ms?: number): string {
           {{ run.status }}
         </span>
         <span class="w-12 text-right text-xs tabular-nums text-muted-foreground">
-          {{ formatDuration(run.durationMs) }}
+          {{ formatDuration(run.started_at, run.finished_at) }}
         </span>
+      </div>
+      <div v-if="store.runs.length === 0" class="px-3 py-6 text-center text-[11.5px] text-muted-foreground">
+        No runs yet.
       </div>
     </div>
   </div>

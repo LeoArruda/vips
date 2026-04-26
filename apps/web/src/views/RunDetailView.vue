@@ -1,15 +1,19 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRunsStore } from '@/stores/runs'
-import NodeStatusBadge from '@/components/runs/NodeStatusBadge.vue'
-import { ArrowLeft, ChevronDown, ChevronRight, RotateCw } from 'lucide-vue-next'
+import type { RunDetail } from '@/stores/runs'
+import { ArrowLeft } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
 const store = useRunsStore()
 
-const detail = computed(() => store.getDetail(route.params.id as string))
+const detail = ref<RunDetail | undefined>(undefined)
+
+onMounted(async () => {
+  detail.value = await store.fetchDetail(route.params.id as string)
+})
 
 const expandedNodes = ref<Set<string>>(new Set())
 
@@ -35,8 +39,9 @@ const logLevelColors: Record<string, string> = {
   error: 'text-red-600',
 }
 
-function formatDuration(ms?: number): string {
-  if (!ms) return '—'
+function formatDuration(start?: string, end?: string): string {
+  if (!start || !end) return '—'
+  const ms = new Date(end).getTime() - new Date(start).getTime()
   if (ms < 1000) return `${ms}ms`
   return `${(ms / 1000).toFixed(2)}s`
 }
@@ -66,9 +71,9 @@ function formatDuration(ms?: number): string {
       <div class="mb-6 rounded-[7px] border bg-background p-[11px]">
         <div class="flex items-start justify-between">
           <div>
-            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.workflowName }}</h1>
+            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.workflow_id }}</h1>
             <p class="mt-0.5 text-[11.5px] text-muted-foreground">
-              Run ID: {{ detail.runId }} · Triggered by {{ detail.triggeredBy }}
+              Run ID: {{ detail.id }} · Triggered by {{ detail.triggered_by }}
             </p>
           </div>
           <span
@@ -79,77 +84,34 @@ function formatDuration(ms?: number): string {
           </span>
         </div>
         <div class="mt-3 flex flex-wrap gap-6 text-[11.5px] text-muted-foreground">
-          <span>Started: {{ detail.startedAt.replace('T', ' ').slice(0, 19) }}Z</span>
-          <span v-if="detail.durationMs">Duration: {{ formatDuration(detail.durationMs) }}</span>
-          <span>Nodes: {{ detail.nodeCount }} ({{ detail.failedNodeCount }} failed)</span>
+          <span>Started: {{ detail.started_at.replace('T', ' ').slice(0, 19) }}Z</span>
+          <span v-if="detail.finished_at">Duration: {{ formatDuration(detail.started_at, detail.finished_at) }}</span>
         </div>
       </div>
 
-      <!-- Node timeline -->
-      <h2 class="mb-3 text-[11.5px] font-semibold">Execution Timeline</h2>
-      <div class="space-y-2">
-        <div
-          v-for="node in detail.nodes"
-          :key="node.nodeId"
-          class="rounded-[7px] border bg-background"
-        >
-          <!-- Node header -->
-          <button
-            class="flex w-full items-center gap-3 px-3 py-[7px] text-left"
-            @click="toggleNode(node.nodeId)"
+      <!-- Log entries -->
+      <h2 class="mb-3 text-[11.5px] font-semibold">Execution Logs</h2>
+      <div class="rounded-[7px] border bg-background">
+        <div v-if="detail.logs.length === 0" class="px-3 py-6 text-center text-[11.5px] text-muted-foreground">
+          No logs available.
+        </div>
+        <div v-else class="divide-y">
+          <div
+            v-for="log in detail.logs"
+            :key="log.id"
+            class="flex items-start gap-3 px-3 py-[7px] font-mono text-xs"
           >
-            <component
-              :is="expandedNodes.has(node.nodeId) ? ChevronDown : ChevronRight"
-              class="h-4 w-4 flex-shrink-0 text-muted-foreground"
-            />
-            <span class="flex-1 text-[11.5px] font-medium">{{ node.nodeLabel }}</span>
-            <NodeStatusBadge :status="node.status" />
-            <button
-              v-if="node.status === 'failed'"
-              class="ml-auto flex items-center gap-1 rounded-[5px] bg-indigo-500 text-white hover:bg-indigo-600 border-0 px-2.5 py-1 text-xs font-medium"
-              @click.stop="store.retryNode(detail.runId, node.nodeId)"
-            >
-              <RotateCw class="h-3.5 w-3.5" /> Retry node
-            </button>
-            <span class="ml-2 text-xs tabular-nums text-muted-foreground">
-              {{ formatDuration(node.durationMs) }}
+            <span class="shrink-0 text-muted-foreground">
+              {{ log.created_at.slice(11, 23) }}
             </span>
-          </button>
-
-          <!-- Log entries -->
-          <div v-if="expandedNodes.has(node.nodeId)" class="border-t bg-muted/30 px-3 py-[7px]">
-            <div v-if="node.logs.length === 0" class="text-xs text-muted-foreground">No logs.</div>
-            <div v-else class="space-y-1.5 font-mono text-xs">
-              <div v-for="(log, i) in node.logs" :key="i" class="flex gap-3">
-                <span class="shrink-0 text-muted-foreground">
-                  {{ log.timestamp.slice(11, 23) }}
-                </span>
-                <span
-                  class="w-10 shrink-0 font-semibold uppercase"
-                  :class="logLevelColors[log.level] ?? 'text-muted-foreground'"
-                >
-                  {{ log.level }}
-                </span>
-                <span class="text-foreground">{{ log.message }}</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Schema drift panel -->
-      <div v-if="detail && detail.nodes.some(n => n.logs.some(l => l.message.toLowerCase().includes('schema')))"
-        class="m-[18px] rounded-[7px] border border-amber-200 bg-amber-50 p-[11px]">
-        <h3 class="mb-2 text-sm font-semibold text-amber-800">Schema drift detected</h3>
-        <p class="mb-3 text-xs text-amber-700">One or more nodes received unexpected fields. Review the diff below.</p>
-        <div class="grid grid-cols-2 gap-3">
-          <div class="rounded-md border bg-background p-3">
-            <p class="mb-1.5 text-xs font-semibold text-muted-foreground">Expected schema</p>
-            <pre class="text-xs text-green-700">{ "id": "string", "email": "string", "name": "string" }</pre>
-          </div>
-          <div class="rounded-md border bg-background p-3">
-            <p class="mb-1.5 text-xs font-semibold text-muted-foreground">Actual schema</p>
-            <pre class="text-xs text-red-600">{ "id": "string", "email": "string", "full_name": "string" }</pre>
+            <span
+              class="w-10 shrink-0 font-semibold uppercase"
+              :class="logLevelColors[log.level] ?? 'text-muted-foreground'"
+            >
+              {{ log.level }}
+            </span>
+            <span v-if="log.node_id" class="shrink-0 text-muted-foreground">[{{ log.node_id }}]</span>
+            <span class="text-foreground">{{ log.message }}</span>
           </div>
         </div>
       </div>
