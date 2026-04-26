@@ -1,19 +1,78 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { stubSession } from '@/data/auth'
-import type { AuthSession } from '@/types/auth'
+import { supabase } from '@/lib/supabase'
+import { api } from '@/lib/api'
+
+export interface UserSession {
+  userId: string
+  email: string
+  workspaceId: string
+  workspaceName: string
+  role: string
+  onboardingComplete: boolean
+}
 
 export const useAuthStore = defineStore('auth', () => {
-  const session = ref<AuthSession | null>(null)
+  const session = ref<UserSession | null>(null)
+  const loading = ref(false)
+  const error = ref<string | null>(null)
 
   const isAuthenticated = computed(() => session.value !== null)
 
-  function login(_email: string, _password: string) {
-    // Demo: accept any credentials and load stub session
-    session.value = { ...stubSession }
+  async function init() {
+    const { data } = await supabase.auth.getSession()
+    if (data.session) {
+      await loadMe()
+    }
+    supabase.auth.onAuthStateChange(async (event) => {
+      if (event === 'SIGNED_IN') await loadMe()
+      if (event === 'SIGNED_OUT') session.value = null
+    })
   }
 
-  function logout() {
+  async function loadMe() {
+    try {
+      const me = await api.get<UserSession>('/auth/me')
+      if (!me) { session.value = null; return }
+      session.value = { ...me, onboardingComplete: true }
+    } catch {
+      session.value = null
+    }
+  }
+
+  async function login(email: string, password: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+      if (authError) throw authError
+      await loadMe()
+    } catch (e: unknown) {
+      error.value = e instanceof Error ? e.message : (e as { message?: string })?.message ?? 'Login failed'
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function signup(email: string, password: string) {
+    loading.value = true
+    error.value = null
+    try {
+      const { error: authError } = await supabase.auth.signUp({ email, password })
+      if (authError) throw authError
+      await api.post('/auth/signup-complete', {})
+      await loadMe()
+    } catch (e: unknown) {
+      error.value = e instanceof Error ? e.message : (e as { message?: string })?.message ?? 'Signup failed'
+      throw e
+    } finally {
+      loading.value = false
+    }
+  }
+
+  async function logout() {
+    await supabase.auth.signOut()
     session.value = null
   }
 
@@ -21,5 +80,5 @@ export const useAuthStore = defineStore('auth', () => {
     if (session.value) session.value.onboardingComplete = true
   }
 
-  return { session, isAuthenticated, login, logout, completeOnboarding }
+  return { session, loading, error, isAuthenticated, init, login, signup, logout, completeOnboarding }
 })
