@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { requireAuth } from '../middleware/auth.ts'
+import { requireAuth, requireJwt } from '../middleware/auth.ts'
 import type { AuthContext } from '../middleware/auth.ts'
 import { adminClient } from '../lib/supabase.ts'
 
@@ -36,8 +36,9 @@ authRoutes.get('/me', requireAuth, async (c) => {
 })
 
 // POST /auth/signup-complete — auto-creates workspace on first sign-up
-authRoutes.post('/signup-complete', requireAuth, async (c) => {
-  const { userId } = c.get('auth') as AuthContext
+// Uses requireJwt (not requireAuth) because no workspace exists yet for new users
+authRoutes.post('/signup-complete', requireJwt, async (c) => {
+  const userId = c.get('userId') as string
 
   // Idempotent: skip if already has a workspace
   const { data: existing } = await adminClient
