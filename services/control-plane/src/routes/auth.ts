@@ -48,7 +48,7 @@ authRoutes.post('/signup-complete', requireAuth, async (c) => {
     .single()
 
   if (existing) {
-    return c.json({ workspaceId: existing.workspace_id })
+    return c.json({ workspaceId: existing.workspace_id }, 200)
   }
 
   // Create a new workspace
