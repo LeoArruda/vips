@@ -82,6 +82,8 @@ runRoutes.post('/', requireAuth, async (c) => {
 
 runRoutes.patch('/:id', requireWorkerAuth, async (c) => {
   const body = await c.req.json<{ status: string; finished_at?: string }>()
+  // Only update runs that are in a non-terminal state to prevent a stale worker
+  // from overwriting a run that was already completed by another worker instance.
   const { error } = await adminClient
     .from('runs')
     .update({
@@ -89,6 +91,7 @@ runRoutes.patch('/:id', requireWorkerAuth, async (c) => {
       ...(body.finished_at ? { finished_at: body.finished_at } : {}),
     })
     .eq('id', c.req.param('id'))
+    .in('status', ['queued', 'running'])
   if (error) return c.json({ error: error.message }, 500)
   return c.json({ ok: true })
 })

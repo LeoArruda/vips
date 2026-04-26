@@ -88,7 +88,7 @@ function formatDuration(start?: string, end?: string): string {
       <div class="mb-6 rounded-[7px] border bg-background p-[11px]">
         <div class="flex items-start justify-between">
           <div>
-            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.workflow_id }}</h1>
+            <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.workflows?.name ?? detail.workflow_id }}</h1>
             <p class="mt-0.5 text-[11.5px] text-muted-foreground">
               Run ID: {{ detail.id }} · Triggered by {{ detail.triggered_by }}
             </p>

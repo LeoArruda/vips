@@ -13,6 +13,7 @@ export interface RunRecord {
 
 export interface RunDetail extends RunRecord {
   logs: Array<{ id: string; node_id?: string; level: string; message: string; created_at: string }>
+  workflows?: { name: string }
 }
 
 export const useRunsStore = defineStore('runs', () => {

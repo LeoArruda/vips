@@ -34,12 +34,21 @@ export async function executeRun(definition: WorkflowDefinition, ctx: RunContext
   for (const node of sortedNodes) {
     await ctx.postLog(node.id, 'info', `Starting node: ${node.label}`)
 
-    const connectorType = (node.config.connectorType as string | undefined) ?? node.type
-    const connector = getConnector(connectorType)
+    // connectorType must be set explicitly in node.config — node.type values like
+    // 'connector.source' are UI categories, not connector IDs. Nodes without
+    // config.connectorType will fail here with a clear error rather than silently skip.
+    const connectorType = node.config.connectorType as string | undefined
+    if (!connectorType) {
+      await ctx.postLog(node.id, 'error', `Node "${node.label}" has no config.connectorType — set it to "http-rest", "postgres", or "statcan"`)
+      await ctx.patchRun({ status: 'failed', finished_at: new Date().toISOString() })
+      return
+    }
 
+    const connector = getConnector(connectorType)
     if (!connector) {
-      await ctx.postLog(node.id, 'warn', `No connector registered for type "${connectorType}" — skipping`)
-      continue
+      await ctx.postLog(node.id, 'error', `Unknown connector type "${connectorType}" — supported: http-rest, postgres, statcan`)
+      await ctx.patchRun({ status: 'failed', finished_at: new Date().toISOString() })
+      return
     }
 
     const inputs: Record<string, unknown> = {}
