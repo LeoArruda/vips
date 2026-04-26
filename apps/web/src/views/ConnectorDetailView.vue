@@ -1,21 +1,14 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useConnectorsStore } from '@/stores/connectors'
-import { ArrowLeft, ExternalLink, CheckCircle2 } from 'lucide-vue-next'
+import { ArrowLeft, Settings } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
 const store = useConnectorsStore()
 
-const detail = computed(() => store.getDetail(route.params.id as string))
-
-const authLabels: Record<string, string> = {
-  oauth2: 'OAuth 2.0',
-  'api-key': 'API Key',
-  basic: 'Basic Auth',
-  none: 'No Auth',
-}
+const detail = computed(() => store.connectors.find((c) => c.id === route.params.id))
 
 const categoryColors: Record<string, string> = {
   database: 'bg-blue-100 text-blue-700',
@@ -24,6 +17,10 @@ const categoryColors: Record<string, string> = {
   messaging: 'bg-green-100 text-green-700',
   analytics: 'bg-rose-100 text-rose-700',
 }
+
+onMounted(() => {
+  if (store.connectors.length === 0) store.fetchAll()
+})
 </script>
 
 <template>
@@ -46,90 +43,57 @@ const categoryColors: Record<string, string> = {
         Connectors
       </button>
 
-      <div class="mb-6 flex items-start gap-2">
+      <div class="mb-6 flex items-start gap-4">
         <div
           class="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-xl bg-muted text-lg font-bold text-muted-foreground"
         >
-          {{ detail.logoInitial }}
+          {{ detail.name[0]?.toUpperCase() ?? '?' }}
         </div>
         <div>
           <div class="flex items-center gap-2">
             <h1 class="text-[15px] font-semibold tracking-tight">{{ detail.name }}</h1>
-            <span
-              v-if="detail.installed"
-              class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700"
-            >
+            <span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
               Installed
             </span>
           </div>
           <div class="mt-1 flex items-center gap-2 text-[11.5px] text-muted-foreground">
-            <span>v{{ detail.version }}</span>
-            <span>·</span>
             <span
               class="rounded-full px-2 py-0.5 text-xs font-medium capitalize"
-              :class="categoryColors[detail.category] ?? 'bg-muted text-muted-foreground'"
+              :class="categoryColors[detail.type] ?? 'bg-muted text-muted-foreground'"
             >
-              {{ detail.category }}
+              {{ detail.type }}
             </span>
             <span>·</span>
-            <span>{{ authLabels[detail.authMethod] ?? detail.authMethod }}</span>
-          </div>
-          <p class="mt-2 text-[11.5px] text-muted-foreground">{{ detail.description }}</p>
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 gap-2 lg:grid-cols-2">
-        <!-- Supported actions -->
-        <div>
-          <h2 class="mb-3 text-[10.5px] font-semibold">Supported Actions</h2>
-          <div class="divide-y rounded-[7px] border">
-            <div
-              v-for="action in detail.actions"
-              :key="action.actionId"
-              class="flex items-start gap-3 px-3 py-[7px]"
-            >
-              <CheckCircle2 class="mt-0.5 h-4 w-4 flex-shrink-0 text-green-500" />
-              <div>
-                <p class="text-[11.5px] font-medium">{{ action.name }}</p>
-                <p class="text-xs text-muted-foreground">{{ action.description }}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Auth requirements -->
-        <div>
-          <h2 class="mb-3 text-[10.5px] font-semibold">Auth Requirements</h2>
-          <div class="divide-y rounded-[7px] border">
-            <div
-              v-for="(req, i) in detail.authRequirements"
-              :key="i"
-              class="flex items-center gap-3 px-3 py-[7px]"
-            >
-              <div class="h-1.5 w-1.5 rounded-full bg-muted-foreground/50" />
-              <span class="text-[11.5px]">{{ req }}</span>
-            </div>
-          </div>
-
-          <div v-if="detail.docsUrl" class="mt-4">
-            <a
-              :href="detail.docsUrl"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="inline-flex items-center gap-1.5 text-[11.5px] text-primary hover:underline"
-            >
-              <ExternalLink class="h-3.5 w-3.5" />
-              View Documentation
-            </a>
+            <span>Added {{ new Date(detail.created_at).toLocaleDateString() }}</span>
           </div>
         </div>
       </div>
 
-      <div class="mt-6 border-t pt-6">
+      <!-- Config fields -->
+      <div class="mb-6 rounded-[7px] border bg-background p-[11px]">
+        <h2 class="mb-3 flex items-center gap-2 text-[10.5px] font-semibold">
+          <Settings class="h-3.5 w-3.5" /> Configuration
+        </h2>
+        <div v-if="Object.keys(detail.config).length === 0" class="text-[11.5px] text-muted-foreground">
+          No configuration fields.
+        </div>
+        <div v-else class="space-y-1">
+          <div
+            v-for="(value, key) in detail.config"
+            :key="key"
+            class="flex items-center gap-3 text-[11.5px]"
+          >
+            <span class="w-32 shrink-0 font-medium text-muted-foreground">{{ key }}</span>
+            <span class="truncate">{{ value }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="border-t pt-6">
         <button
           class="rounded-[5px] bg-indigo-500 px-4 py-2 text-[11.5px] font-medium text-white hover:bg-indigo-600"
         >
-          {{ detail.installed ? 'Configure Connector' : 'Install Connector' }}
+          Configure Connector
         </button>
       </div>
     </div>

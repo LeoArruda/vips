@@ -1,24 +1,43 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useSecretsStore } from '../secrets'
 
-describe('useSecretsStore', () => {
-  beforeEach(() => { setActivePinia(createPinia()) })
+vi.mock('@/lib/api', () => ({
+  api: {
+    get: vi.fn().mockResolvedValue([
+      { id: 's1', name: 'API_KEY', created_at: '2026-01-01' },
+    ]),
+    post: vi.fn().mockResolvedValue(
+      { id: 's2', name: 'DB_PASS', created_at: '2026-01-02' }
+    ),
+    delete: vi.fn().mockResolvedValue(undefined),
+  },
+}))
 
-  it('loads stub secrets', () => {
-    const store = useSecretsStore()
-    expect(store.secrets.length).toBeGreaterThan(0)
+describe('useSecretsStore (API-backed)', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
-  it('counts secrets needing rotation', () => {
+  it('fetchAll loads secrets from API (names only)', async () => {
     const store = useSecretsStore()
-    const expected = store.secrets.filter(s => s.rotationState !== 'ok').length
-    expect(store.rotationAlertCount).toBe(expected)
+    await store.fetchAll()
+    expect(store.secrets.length).toBe(1)
+    expect(store.secrets[0].name).toBe('API_KEY')
   })
 
-  it('filters secrets by scope', () => {
+  it('create adds secret to list', async () => {
     const store = useSecretsStore()
-    const connectorSecrets = store.byScope('connector')
-    expect(connectorSecrets.every(s => s.scope === 'connector')).toBe(true)
+    const result = await store.create('DB_PASS', 'secret123')
+    expect(result.id).toBe('s2')
+    expect(store.secrets.length).toBe(1)
+  })
+
+  it('remove deletes secret from list', async () => {
+    const store = useSecretsStore()
+    store.secrets = [{ id: 's1', name: 'API_KEY', created_at: '' }]
+    await store.remove('s1')
+    expect(store.secrets.length).toBe(0)
   })
 })

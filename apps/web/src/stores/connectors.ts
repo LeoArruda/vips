@@ -1,29 +1,39 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
-import { connectorCards, connectorDetails } from '@/data/connectors'
-import type { ConnectorCard, ConnectorDetail } from '@/types'
+import { ref } from 'vue'
+import { api } from '@/lib/api'
+
+export interface ConnectorRecord {
+  id: string
+  type: string
+  name: string
+  config: Record<string, unknown>
+  created_at: string
+}
 
 export const useConnectorsStore = defineStore('connectors', () => {
-  const cards = ref<ConnectorCard[]>(connectorCards)
-  const details = ref<ConnectorDetail[]>(connectorDetails)
+  const connectors = ref<ConnectorRecord[]>([])
+  const loading = ref(false)
 
-  const installedCount = computed(() => cards.value.filter((c) => c.installed).length)
-
-  function getDetail(connectorId: string): ConnectorDetail | undefined {
-    return details.value.find((d) => d.connectorId === connectorId)
+  async function fetchAll() {
+    loading.value = true
+    try {
+      connectors.value = (await api.get<ConnectorRecord[]>('/connectors')) ?? []
+    } finally {
+      loading.value = false
+    }
   }
 
-  function filterByCategory(category: string): ConnectorCard[] {
-    if (!category) return cards.value
-    return cards.value.filter((c) => c.category === category)
+  async function create(payload: { type: string; name: string; config?: Record<string, unknown> }) {
+    const data = await api.post<ConnectorRecord>('/connectors', payload)
+    if (!data) throw new Error('Create connector returned no data')
+    connectors.value.unshift(data)
+    return data
   }
 
-  function search(query: string): ConnectorCard[] {
-    const q = query.toLowerCase()
-    return cards.value.filter(
-      (c) => c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q),
-    )
+  async function remove(id: string) {
+    await api.delete(`/connectors/${id}`)
+    connectors.value = connectors.value.filter((c) => c.id !== id)
   }
 
-  return { cards, details, installedCount, getDetail, filterByCategory, search }
+  return { connectors, loading, fetchAll, create, remove }
 })

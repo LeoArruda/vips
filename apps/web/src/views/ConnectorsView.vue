@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useConnectorsStore } from '@/stores/connectors'
+import type { ConnectorRecord } from '@/stores/connectors'
 import ConnectorCard from '@/components/connectors/ConnectorCard.vue'
 import { Search, AlertTriangle } from 'lucide-vue-next'
 
@@ -21,16 +22,33 @@ const categoryLabels: Record<string, string> = {
   analytics: 'Analytics',
 }
 
+/** Map a ConnectorRecord to the shape ConnectorCard component expects */
+function toCardShape(c: ConnectorRecord) {
+  const initial = c.name ? c.name[0].toUpperCase() : '?'
+  return {
+    connectorId: c.id,
+    name: c.name,
+    description: '',
+    category: c.type,
+    authMethod: 'api-key',
+    logoInitial: initial,
+    certified: false,
+    installed: true,
+  }
+}
+
 const filteredConnectors = computed(() => {
-  let result = store.filterByCategory(selectedCategory.value)
+  let result = store.connectors.filter(
+    (c) => !selectedCategory.value || c.type === selectedCategory.value,
+  )
   if (searchQuery.value.trim()) {
     const q = searchQuery.value.toLowerCase()
-    result = result.filter(
-      (c) => c.name.toLowerCase().includes(q) || c.description.toLowerCase().includes(q),
-    )
+    result = result.filter((c) => c.name.toLowerCase().includes(q))
   }
   return result
 })
+
+onMounted(() => store.fetchAll())
 </script>
 
 <template>
@@ -38,7 +56,7 @@ const filteredConnectors = computed(() => {
     <div class="mb-5">
       <h1 class="text-[15px] font-semibold tracking-tight">Connectors</h1>
       <p class="mt-1 text-[11.5px] text-muted-foreground">
-        {{ store.cards.length }} connectors · {{ store.installedCount }} installed
+        {{ store.connectors.length }} connectors · {{ store.connectors.length }} installed
       </p>
     </div>
 
@@ -91,11 +109,11 @@ const filteredConnectors = computed(() => {
     >
       <div
         v-for="connector in filteredConnectors"
-        :key="connector.connectorId"
+        :key="connector.id"
         class="cursor-pointer"
-        @click="router.push(`/connectors/${connector.connectorId}`)"
+        @click="router.push(`/connectors/${connector.id}`)"
       >
-        <ConnectorCard :connector="connector" />
+        <ConnectorCard :connector="toCardShape(connector)" />
       </div>
     </div>
   </div>

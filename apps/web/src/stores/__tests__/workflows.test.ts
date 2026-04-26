@@ -1,45 +1,71 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useWorkflowsStore } from '../workflows'
 
-describe('useWorkflowsStore', () => {
+vi.mock('@/lib/api', () => ({
+  api: {
+    get: vi.fn().mockResolvedValue([
+      {
+        id: 'wf_1',
+        name: 'Test Flow',
+        status: 'draft',
+        updated_at: new Date().toISOString(),
+        definition: { trigger: { type: 'manual' } },
+      },
+    ]),
+    post: vi.fn().mockResolvedValue({
+      workflowId: 'wf_new',
+      name: 'New Flow',
+      status: 'draft',
+      updatedAt: new Date().toISOString(),
+      trigger: { type: 'manual' },
+    }),
+    put: vi.fn().mockResolvedValue({
+      workflowId: 'wf_1',
+      name: 'Updated Flow',
+      status: 'published',
+      updatedAt: new Date().toISOString(),
+      trigger: { type: 'manual' },
+    }),
+    delete: vi.fn().mockResolvedValue(undefined),
+  },
+}))
+
+describe('useWorkflowsStore (API-backed)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
-  it('exposes workflow summaries from stub data', () => {
+  it('fetchAll loads and maps summaries from API', async () => {
     const store = useWorkflowsStore()
-    expect(store.summaries.length).toBeGreaterThan(0)
+    await store.fetchAll()
+    expect(store.summaries.length).toBe(1)
+    expect(store.summaries[0].workflowId).toBe('wf_1')
+    expect(store.summaries[0].name).toBe('Test Flow')
+    expect(store.summaries[0].trigger.type).toBe('manual')
   })
 
-  it('counts published workflows via computed', () => {
+  it('create adds new workflow to summaries', async () => {
     const store = useWorkflowsStore()
-    const expected = store.summaries.filter((w) => w.status === 'published').length
-    expect(store.publishedCount).toBe(expected)
+    const result = await store.create({ name: 'New Flow', trigger: { type: 'manual' } })
+    expect(result.name).toBe('New Flow')
+    expect(store.summaries.length).toBe(1)
   })
 
-  it('finds a workflow definition by id', () => {
+  it('remove deletes from summaries', async () => {
     const store = useWorkflowsStore()
-    const def = store.getDefinition('wf_001')
-    expect(def).toBeDefined()
-    expect(def?.workflowId).toBe('wf_001')
-    expect(def?.nodes.length).toBeGreaterThan(0)
-    expect(def?.edges.length).toBeGreaterThan(0)
+    store.summaries = [{ workflowId: 'wf_1', name: 'Flow', status: 'draft', updatedAt: '', trigger: { type: 'manual' } }]
+    await store.remove('wf_1')
+    expect(store.summaries.length).toBe(0)
   })
 
-  it('returns undefined for an unknown workflow id', () => {
+  it('publishedCount counts only published workflows', () => {
     const store = useWorkflowsStore()
-    expect(store.getDefinition('nonexistent')).toBeUndefined()
-  })
-
-  it('finds a workflow summary by id', () => {
-    const store = useWorkflowsStore()
-    const summary = store.getSummary('wf_001')
-    expect(summary?.name).toBe('Salesforce → BigQuery Sync')
-  })
-
-  it('returns undefined summary for an unknown id', () => {
-    const store = useWorkflowsStore()
-    expect(store.getSummary('nonexistent')).toBeUndefined()
+    store.summaries = [
+      { workflowId: 'a', name: 'A', status: 'published', updatedAt: '', trigger: { type: 'manual' } },
+      { workflowId: 'b', name: 'B', status: 'draft', updatedAt: '', trigger: { type: 'manual' } },
+    ]
+    expect(store.publishedCount).toBe(1)
   })
 })

@@ -1,61 +1,43 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useConnectorsStore } from '../connectors'
 
-describe('useConnectorsStore', () => {
+vi.mock('@/lib/api', () => ({
+  api: {
+    get: vi.fn().mockResolvedValue([
+      { id: 'c1', type: 'http-rest', name: 'My HTTP', config: {}, created_at: '2026-01-01' },
+    ]),
+    post: vi.fn().mockResolvedValue(
+      { id: 'c2', type: 'postgres', name: 'My DB', config: {}, created_at: '2026-01-02' }
+    ),
+    delete: vi.fn().mockResolvedValue(undefined),
+  },
+}))
+
+describe('useConnectorsStore (API-backed)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
-  it('exposes connector cards from stub data', () => {
+  it('fetchAll loads connectors from API', async () => {
     const store = useConnectorsStore()
-    expect(store.cards.length).toBeGreaterThan(0)
+    await store.fetchAll()
+    expect(store.connectors.length).toBe(1)
+    expect(store.connectors[0].id).toBe('c1')
   })
 
-  it('counts installed connectors via computed', () => {
+  it('create adds connector to list', async () => {
     const store = useConnectorsStore()
-    const expected = store.cards.filter((c) => c.installed).length
-    expect(store.installedCount).toBe(expected)
+    const result = await store.create({ type: 'postgres', name: 'My DB' })
+    expect(result.id).toBe('c2')
+    expect(store.connectors.length).toBe(1)
   })
 
-  it('returns a connector detail by id', () => {
+  it('remove deletes connector from list', async () => {
     const store = useConnectorsStore()
-    const detail = store.getDetail('conn_salesforce')
-    expect(detail).toBeDefined()
-    expect(detail?.actions.length).toBeGreaterThan(0)
-  })
-
-  it('returns undefined for an unknown connector id', () => {
-    const store = useConnectorsStore()
-    expect(store.getDetail('nonexistent')).toBeUndefined()
-  })
-
-  it('filters connectors by category', () => {
-    const store = useConnectorsStore()
-    const databases = store.filterByCategory('database')
-    expect(databases.length).toBeGreaterThan(0)
-    expect(databases.every((c) => c.category === 'database')).toBe(true)
-  })
-
-  it('returns all connectors when category is empty string', () => {
-    const store = useConnectorsStore()
-    expect(store.filterByCategory('').length).toBe(store.cards.length)
-  })
-
-  it('searches connectors by name case-insensitively', () => {
-    const store = useConnectorsStore()
-    expect(store.search('SALESFORCE').length).toBeGreaterThan(0)
-    expect(store.search('salesforce')[0].name).toBe('Salesforce')
-  })
-
-  it('searches connectors by description', () => {
-    const store = useConnectorsStore()
-    const results = store.search('payment')
-    expect(results.some((c) => c.name === 'Stripe')).toBe(true)
-  })
-
-  it('returns empty array for no search match', () => {
-    const store = useConnectorsStore()
-    expect(store.search('zzznomatch999').length).toBe(0)
+    store.connectors = [{ id: 'c1', type: 'http-rest', name: 'My HTTP', config: {}, created_at: '' }]
+    await store.remove('c1')
+    expect(store.connectors.length).toBe(0)
   })
 })

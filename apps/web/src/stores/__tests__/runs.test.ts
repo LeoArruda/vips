@@ -1,38 +1,35 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useRunsStore } from '../runs'
 
-describe('useRunsStore', () => {
+vi.mock('@/lib/api', () => ({
+  api: {
+    get: vi.fn().mockResolvedValue([
+      { id: 'r1', workflow_id: 'wf1', status: 'success', triggered_by: 'manual', started_at: '2026-01-01' },
+    ]),
+    post: vi.fn().mockResolvedValue(
+      { id: 'r2', workflow_id: 'wf1', status: 'queued', triggered_by: 'manual', started_at: '2026-01-02' }
+    ),
+  },
+}))
+
+describe('useRunsStore (API-backed)', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
+    vi.clearAllMocks()
   })
 
-  it('exposes run records from stub data', () => {
+  it('fetchAll loads runs from API', async () => {
     const store = useRunsStore()
-    expect(store.records.length).toBeGreaterThan(0)
+    await store.fetchAll()
+    expect(store.runs.length).toBe(1)
+    expect(store.runs[0].id).toBe('r1')
   })
 
-  it('returns a run detail by id', () => {
+  it('triggerRun adds run to list', async () => {
     const store = useRunsStore()
-    const detail = store.getDetail('run_002')
-    expect(detail).toBeDefined()
-    expect(detail?.nodes.length).toBeGreaterThan(0)
-  })
-
-  it('returns undefined for an unknown run id', () => {
-    const store = useRunsStore()
-    expect(store.getDetail('nonexistent')).toBeUndefined()
-  })
-
-  it('returns runs filtered by workflow id', () => {
-    const store = useRunsStore()
-    const runs = store.getByWorkflow('wf_002')
-    expect(runs.length).toBeGreaterThan(0)
-    expect(runs.every((r) => r.workflowId === 'wf_002')).toBe(true)
-  })
-
-  it('returns empty array when no runs match the workflow id', () => {
-    const store = useRunsStore()
-    expect(store.getByWorkflow('nonexistent').length).toBe(0)
+    const result = await store.triggerRun('wf1')
+    expect(result.status).toBe('queued')
+    expect(store.runs.length).toBe(1)
   })
 })

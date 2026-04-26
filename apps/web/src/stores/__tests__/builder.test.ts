@@ -2,6 +2,40 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useBuilderStore } from '../builder'
 
+// Stub definitions matching the previous hard-coded data
+const stubDefinitions: Record<string, { nodes: unknown[]; edges: unknown[] }> = {
+  wf_001: {
+    nodes: [
+      { id: 'source_1', type: 'connector.source', label: 'Salesforce', config: {}, connectorId: 'conn_sf' },
+      { id: 'transform_1', type: 'transform.map', label: 'Map Fields', config: {} },
+      { id: 'dest_1', type: 'connector.destination', label: 'BigQuery', config: {}, connectorId: 'conn_bq' },
+    ],
+    edges: [
+      { id: 'e1', source: 'source_1', target: 'transform_1' },
+      { id: 'e2', source: 'transform_1', target: 'dest_1' },
+    ],
+  },
+  wf_002: {
+    nodes: [
+      { id: 'source_1', type: 'connector.source', label: 'Stripe Webhook', config: {}, connectorId: 'conn_stripe' },
+      { id: 'logic_1', type: 'logic.branch', label: 'Route by Status', config: {} },
+      { id: 'dest_success', type: 'connector.destination', label: 'Postgres', config: {}, connectorId: 'conn_pg' },
+      { id: 'dest_failed', type: 'connector.destination', label: 'Slack Alert', config: {}, connectorId: 'conn_slack' },
+    ],
+    edges: [
+      { id: 'e1', source: 'source_1', target: 'logic_1' },
+      { id: 'e2', source: 'logic_1', target: 'dest_success' },
+      { id: 'e3', source: 'logic_1', target: 'dest_failed' },
+    ],
+  },
+}
+
+vi.mock('../workflows', () => ({
+  useWorkflowsStore: () => ({
+    getDefinition: (id: string) => stubDefinitions[id] ?? undefined,
+  }),
+}))
+
 describe('useBuilderStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())

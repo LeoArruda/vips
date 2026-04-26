@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { useRunsStore } from '@/stores/runs'
 import StatTile from '@/components/ui/StatTile.vue'
 import {
@@ -15,6 +16,8 @@ import { useRouter } from 'vue-router'
 const router = useRouter()
 const runsStore = useRunsStore()
 
+onMounted(() => runsStore.fetchAll())
+
 const statusBg: Record<string, string> = {
   success: 'bg-green-100 text-green-700',
   failed: 'bg-red-100 text-red-700',
@@ -23,8 +26,9 @@ const statusBg: Record<string, string> = {
   cancelled: 'bg-muted text-muted-foreground',
 }
 
-function formatDuration(ms?: number): string {
-  if (!ms) return '—'
+function formatDuration(start?: string, end?: string): string {
+  if (!start || !end) return '—'
+  const ms = new Date(end).getTime() - new Date(start).getTime()
   if (ms < 1000) return `${ms}ms`
   if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`
   return `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s`
@@ -83,10 +87,10 @@ function formatDuration(ms?: number): string {
       <h2 class="mb-3 text-[11.5px] font-semibold">Recent Runs</h2>
       <div class="divide-y rounded-[7px] border">
         <div
-          v-for="run in runsStore.records"
-          :key="run.runId"
+          v-for="run in runsStore.runs"
+          :key="run.id"
           class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-muted/50"
-          @click="router.push(`/runs/${run.runId}`)"
+          @click="router.push(`/runs/${run.id}`)"
         >
           <span
             class="rounded-full px-2.5 py-0.5 text-xs font-medium capitalize"
@@ -95,34 +99,36 @@ function formatDuration(ms?: number): string {
             {{ run.status }}
           </span>
           <div class="min-w-0 flex-1">
-            <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
+            <p class="truncate text-[11.5px] font-medium">{{ run.workflow_id }}</p>
             <p class="text-xs text-muted-foreground">
-              {{ run.triggeredBy }} · {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z
+              {{ run.triggered_by }} · {{ run.started_at.replace('T', ' ').slice(0, 16) }}Z
             </p>
           </div>
           <span class="text-xs tabular-nums text-muted-foreground">
-            {{ formatDuration(run.durationMs) }}
+            {{ formatDuration(run.started_at, run.finished_at) }}
           </span>
+        </div>
+        <div v-if="runsStore.runs.length === 0" class="px-3 py-6 text-center text-[11.5px] text-muted-foreground">
+          No recent runs.
         </div>
       </div>
     </div>
 
     <!-- Failed runs -->
-    <div v-if="dashboardStats.failedRuns.length > 0">
+    <div v-if="runsStore.runs.some(r => r.status === 'failed')">
       <h2 class="mb-3 text-[11.5px] font-semibold text-red-600">Failed Runs</h2>
       <div class="divide-y rounded-[7px] border border-red-200">
         <div
-          v-for="run in dashboardStats.failedRuns"
-          :key="run.runId"
+          v-for="run in runsStore.runs.filter(r => r.status === 'failed')"
+          :key="run.id"
           class="flex cursor-pointer items-center gap-4 px-3 py-[7px] transition-colors hover:bg-red-50/50"
-          @click="router.push(`/runs/${run.runId}`)"
+          @click="router.push(`/runs/${run.id}`)"
         >
           <XCircle class="h-4 w-4 flex-shrink-0 text-red-500" />
           <div class="min-w-0 flex-1">
-            <p class="truncate text-[11.5px] font-medium">{{ run.workflowName }}</p>
+            <p class="truncate text-[11.5px] font-medium">{{ run.workflow_id }}</p>
             <p class="text-xs text-muted-foreground">
-              {{ run.failedNodeCount }} node(s) failed ·
-              {{ run.startedAt.replace('T', ' ').slice(0, 16) }}Z
+              {{ run.started_at.replace('T', ' ').slice(0, 16) }}Z
             </p>
           </div>
           <span class="text-xs font-medium text-red-600">View →</span>
