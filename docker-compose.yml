@@ -1,0 +1,24 @@
+# docker-compose.yml
+# Supabase is managed separately via `supabase start`.
+# This compose file handles the control plane and (optionally) the frontend in dev mode.
+
+services:
+  control-plane:
+    build:
+      context: ./services/control-plane
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      SUPABASE_URL: ${SUPABASE_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SUPABASE_SERVICE_ROLE_KEY}
+      SUPABASE_JWT_SECRET: ${SUPABASE_JWT_SECRET}
+      SECRETS_ENCRYPTION_KEY: ${SECRETS_ENCRYPTION_KEY}
+      CONTROL_PLANE_PORT: 3001
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:5173}
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
