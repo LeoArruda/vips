@@ -20,9 +20,11 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => session.value !== null)
 
   async function init() {
-    const { data } = await supabase.auth.getSession()
-    if (data.session) {
-      await loadMe()
+    try {
+      const { data } = await supabase.auth.getSession()
+      if (data.session) await loadMe()
+    } catch {
+      // getSession failed (e.g. network unavailable) — start unauthenticated
     }
     supabase.auth.onAuthStateChange(async (event) => {
       if (event === 'SIGNED_IN') await loadMe()
@@ -72,6 +74,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    error.value = null
     await supabase.auth.signOut()
     session.value = null
   }
