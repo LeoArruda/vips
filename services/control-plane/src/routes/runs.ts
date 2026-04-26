@@ -41,6 +41,16 @@ runRoutes.post('/', async (c) => {
   const { workspaceId } = c.get('auth') as AuthContext
   const body = await c.req.json<{ workflowId: string; triggeredBy?: string }>()
   if (!body.workflowId) return c.json({ error: 'workflowId is required' }, 400)
+
+  // Verify the workflow belongs to this workspace before creating a run
+  const { data: workflow } = await adminClient
+    .from('workflows')
+    .select('id')
+    .eq('id', body.workflowId)
+    .eq('workspace_id', workspaceId)
+    .single()
+  if (!workflow) return c.json({ error: 'Workflow not found' }, 404)
+
   const { data, error } = await adminClient
     .from('runs')
     .insert({

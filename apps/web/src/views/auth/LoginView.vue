@@ -10,14 +10,18 @@ const auth = useAuthStore()
 const router = useRouter()
 const route = useRoute()
 
-function submit() {
+async function submit() {
   if (!email.value || !password.value) {
     error.value = 'Please enter your email and password.'
     return
   }
-  auth.login(email.value, password.value)
-  const redirect = (route.query.redirect as string) || '/dashboard'
-  router.push(redirect)
+  try {
+    await auth.login(email.value, password.value)
+    const redirect = (route.query.redirect as string) || '/dashboard'
+    router.push(redirect)
+  } catch {
+    error.value = auth.error ?? 'Login failed'
+  }
 }
 </script>
 

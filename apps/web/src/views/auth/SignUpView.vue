@@ -11,7 +11,7 @@ const error = ref('')
 const auth = useAuthStore()
 const router = useRouter()
 
-function submit() {
+async function submit() {
   if (!name.value || !email.value || !password.value) {
     error.value = 'All fields are required.'
     return
@@ -20,8 +20,12 @@ function submit() {
     error.value = 'You must agree to the terms.'
     return
   }
-  auth.login(email.value, password.value)
-  router.push('/onboarding')
+  try {
+    await auth.signup(email.value, password.value)
+    router.push('/dashboard')
+  } catch {
+    error.value = auth.error ?? 'Signup failed'
+  }
 }
 </script>
 
