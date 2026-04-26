@@ -1,11 +1,18 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { Play, Save, Rocket, Loader2 } from 'lucide-vue-next'
 import { useBuilderStore } from '@/stores/builder'
 import { useWorkflowsStore } from '@/stores/workflows'
+import { useRunsStore } from '@/stores/runs'
 
+const router = useRouter()
 const builderStore = useBuilderStore()
 const workflowsStore = useWorkflowsStore()
+const runsStore = useRunsStore()
+
+const isRunning = ref(false)
+const runError = ref<string | null>(null)
 
 const workflow = computed(() =>
   builderStore.currentWorkflowId
@@ -17,6 +24,20 @@ const statusColors: Record<string, string> = {
   published: 'bg-green-100 text-green-700',
   draft: 'bg-muted text-muted-foreground',
   archived: 'bg-red-100 text-red-700',
+}
+
+async function triggerRun() {
+  if (!builderStore.currentWorkflowId || isRunning.value) return
+  isRunning.value = true
+  runError.value = null
+  try {
+    const run = await runsStore.triggerRun(builderStore.currentWorkflowId)
+    if (run) router.push(`/runs/${run.id}`)
+  } catch (err) {
+    runError.value = err instanceof Error ? err.message : 'Run failed'
+  } finally {
+    isRunning.value = false
+  }
 }
 </script>
 
@@ -36,6 +57,7 @@ const statusColors: Record<string, string> = {
     </div>
 
     <div class="flex items-center gap-2">
+      <span v-if="runError" class="text-xs text-red-500">{{ runError }}</span>
       <button
         class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted"
         title="Save (demo)"
@@ -52,12 +74,12 @@ const statusColors: Record<string, string> = {
       </button>
       <button
         class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-[5px] text-[11.5px] font-medium text-white transition-opacity hover:bg-indigo-600 disabled:opacity-50"
-        :disabled="builderStore.isRunning || builderStore.nodes.length === 0"
-        @click="builderStore.simulateRun()"
+        :disabled="isRunning || !builderStore.currentWorkflowId || builderStore.nodes.length === 0"
+        @click="triggerRun"
       >
-        <Loader2 v-if="builderStore.isRunning" class="h-3.5 w-3.5 animate-spin" />
+        <Loader2 v-if="isRunning" class="h-3.5 w-3.5 animate-spin" />
         <Play v-else class="h-3.5 w-3.5" />
-        {{ builderStore.isRunning ? 'Running…' : 'Run' }}
+        {{ isRunning ? 'Starting…' : 'Run' }}
       </button>
     </div>
   </div>

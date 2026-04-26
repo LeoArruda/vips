@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useRunsStore } from '@/stores/runs'
 import type { RunDetail } from '@/stores/runs'
@@ -10,9 +10,26 @@ const router = useRouter()
 const store = useRunsStore()
 
 const detail = ref<RunDetail | undefined>(undefined)
+let pollTimer: ReturnType<typeof setInterval> | undefined
+
+async function loadDetail() {
+  const data = await store.fetchDetail(route.params.id as string)
+  if (data) detail.value = data
+}
 
 onMounted(async () => {
-  detail.value = await store.fetchDetail(route.params.id as string)
+  await loadDetail()
+  pollTimer = setInterval(async () => {
+    if (detail.value?.status === 'queued' || detail.value?.status === 'running') {
+      await loadDetail()
+    } else {
+      clearInterval(pollTimer)
+    }
+  }, 3000)
+})
+
+onUnmounted(() => {
+  clearInterval(pollTimer)
 })
 
 const expandedNodes = ref<Set<string>>(new Set())
@@ -29,8 +46,8 @@ const statusBg: Record<string, string> = {
   success: 'bg-green-100 text-green-700',
   failed: 'bg-red-100 text-red-700',
   running: 'bg-blue-100 text-blue-700',
+  queued: 'bg-amber-100 text-amber-700',
   pending: 'bg-muted text-muted-foreground',
-  cancelled: 'bg-muted text-muted-foreground',
 }
 
 const logLevelColors: Record<string, string> = {
