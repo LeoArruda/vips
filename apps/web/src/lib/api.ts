@@ -8,7 +8,7 @@ async function getAuthHeader(): Promise<Record<string, string>> {
 
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
 
-async function request<T>(method: HttpMethod, path: string, body?: unknown): Promise<T> {
+async function request<T>(method: HttpMethod, path: string, body?: unknown): Promise<T | undefined> {
   const authHeaders = await getAuthHeader()
   const res = await fetch(`/api${path}`, {
     method,
@@ -19,11 +19,18 @@ async function request<T>(method: HttpMethod, path: string, body?: unknown): Pro
     body: body !== undefined ? JSON.stringify(body) : undefined,
   })
 
-  if (res.status === 204) return undefined as T
+  if (res.status === 204) return undefined
 
-  const data = await res.json()
-  if (!res.ok) throw new Error(data?.error ?? `Request failed: ${res.status}`)
-  return data as T
+  if (!res.ok) {
+    let message = `Request failed: ${res.status}`
+    try {
+      const errBody = await res.json()
+      message = errBody?.error ?? message
+    } catch { /* non-JSON error body */ }
+    throw new Error(message)
+  }
+
+  return (await res.json()) as T
 }
 
 export const api = {
