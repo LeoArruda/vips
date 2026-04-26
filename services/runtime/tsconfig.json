@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "noEmit": true,
+    "types": ["bun-types"],
+    "paths": {
+      "@vipsos/connector-sdk": ["../../packages/connector-sdk/src/index.ts"],
+      "@vipsos/workflow-schema": ["../../packages/workflow-schema/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}
