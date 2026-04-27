@@ -69,30 +69,8 @@ function onDrop(event: DragEvent) {
 
 <template>
   <div class="relative h-full w-full" @dragover="onDragOver" @drop="onDrop">
-    <!-- No workflow selected at all -->
-    <div
-      v-if="!workflowSelected"
-      class="flex h-full flex-col items-center justify-center gap-3 bg-gray-50 text-muted-foreground"
-    >
-      <div class="text-5xl opacity-20">⬡</div>
-      <p class="text-sm">No workflow loaded. Select one from Workflows.</p>
-    </div>
-
-    <!-- Workflow selected but canvas is empty — prompt to drag a node -->
-    <div
-      v-else-if="!hasNodes"
-      class="flex h-full flex-col items-center justify-center gap-3 bg-gray-50 text-muted-foreground"
-      @dragover="onDragOver"
-      @drop="onDrop"
-    >
-      <div class="text-5xl opacity-20">⬡</div>
-      <p class="text-sm font-medium">Drag a node from the left panel to get started</p>
-      <p class="text-xs">Add a Source node and configure it in the inspector</p>
-    </div>
-
-    <!-- Workflow with nodes — show the canvas -->
+    <!-- VueFlow always rendered so Background dots are always visible -->
     <VueFlow
-      v-else
       :nodes="store.nodes"
       :edges="store.edges"
       :node-types="nodeTypes"
@@ -102,9 +80,28 @@ function onDrop(event: DragEvent) {
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
     >
-      <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1" color="#d1d5db" />
+      <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1.5" color="#d1d5db" />
       <Controls />
-      <MiniMap node-color="#e5e7eb" mask-color="rgba(255,255,255,0.7)" />
+      <MiniMap v-if="hasNodes" node-color="#e5e7eb" mask-color="rgba(255,255,255,0.7)" />
     </VueFlow>
+
+    <!-- Overlay: no workflow selected -->
+    <div
+      v-if="!workflowSelected"
+      class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground"
+    >
+      <div class="text-5xl opacity-20">⬡</div>
+      <p class="text-sm">No workflow loaded. Select one from Workflows.</p>
+    </div>
+
+    <!-- Overlay: workflow selected but canvas is empty -->
+    <div
+      v-else-if="!hasNodes"
+      class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground"
+    >
+      <div class="text-5xl opacity-20">⬡</div>
+      <p class="text-sm font-medium">Drag a node from the left panel to get started</p>
+      <p class="text-xs">Add a Source node and configure it in the inspector</p>
+    </div>
   </div>
 </template>
