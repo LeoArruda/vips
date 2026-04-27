@@ -1,13 +1,44 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useWorkflowsStore } from '@/stores/workflows'
-import { GitBranch, Clock, Webhook, Play, Plus, MoreHorizontal, Copy, Archive, Download } from 'lucide-vue-next'
+import { GitBranch, Clock, Webhook, Play, Plus, MoreHorizontal, Copy, Archive, Download, Loader2 } from 'lucide-vue-next'
 import type { Component } from 'vue'
 import type { WorkflowSummary } from '@/types'
 
 const router = useRouter()
 const store = useWorkflowsStore()
+
+onMounted(() => store.fetchAll())
+
+const creating = ref(false)
+const newName = ref('')
+const showNameInput = ref(false)
+
+async function startCreate() {
+  showNameInput.value = true
+  newName.value = 'New Workflow'
+}
+
+async function confirmCreate() {
+  if (!newName.value.trim() || creating.value) return
+  creating.value = true
+  try {
+    const wf = await store.create({ name: newName.value.trim(), trigger: { type: 'manual' } })
+    showNameInput.value = false
+    newName.value = ''
+    router.push(`/workflows/${wf.workflowId}/builder`)
+  } catch {
+    // creation failed — stay on page, user can retry
+  } finally {
+    creating.value = false
+  }
+}
+
+function cancelCreate() {
+  showNameInput.value = false
+  newName.value = ''
+}
 
 const triggerIcons: Record<string, Component> = {
   schedule: Clock,
@@ -76,8 +107,34 @@ function exportWorkflow(workflowId: string) {
           {{ store.summaries.length }} workflows · {{ store.publishedCount }} published
         </p>
       </div>
+      <div v-if="showNameInput" class="flex items-center gap-2">
+        <input
+          v-model="newName"
+          class="rounded-md border bg-background px-3 py-1.5 text-sm outline-none focus:ring-2 focus:ring-ring"
+          placeholder="Workflow name"
+          autofocus
+          @keyup.enter="confirmCreate"
+          @keyup.escape="cancelCreate"
+        />
+        <button
+          class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-600 disabled:opacity-50"
+          :disabled="creating || !newName.trim()"
+          @click="confirmCreate"
+        >
+          <Loader2 v-if="creating" class="h-4 w-4 animate-spin" />
+          <span v-else>Create</span>
+        </button>
+        <button
+          class="rounded-[5px] border px-3 py-2 text-sm font-medium hover:bg-muted"
+          @click="cancelCreate"
+        >
+          Cancel
+        </button>
+      </div>
       <button
+        v-else
         class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-600"
+        @click="startCreate"
       >
         <Plus class="h-4 w-4" />
         New Workflow

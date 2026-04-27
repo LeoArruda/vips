@@ -51,10 +51,11 @@ export const useWorkflowsStore = defineStore('workflows', () => {
   }
 
   async function create(payload: CreateWorkflowRequest): Promise<WorkflowSummary> {
-    const data = await api.post<WorkflowSummary>('/workflows', payload)
-    if (!data) throw new Error('Create workflow returned no data')
-    summaries.value.unshift(data)
-    return data
+    const raw = await api.post<Record<string, unknown>>('/workflows', payload)
+    if (!raw) throw new Error('Create workflow returned no data')
+    const summary = mapRow(raw)
+    summaries.value.unshift(summary)
+    return summary
   }
 
   async function update(workflowId: string, payload: UpdateWorkflowRequest): Promise<WorkflowSummary> {
