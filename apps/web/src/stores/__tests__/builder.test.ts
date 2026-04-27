@@ -106,6 +106,26 @@ describe('useBuilderStore', () => {
     expect(store.nodes[store.nodes.length - 1].position).toEqual({ x: 100, y: 200 })
   })
 
+  it('stores initialConfig on the new node', () => {
+    const store = useBuilderStore()
+    store.addNode('connector.source', { x: 0, y: 0 }, { connectorType: 'http-rest' })
+    const node = store.nodes[store.nodes.length - 1]
+    expect(node.data.config).toEqual({ connectorType: 'http-rest' })
+  })
+
+  it('uses supplied label instead of default', () => {
+    const store = useBuilderStore()
+    store.addNode('connector.source', { x: 0, y: 0 }, {}, 'HTTP / REST')
+    expect(store.nodes[store.nodes.length - 1].data.label).toBe('HTTP / REST')
+  })
+
+  it('auto-selects the new node', () => {
+    const store = useBuilderStore()
+    store.addNode('connector.source', { x: 0, y: 0 })
+    const id = store.nodes[store.nodes.length - 1].id
+    expect(store.selectedNodeId).toBe(id)
+  })
+
   it('isRunning starts as false', () => {
     const store = useBuilderStore()
     expect(store.isRunning).toBe(false)
