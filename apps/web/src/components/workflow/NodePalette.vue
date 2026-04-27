@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, markRaw } from 'vue'
+import type { Component } from 'vue'
 import {
   ArrowRightFromLine, ArrowRightToLine, ArrowLeftRight,
   GitBranch, Globe, Database, Table2,
@@ -10,7 +11,7 @@ interface PaletteItem {
   key: string
   label: string
   description: string
-  icon: unknown
+  icon: Component
   accentColor: string
   dragType: NodeType
   dragConfig?: Record<string, unknown>
@@ -20,23 +21,23 @@ const sections: Array<{ title: string; items: PaletteItem[] }> = [
   {
     title: 'Data Flow',
     items: [
-      { key: 'source', label: 'Source', description: 'Read from any connector', icon: ArrowRightFromLine, accentColor: '#3b82f6', dragType: 'connector.source' },
-      { key: 'destination', label: 'Destination', description: 'Write to any connector', icon: ArrowRightToLine, accentColor: '#22c55e', dragType: 'connector.destination' },
+      { key: 'source', label: 'Source', description: 'Read from any connector', icon: markRaw(ArrowRightFromLine), accentColor: '#3b82f6', dragType: 'connector.source' },
+      { key: 'destination', label: 'Destination', description: 'Write to any connector', icon: markRaw(ArrowRightToLine), accentColor: '#22c55e', dragType: 'connector.destination' },
     ],
   },
   {
     title: 'Logic',
     items: [
-      { key: 'transform', label: 'Transform', description: 'Map / reshape data', icon: ArrowLeftRight, accentColor: '#f59e0b', dragType: 'transform.map' },
-      { key: 'branch', label: 'Branch', description: 'Conditional routing', icon: GitBranch, accentColor: '#a855f7', dragType: 'logic.branch' },
+      { key: 'transform', label: 'Transform', description: 'Map / reshape data', icon: markRaw(ArrowLeftRight), accentColor: '#f59e0b', dragType: 'transform.map' },
+      { key: 'branch', label: 'Branch', description: 'Conditional routing', icon: markRaw(GitBranch), accentColor: '#a855f7', dragType: 'logic.branch' },
     ],
   },
   {
     title: 'Connectors',
     items: [
-      { key: 'http-rest', label: 'HTTP / REST', description: 'GET · POST · PUT · DELETE', icon: Globe, accentColor: '#3b82f6', dragType: 'connector.source', dragConfig: { connectorType: 'http-rest' } },
-      { key: 'postgres', label: 'Postgres', description: 'Query or write rows', icon: Database, accentColor: '#22c55e', dragType: 'connector.source', dragConfig: { connectorType: 'postgres' } },
-      { key: 'statcan', label: 'StatCan', description: 'Statistics Canada data', icon: Table2, accentColor: '#ca8a04', dragType: 'connector.source', dragConfig: { connectorType: 'statcan' } },
+      { key: 'http-rest', label: 'HTTP / REST', description: 'GET · POST · PUT · DELETE', icon: markRaw(Globe), accentColor: '#3b82f6', dragType: 'connector.source', dragConfig: { connectorType: 'http-rest' } },
+      { key: 'postgres', label: 'Postgres', description: 'Query or write rows', icon: markRaw(Database), accentColor: '#22c55e', dragType: 'connector.source', dragConfig: { connectorType: 'postgres' } },
+      { key: 'statcan', label: 'StatCan', description: 'Statistics Canada data', icon: markRaw(Table2), accentColor: '#ca8a04', dragType: 'connector.source', dragConfig: { connectorType: 'statcan' } },
     ],
   },
 ]

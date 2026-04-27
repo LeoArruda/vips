@@ -68,6 +68,8 @@ function onDrop(event: DragEvent) {
     const parsed = JSON.parse(raw) as { type: NodeType; config?: Record<string, unknown>; label?: string }
     store.addNode(parsed.type, position, parsed.config ?? {}, parsed.label)
   } catch {
+    const validTypes = ['connector.source', 'connector.destination', 'transform.map', 'logic.branch', 'trigger'] as const
+    if (!(validTypes as readonly string[]).includes(raw)) return
     store.addNode(raw as NodeType, position)
   }
 }
