@@ -40,7 +40,7 @@ export function useNodePreview(getConfig: () => Record<string, unknown>) {
       | { rowCount?: number; error?: string }
       | undefined
     if (!out) return null
-    if (out.error) return `✗ ${out.error.slice(0, 32)}`
+    if (out.error) return `✗ ${String(out.error)}`
     return `✓ ${out.rowCount ?? 0} rows`
   })
 
