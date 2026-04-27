@@ -84,13 +84,20 @@ export const useBuilderStore = defineStore('builder', () => {
   )
 
   function loadWorkflow(workflowId: string) {
+    // Always set currentWorkflowId so the toolbar Run button becomes enabled
+    currentWorkflowId.value = workflowId
+    selectedNodeId.value = null
+
     const workflowsStore = useWorkflowsStore()
     const def = workflowsStore.getDefinition(workflowId)
-    if (!def) return
+    if (!def) {
+      // New or unloaded workflow — start with an empty canvas
+      nodes.value = []
+      edges.value = []
+      return
+    }
 
-    currentWorkflowId.value = workflowId
     const positions = WORKFLOW_POSITIONS[workflowId] ?? {}
-
     nodes.value = def.nodes.map((n, i) => ({
       id: n.id,
       type: nodeTypeToVueFlowType(n.type),
@@ -103,14 +110,29 @@ export const useBuilderStore = defineStore('builder', () => {
         status: 'pending' as NodeStatus,
       },
     }))
+    edges.value = def.edges.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+  }
 
-    edges.value = def.edges.map((e) => ({
-      id: e.id,
-      source: e.source,
-      target: e.target,
+  async function saveWorkflow() {
+    if (!currentWorkflowId.value) return
+    const workflowsStore = useWorkflowsStore()
+    const workflowNodes = nodes.value.map((n) => ({
+      id: n.id,
+      type: n.data.nodeType,
+      label: n.data.label,
+      config: n.data.config,
+      connectorId: n.data.connectorId,
+      position: n.position,
     }))
+    const workflowEdges = edges.value.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+    await workflowsStore.update(currentWorkflowId.value, { nodes: workflowNodes, edges: workflowEdges })
+  }
 
-    selectedNodeId.value = null
+  async function publishWorkflow() {
+    if (!currentWorkflowId.value) return
+    await saveWorkflow()
+    const workflowsStore = useWorkflowsStore()
+    await workflowsStore.update(currentWorkflowId.value, { status: 'published' })
   }
 
   function selectNode(nodeId: string | null) {
@@ -177,6 +199,8 @@ export const useBuilderStore = defineStore('builder', () => {
     clearSelection,
     addNode,
     updateNodeConfig,
+    saveWorkflow,
+    publishWorkflow,
     simulateRun,
   }
 })
