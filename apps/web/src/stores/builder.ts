@@ -121,6 +121,12 @@ export const useBuilderStore = defineStore('builder', () => {
     selectedNodeId.value = null
   }
 
+  function updateNodeConfig(nodeId: string, config: Record<string, unknown>) {
+    nodes.value = nodes.value.map((n) =>
+      n.id === nodeId ? { ...n, data: { ...n.data, config: { ...n.data.config, ...config } } } : n,
+    )
+  }
+
   function addNode(type: NodeType, position: { x: number; y: number }) {
     const id = `node_${Date.now()}`
     nodes.value.push({
@@ -170,6 +176,7 @@ export const useBuilderStore = defineStore('builder', () => {
     selectNode,
     clearSelection,
     addNode,
+    updateNodeConfig,
     simulateRun,
   }
 })
