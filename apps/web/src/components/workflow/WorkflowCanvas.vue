@@ -55,15 +55,21 @@ function onDragOver(event: DragEvent) {
 
 function onDrop(event: DragEvent) {
   event.preventDefault()
-  const type = event.dataTransfer?.getData('application/vueflow-node') as NodeType | undefined
-  if (!type) return
+  const raw = event.dataTransfer?.getData('application/vueflow-node')
+  if (!raw) return
 
   const position: XYPosition = screenToFlowCoordinate({
     x: event.clientX,
     y: event.clientY,
   })
 
-  store.addNode(type, position)
+  // Connector items encode JSON { type, config, label }; generic items are plain strings
+  try {
+    const parsed = JSON.parse(raw) as { type: NodeType; config?: Record<string, unknown>; label?: string }
+    store.addNode(parsed.type, position, parsed.config ?? {}, parsed.label)
+  } catch {
+    store.addNode(raw as NodeType, position)
+  }
 }
 </script>
 
