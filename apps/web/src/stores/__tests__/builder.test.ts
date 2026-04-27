@@ -33,6 +33,8 @@ const stubDefinitions: Record<string, { nodes: unknown[]; edges: unknown[] }> = 
 vi.mock('../workflows', () => ({
   useWorkflowsStore: () => ({
     getDefinition: (id: string) => stubDefinitions[id] ?? undefined,
+    fetchDefinition: async (id: string) => stubDefinitions[id] ?? undefined,
+    update: vi.fn().mockResolvedValue({}),
   }),
 }))
 

@@ -83,25 +83,27 @@ export const useBuilderStore = defineStore('builder', () => {
     () => nodes.value.find((n) => n.id === selectedNodeId.value) ?? null,
   )
 
-  function loadWorkflow(workflowId: string) {
-    // Always set currentWorkflowId so the toolbar Run button becomes enabled
+  async function loadWorkflow(workflowId: string) {
     currentWorkflowId.value = workflowId
     selectedNodeId.value = null
+    nodes.value = []
+    edges.value = []
 
     const workflowsStore = useWorkflowsStore()
-    const def = workflowsStore.getDefinition(workflowId)
+
+    // Try in-memory cache first; if absent, fetch from the API
+    let def = workflowsStore.getDefinition(workflowId)
     if (!def) {
-      // New or unloaded workflow — start with an empty canvas
-      nodes.value = []
-      edges.value = []
-      return
+      def = await workflowsStore.fetchDefinition(workflowId)
     }
+
+    if (!def || !def.nodes?.length) return
 
     const positions = WORKFLOW_POSITIONS[workflowId] ?? {}
     nodes.value = def.nodes.map((n, i) => ({
       id: n.id,
       type: nodeTypeToVueFlowType(n.type),
-      position: positions[n.id] ?? { x: 50 + i * 270, y: 150 },
+      position: n.position ?? positions[n.id] ?? { x: 50 + i * 270, y: 150 },
       data: {
         label: n.label,
         config: n.config,
@@ -126,6 +128,8 @@ export const useBuilderStore = defineStore('builder', () => {
     }))
     const workflowEdges = edges.value.map((e) => ({ id: e.id, source: e.source, target: e.target }))
     await workflowsStore.update(currentWorkflowId.value, { nodes: workflowNodes, edges: workflowEdges })
+    // Invalidate the cache so the next loadWorkflow fetches the freshly saved definition
+    await workflowsStore.fetchDefinition(currentWorkflowId.value)
   }
 
   async function publishWorkflow() {

@@ -10,9 +10,9 @@ import NodeConfigPanel from '@/components/workflow/NodeConfigPanel.vue'
 const route = useRoute()
 const store = useBuilderStore()
 
-function load() {
+async function load() {
   const id = route.params.id as string
-  if (id) store.loadWorkflow(id)
+  if (id) await store.loadWorkflow(id)
 }
 
 onMounted(load)
