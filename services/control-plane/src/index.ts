@@ -34,4 +34,5 @@ app.onError((err, c) => {
 const port = parseInt(process.env.CONTROL_PLANE_PORT ?? '3001', 10)
 console.log(`Control plane listening on port ${port}`)
 
+export { app }
 export default { port, fetch: app.fetch }

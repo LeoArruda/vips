@@ -13,3 +13,10 @@ if (typeof localStorage === 'undefined' || typeof localStorage.getItem !== 'func
     key: (index: number) => Array.from(store.keys())[index] ?? null,
   }
 }
+
+import { beforeAll, afterEach, afterAll } from 'vitest'
+import { server } from './mocks/server.ts'
+
+beforeAll(() => server.listen({ onUnhandledRequest: 'bypass' }))
+afterEach(() => server.resetHandlers())
+afterAll(() => server.close())

@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main, 'feat/**', 'fix/**']
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ── Fast unit tests — run on every PR and push ─────────────────────────────
+  unit-tests:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install control plane deps
+        run: cd services/control-plane && bun install --frozen-lockfile
+
+      - name: Install runtime deps
+        run: cd services/runtime && bun install --frozen-lockfile
+
+      - name: Install frontend deps
+        run: cd apps/web && npm ci
+
+      - name: Test — control plane unit
+        run: cd services/control-plane && npm test
+
+      - name: Test — runtime unit
+        run: cd services/runtime && bun test
+
+      - name: Test — frontend unit
+        run: cd apps/web && npm test -- --run
+
+  # ── Security audit — run on PRs to main ────────────────────────────────────
+  audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' && github.base_ref == 'main'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Frontend npm audit
+        run: cd apps/web && npm audit --audit-level=high
+        continue-on-error: true
+
+  # ── E2E tests — run on push to main only ───────────────────────────────────
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [unit-tests]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: apps/web/package-lock.json
+
+      - name: Install Supabase CLI
+        run: |
+          brew install supabase/tap/supabase
+        env:
+          HOMEBREW_NO_AUTO_UPDATE: 1
+
+      - name: Install all deps
+        run: |
+          cd apps/web && npm ci
+          cd ../services/control-plane && bun install --frozen-lockfile
+          cd ../services/runtime && bun install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: cd apps/web && npx playwright install --with-deps chromium
+
+      - name: Start Supabase local stack
+        run: |
+          supabase start
+          echo "SUPABASE_URL=http://127.0.0.1:54321" >> $GITHUB_ENV
+          supabase status -o env >> $GITHUB_ENV
+
+      - name: Apply migrations
+        run: supabase db push
+
+      - name: Generate secrets
+        run: |
+          echo "SECRETS_ENCRYPTION_KEY=$(openssl rand -hex 32)" >> $GITHUB_ENV
+          echo "WORKER_KEY=$(openssl rand -hex 16)" >> $GITHUB_ENV
+
+      - name: Start control plane
+        run: |
+          cd services/control-plane && bun src/index.ts &
+          sleep 5
+
+      - name: Start runtime worker
+        run: |
+          cd services/runtime && bun src/index.ts &
+          sleep 3
+
+      - name: Run E2E tests
+        run: cd apps/web && npm run test:e2e
+        env:
+          CI: true

@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "start": "bun src/index.ts",
-    "test": "bun test"
+    "test": "bun test src/__tests__/*.test.ts",
+    "test:integration": "bun test --env-file=../../.env src/__tests__/integration/"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.43.0",
