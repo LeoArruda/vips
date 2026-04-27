@@ -1,39 +1,103 @@
 <script setup lang="ts">
+import { computed } from 'vue'
 import { Handle, Position } from '@vue-flow/core'
 import { ArrowLeftRight } from 'lucide-vue-next'
 import type { BuilderNodeData } from '@/stores/builder'
+import { useNodePreview } from './useNodePreview'
 
 const props = defineProps<{ data: BuilderNodeData; selected: boolean }>()
+
+const outputCount = computed(() => (props.data.config.outputs as number | undefined) ?? 1)
+
+function handleTop(i: number, total: number): string {
+  return `${((i + 1) / (total + 1)) * 100}%`
+}
+
+const { activeTab, outputHint } = useNodePreview(() => props.data.config)
+
+const subLabel = computed(() => {
+  const count = outputCount.value
+  return count > 1 ? `${count} outputs` : '1 output'
+})
 </script>
 
 <template>
   <div
-    class="relative flex min-w-[200px] overflow-visible rounded-lg border bg-white shadow-sm transition-all"
+    class="relative w-40 overflow-visible rounded-lg border bg-white shadow-sm"
     :class="{
-      'border-amber-500 shadow-amber-100 shadow-md ring-2 ring-amber-500/20': props.selected,
-      'border-gray-200': !props.selected && props.data.status === 'pending',
+      'border-amber-500 ring-2 ring-amber-500/20 shadow-amber-100 shadow-md': props.selected,
+      'border-slate-200': !props.selected && props.data.status === 'pending',
       'border-amber-400': !props.selected && props.data.status === 'running',
       'border-green-500': !props.selected && props.data.status === 'success',
       'border-red-500': !props.selected && props.data.status === 'failed',
     }"
   >
-    <Handle type="target" :position="Position.Left"
-      class="!h-3 !w-3 !border-2 !border-amber-400 !bg-white opacity-60 hover:!opacity-100" />
-    <Handle type="source" :position="Position.Right"
-      class="!h-3 !w-3 !border-2 !border-amber-400 !bg-white opacity-60 hover:!opacity-100" />
-    <div class="flex w-12 flex-shrink-0 items-center justify-center rounded-l-lg bg-amber-500 py-3">
-      <ArrowLeftRight class="h-5 w-5 text-white" />
+    <!-- Accent bar -->
+    <div class="h-[5px] rounded-t-[7px] bg-amber-500" />
+
+    <!-- Input handle -->
+    <Handle
+      type="target"
+      :position="Position.Left"
+      class="!h-2.5 !w-2.5 !border-2 !border-amber-400 !bg-white"
+    />
+
+    <!-- Output handles (dynamic count) -->
+    <Handle
+      v-for="i in outputCount"
+      :key="i"
+      type="source"
+      :position="Position.Right"
+      :id="`output-${i - 1}`"
+      :style="{ top: handleTop(i - 1, outputCount.value) }"
+      class="!h-2.5 !w-2.5 !border-2 !border-amber-400 !bg-white"
+    />
+
+    <!-- Icon + name -->
+    <div class="flex items-center gap-2 px-3 pb-1 pt-[7px]">
+      <div class="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-[5px] bg-amber-50">
+        <ArrowLeftRight class="h-3.5 w-3.5 text-amber-500" />
+      </div>
+      <span class="truncate text-[12px] font-semibold leading-tight text-slate-800">{{ props.data.label }}</span>
     </div>
-    <div class="flex flex-1 flex-col justify-center px-3 py-2.5">
-      <div class="text-[10px] font-semibold uppercase tracking-widest text-gray-400">Transform</div>
-      <div class="mt-0.5 text-sm font-semibold leading-tight text-gray-800">{{ props.data.label }}</div>
+
+    <!-- Sub-label -->
+    <div class="truncate px-3 pb-[6px] text-[10px] leading-tight text-slate-400">{{ subLabel }}</div>
+
+    <!-- Preview band -->
+    <div class="rounded-b-[7px] border-t border-slate-100">
+      <div class="flex">
+        <button
+          class="flex-1 py-[3px] text-[10px] font-semibold transition-colors"
+          :class="activeTab === 'schema' ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-slate-400 hover:text-slate-600'"
+          @click.stop="activeTab = 'schema'"
+        >Schema</button>
+        <button
+          class="flex-1 py-[3px] text-[10px] font-semibold transition-colors"
+          :class="activeTab === 'output' ? 'border-b-2 border-indigo-500 text-indigo-600' : 'text-slate-400 hover:text-slate-600'"
+          @click.stop="activeTab = 'output'"
+        >Output</button>
+      </div>
+      <div class="px-3 py-[4px]">
+        <template v-if="activeTab === 'schema'">
+          <span class="block truncate font-mono text-[10px] text-violet-600">{{ subLabel }}</span>
+        </template>
+        <template v-else>
+          <span v-if="outputHint" class="block truncate font-mono text-[10px] text-green-600">{{ outputHint }}</span>
+          <span v-else class="block truncate text-[10px] italic text-slate-300">Run to see output</span>
+        </template>
+      </div>
     </div>
-    <div v-if="props.data.status !== 'pending'"
-      class="absolute -right-1 -top-1 h-3 w-3 rounded-full border-2 border-white"
+
+    <!-- Status dot -->
+    <div
+      v-if="props.data.status !== 'pending'"
+      class="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-white"
       :class="{
         'animate-pulse bg-amber-500': props.data.status === 'running',
         'bg-green-500': props.data.status === 'success',
         'bg-red-500': props.data.status === 'failed',
-      }" />
+      }"
+    />
   </div>
 </template>
