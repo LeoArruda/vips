@@ -20,15 +20,17 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => session.value !== null)
 
   async function init() {
-    try {
-      const { data } = await supabase.auth.getSession()
-      if (data.session) await loadMe()
-    } catch {
-      // getSession failed (e.g. network unavailable) — start unauthenticated
-    }
+    // onAuthStateChange fires INITIAL_SESSION on startup with the stored session,
+    // TOKEN_REFRESHED when the access token is silently renewed, and SIGNED_IN on login.
+    // Handling all three here means we don't need to call getSession() separately,
+    // and we never call loadMe() with a stale token before the refresh fires.
     supabase.auth.onAuthStateChange(async (event) => {
-      if (event === 'SIGNED_IN') await loadMe()
-      if (event === 'SIGNED_OUT') session.value = null
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') {
+        await loadMe()
+      }
+      if (event === 'SIGNED_OUT') {
+        session.value = null
+      }
     })
   }
 
