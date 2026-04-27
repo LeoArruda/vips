@@ -153,19 +153,25 @@ export const useBuilderStore = defineStore('builder', () => {
     )
   }
 
-  function addNode(type: NodeType, position: { x: number; y: number }) {
+  function addNode(
+    type: NodeType,
+    position: { x: number; y: number },
+    initialConfig: Record<string, unknown> = {},
+    label?: string,
+  ) {
     const id = `node_${Date.now()}`
     nodes.value.push({
       id,
       type: nodeTypeToVueFlowType(type),
       position,
       data: {
-        label: defaultLabelForType(type),
-        config: {},
+        label: label ?? defaultLabelForType(type),
+        config: initialConfig,
         nodeType: type,
         status: 'pending',
       },
     })
+    selectedNodeId.value = id   // auto-open inspector
   }
 
   async function simulateRun() {
