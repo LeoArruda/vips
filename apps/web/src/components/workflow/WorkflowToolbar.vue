@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { Play, Save, Rocket, Loader2 } from 'lucide-vue-next'
+import { Play, Save, Rocket, Loader2, Check } from 'lucide-vue-next'
 import { useBuilderStore } from '@/stores/builder'
 import { useWorkflowsStore } from '@/stores/workflows'
 import { useRunsStore } from '@/stores/runs'
@@ -12,7 +12,32 @@ const workflowsStore = useWorkflowsStore()
 const runsStore = useRunsStore()
 
 const isRunning = ref(false)
+const isSaving = ref(false)
+const saveOk = ref(false)
 const runError = ref<string | null>(null)
+
+async function save() {
+  if (isSaving.value) return
+  isSaving.value = true
+  try {
+    await builderStore.saveWorkflow()
+    saveOk.value = true
+    setTimeout(() => { saveOk.value = false }, 2000)
+  } finally {
+    isSaving.value = false
+  }
+}
+
+async function publish() {
+  isSaving.value = true
+  try {
+    await builderStore.publishWorkflow()
+    saveOk.value = true
+    setTimeout(() => { saveOk.value = false }, 2000)
+  } finally {
+    isSaving.value = false
+  }
+}
 
 const workflow = computed(() =>
   builderStore.currentWorkflowId
@@ -59,15 +84,22 @@ async function triggerRun() {
     <div class="flex items-center gap-2">
       <span v-if="runError" class="text-xs text-red-500">{{ runError }}</span>
       <button
-        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted"
-        title="Save (demo)"
+        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium transition-colors hover:bg-muted disabled:opacity-40"
+        :class="saveOk ? 'text-green-600' : 'text-muted-foreground'"
+        :disabled="!builderStore.currentWorkflowId || isSaving"
+        title="Save workflow"
+        @click="save"
       >
-        <Save class="h-3.5 w-3.5" />
+        <Check v-if="saveOk" class="h-3.5 w-3.5" />
+        <Loader2 v-else-if="isSaving" class="h-3.5 w-3.5 animate-spin" />
+        <Save v-else class="h-3.5 w-3.5" />
         Save
       </button>
       <button
-        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted"
-        title="Publish (demo)"
+        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-muted-foreground transition-colors hover:bg-muted disabled:opacity-40"
+        :disabled="!builderStore.currentWorkflowId || isSaving"
+        title="Save and publish workflow"
+        @click="publish"
       >
         <Rocket class="h-3.5 w-3.5" />
         Publish

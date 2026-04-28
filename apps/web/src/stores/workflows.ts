@@ -41,20 +41,40 @@ export const useWorkflowsStore = defineStore('workflows', () => {
 
   async function fetchDefinition(workflowId: string): Promise<WorkflowDefinition | undefined> {
     try {
-      const data = await api.get<WorkflowDefinition>(`/workflows/${workflowId}`)
-      if (!data) return undefined
-      definitions.value.set(workflowId, data)
-      return data
+      // The API returns the raw Postgres row: { id, name, status, version, definition: { trigger, nodes, edges }, ... }
+      // The workflow graph is nested inside row.definition (a JSONB column).
+      const row = await api.get<Record<string, unknown>>(`/workflows/${workflowId}`)
+      if (!row) return undefined
+
+      const inner = (row.definition ?? {}) as {
+        trigger?: WorkflowDefinition['trigger']
+        nodes?: WorkflowDefinition['nodes']
+        edges?: WorkflowDefinition['edges']
+      }
+
+      const def: WorkflowDefinition = {
+        workflowId: row.id as string,
+        name: row.name as string,
+        status: row.status as WorkflowDefinition['status'],
+        version: (row.version as number) ?? 1,
+        trigger: inner.trigger ?? { type: 'manual' },
+        nodes: inner.nodes ?? [],
+        edges: inner.edges ?? [],
+      }
+
+      definitions.value.set(workflowId, def)
+      return def
     } catch {
       return undefined
     }
   }
 
   async function create(payload: CreateWorkflowRequest): Promise<WorkflowSummary> {
-    const data = await api.post<WorkflowSummary>('/workflows', payload)
-    if (!data) throw new Error('Create workflow returned no data')
-    summaries.value.unshift(data)
-    return data
+    const raw = await api.post<Record<string, unknown>>('/workflows', payload)
+    if (!raw) throw new Error('Create workflow returned no data')
+    const summary = mapRow(raw)
+    summaries.value.unshift(summary)
+    return summary
   }
 
   async function update(workflowId: string, payload: UpdateWorkflowRequest): Promise<WorkflowSummary> {

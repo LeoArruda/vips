@@ -6,7 +6,9 @@ import AppShell from '@/components/layout/AppShell.vue'
 
 const route = useRoute()
 const auth = useAuthStore()
-const useShell = computed(() => route.path !== '/embedded')
+const useShell = computed(
+  () => !route.path.startsWith('/auth/') && route.path !== '/embedded',
+)
 
 onMounted(() => auth.init())
 </script>

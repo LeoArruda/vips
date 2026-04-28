@@ -83,18 +83,27 @@ export const useBuilderStore = defineStore('builder', () => {
     () => nodes.value.find((n) => n.id === selectedNodeId.value) ?? null,
   )
 
-  function loadWorkflow(workflowId: string) {
-    const workflowsStore = useWorkflowsStore()
-    const def = workflowsStore.getDefinition(workflowId)
-    if (!def) return
-
+  async function loadWorkflow(workflowId: string) {
     currentWorkflowId.value = workflowId
-    const positions = WORKFLOW_POSITIONS[workflowId] ?? {}
+    selectedNodeId.value = null
+    nodes.value = []
+    edges.value = []
 
+    const workflowsStore = useWorkflowsStore()
+
+    // Try in-memory cache first; if absent, fetch from the API
+    let def = workflowsStore.getDefinition(workflowId)
+    if (!def) {
+      def = await workflowsStore.fetchDefinition(workflowId)
+    }
+
+    if (!def || !def.nodes?.length) return
+
+    const positions = WORKFLOW_POSITIONS[workflowId] ?? {}
     nodes.value = def.nodes.map((n, i) => ({
       id: n.id,
       type: nodeTypeToVueFlowType(n.type),
-      position: positions[n.id] ?? { x: 50 + i * 270, y: 150 },
+      position: n.position ?? positions[n.id] ?? { x: 50 + i * 270, y: 150 },
       data: {
         label: n.label,
         config: n.config,
@@ -103,14 +112,31 @@ export const useBuilderStore = defineStore('builder', () => {
         status: 'pending' as NodeStatus,
       },
     }))
+    edges.value = def.edges.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+  }
 
-    edges.value = def.edges.map((e) => ({
-      id: e.id,
-      source: e.source,
-      target: e.target,
+  async function saveWorkflow() {
+    if (!currentWorkflowId.value) return
+    const workflowsStore = useWorkflowsStore()
+    const workflowNodes = nodes.value.map((n) => ({
+      id: n.id,
+      type: n.data.nodeType,
+      label: n.data.label,
+      config: n.data.config,
+      connectorId: n.data.connectorId,
+      position: n.position,
     }))
+    const workflowEdges = edges.value.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+    await workflowsStore.update(currentWorkflowId.value, { nodes: workflowNodes, edges: workflowEdges })
+    // Invalidate the cache so the next loadWorkflow fetches the freshly saved definition
+    await workflowsStore.fetchDefinition(currentWorkflowId.value)
+  }
 
-    selectedNodeId.value = null
+  async function publishWorkflow() {
+    if (!currentWorkflowId.value) return
+    await saveWorkflow()
+    const workflowsStore = useWorkflowsStore()
+    await workflowsStore.update(currentWorkflowId.value, { status: 'published' })
   }
 
   function selectNode(nodeId: string | null) {
@@ -121,19 +147,31 @@ export const useBuilderStore = defineStore('builder', () => {
     selectedNodeId.value = null
   }
 
-  function addNode(type: NodeType, position: { x: number; y: number }) {
+  function updateNodeConfig(nodeId: string, config: Record<string, unknown>) {
+    nodes.value = nodes.value.map((n) =>
+      n.id === nodeId ? { ...n, data: { ...n.data, config: { ...n.data.config, ...config } } } : n,
+    )
+  }
+
+  function addNode(
+    type: NodeType,
+    position: { x: number; y: number },
+    initialConfig: Record<string, unknown> = {},
+    label?: string,
+  ) {
     const id = `node_${Date.now()}`
     nodes.value.push({
       id,
       type: nodeTypeToVueFlowType(type),
       position,
       data: {
-        label: defaultLabelForType(type),
-        config: {},
+        label: label ?? defaultLabelForType(type),
+        config: initialConfig,
         nodeType: type,
         status: 'pending',
       },
     })
+    selectedNodeId.value = id   // auto-open inspector
   }
 
   async function simulateRun() {
@@ -170,6 +208,9 @@ export const useBuilderStore = defineStore('builder', () => {
     selectNode,
     clearSelection,
     addNode,
+    updateNodeConfig,
+    saveWorkflow,
+    publishWorkflow,
     simulateRun,
   }
 })

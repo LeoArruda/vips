@@ -33,7 +33,10 @@ const defaultEdgeOptions = {
   style: { stroke: '#9ca3af', strokeWidth: 2 },
 }
 
-const hasWorkflow = computed(() => store.nodes.length > 0)
+// Show the canvas whenever a workflow is selected — even if it has no nodes yet.
+// The empty-nodes state gets its own lighter prompt; the "no workflow" state is for null currentWorkflowId.
+const workflowSelected = computed(() => store.currentWorkflowId !== null)
+const hasNodes = computed(() => store.nodes.length > 0)
 
 function onNodeClick({ node }: NodeMouseEvent) {
   store.selectNode(node.id)
@@ -52,22 +55,30 @@ function onDragOver(event: DragEvent) {
 
 function onDrop(event: DragEvent) {
   event.preventDefault()
-  const type = event.dataTransfer?.getData('application/vueflow-node') as NodeType | undefined
-  if (!type) return
+  const raw = event.dataTransfer?.getData('application/vueflow-node')
+  if (!raw) return
 
   const position: XYPosition = screenToFlowCoordinate({
     x: event.clientX,
     y: event.clientY,
   })
 
-  store.addNode(type, position)
+  // Connector items encode JSON { type, config, label }; generic items are plain strings
+  try {
+    const parsed = JSON.parse(raw) as { type: NodeType; config?: Record<string, unknown>; label?: string }
+    store.addNode(parsed.type, position, parsed.config ?? {}, parsed.label)
+  } catch {
+    const validTypes = ['connector.source', 'connector.destination', 'transform.map', 'logic.branch', 'trigger'] as const
+    if (!(validTypes as readonly string[]).includes(raw)) return
+    store.addNode(raw as NodeType, position)
+  }
 }
 </script>
 
 <template>
   <div class="relative h-full w-full" @dragover="onDragOver" @drop="onDrop">
+    <!-- VueFlow always rendered so Background dots are always visible -->
     <VueFlow
-      v-if="hasWorkflow"
       :nodes="store.nodes"
       :edges="store.edges"
       :node-types="nodeTypes"
@@ -77,17 +88,28 @@ function onDrop(event: DragEvent) {
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
     >
-      <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1" color="#d1d5db" />
+      <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1.5" color="#d1d5db" />
       <Controls />
-      <MiniMap node-color="#e5e7eb" mask-color="rgba(255,255,255,0.7)" />
+      <MiniMap v-if="hasNodes" node-color="#e5e7eb" mask-color="rgba(255,255,255,0.7)" />
     </VueFlow>
 
+    <!-- Overlay: no workflow selected -->
     <div
-      v-else
-      class="flex h-full flex-col items-center justify-center gap-3 bg-gray-50 text-muted-foreground"
+      v-if="!workflowSelected"
+      class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground"
     >
       <div class="text-5xl opacity-20">⬡</div>
       <p class="text-sm">No workflow loaded. Select one from Workflows.</p>
+    </div>
+
+    <!-- Overlay: workflow selected but canvas is empty -->
+    <div
+      v-else-if="!hasNodes"
+      class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-3 text-muted-foreground"
+    >
+      <div class="text-5xl opacity-20">⬡</div>
+      <p class="text-sm font-medium">Drag a node from the left panel to get started</p>
+      <p class="text-xs">Add a Source node and configure it in the inspector</p>
     </div>
   </div>
 </template>

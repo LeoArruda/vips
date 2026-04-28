@@ -20,15 +20,17 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => session.value !== null)
 
   async function init() {
-    try {
-      const { data } = await supabase.auth.getSession()
-      if (data.session) await loadMe()
-    } catch {
-      // getSession failed (e.g. network unavailable) — start unauthenticated
-    }
-    supabase.auth.onAuthStateChange(async (event) => {
-      if (event === 'SIGNED_IN') await loadMe()
-      if (event === 'SIGNED_OUT') session.value = null
+    // INITIAL_SESSION fires on startup with the stored session (or null if none).
+    // TOKEN_REFRESHED fires when the access token is silently renewed.
+    // Skip loadMe() when there is no session — avoids spurious 401s on startup
+    // and the transient 403 that fires during signup before signup-complete runs.
+    supabase.auth.onAuthStateChange(async (event, authSession) => {
+      if ((event === 'TOKEN_REFRESHED' || event === 'INITIAL_SESSION') && authSession) {
+        await loadMe()
+      }
+      if (event === 'SIGNED_OUT') {
+        session.value = null
+      }
     })
   }
 
@@ -49,6 +51,13 @@ export const useAuthStore = defineStore('auth', () => {
       const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
       if (authError) throw authError
       await loadMe()
+      // If workspace is missing (signup-complete never ran, e.g. control plane was down at
+      // registration time), create it now — signup-complete is idempotent.
+      if (!session.value) {
+        await api.post('/auth/signup-complete', {})
+        await loadMe()
+      }
+      if (!session.value) throw new Error('Login failed — unable to load your account')
     } catch (e: unknown) {
       error.value = e instanceof Error ? e.message : (e as { message?: string })?.message ?? 'Login failed'
       throw e
