@@ -22,6 +22,8 @@ export interface BuilderEdge {
   id: string
   source: string
   target: string
+  sourceHandle?: string
+  targetHandle?: string
 }
 
 const WORKFLOW_POSITIONS: Record<string, Record<string, { x: number; y: number }>> = {
@@ -174,6 +176,45 @@ export const useBuilderStore = defineStore('builder', () => {
     selectedNodeId.value = id   // auto-open inspector
   }
 
+  function addEdge(connection: { source: string; target: string; sourceHandle?: string | null; targetHandle?: string | null }) {
+    const id = `edge_${Date.now()}`
+    edges.value.push({
+      id,
+      source: connection.source,
+      target: connection.target,
+      sourceHandle: connection.sourceHandle ?? undefined,
+      targetHandle: connection.targetHandle ?? undefined,
+    })
+  }
+
+  function resetNodeStatuses() {
+    nodes.value = nodes.value.map((n) => ({ ...n, data: { ...n.data, status: 'pending' as NodeStatus } }))
+  }
+
+  function applyRunLogs(logs: Array<{ node_id?: string; level: string; message: string }>) {
+    for (const log of logs) {
+      if (!log.node_id) continue
+      const nid = log.node_id
+      if (log.message.includes('Starting node')) {
+        nodes.value = nodes.value.map((n) =>
+          n.id === nid ? { ...n, data: { ...n.data, status: 'running' as NodeStatus } } : n,
+        )
+      } else if (log.message.includes('completed successfully') || log.message.match(/\d+ row/)) {
+        nodes.value = nodes.value.map((n) =>
+          n.id === nid ? { ...n, data: { ...n.data, status: 'success' as NodeStatus } } : n,
+        )
+      } else if (log.level === 'error') {
+        nodes.value = nodes.value.map((n) =>
+          n.id === nid ? { ...n, data: { ...n.data, status: 'failed' as NodeStatus } } : n,
+        )
+      }
+    }
+  }
+
+  function setAllNodeStatus(status: NodeStatus) {
+    nodes.value = nodes.value.map((n) => ({ ...n, data: { ...n.data, status } }))
+  }
+
   async function simulateRun() {
     if (isRunning.value) return
     isRunning.value = true
@@ -208,9 +249,13 @@ export const useBuilderStore = defineStore('builder', () => {
     selectNode,
     clearSelection,
     addNode,
+    addEdge,
     updateNodeConfig,
     saveWorkflow,
     publishWorkflow,
+    resetNodeStatuses,
+    applyRunLogs,
+    setAllNodeStatus,
     simulateRun,
   }
 })

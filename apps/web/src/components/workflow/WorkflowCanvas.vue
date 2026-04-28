@@ -7,7 +7,7 @@ import { Background, BackgroundVariant } from '@vue-flow/background'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/controls/dist/style.css'
 import '@vue-flow/minimap/dist/style.css'
-import type { NodeMouseEvent, XYPosition } from '@vue-flow/core'
+import type { NodeMouseEvent, XYPosition, Connection } from '@vue-flow/core'
 import { useBuilderStore } from '@/stores/builder'
 import SourceNode from './nodes/SourceNode.vue'
 import TransformNode from './nodes/TransformNode.vue'
@@ -44,6 +44,10 @@ function onNodeClick({ node }: NodeMouseEvent) {
 
 function onPaneClick() {
   store.clearSelection()
+}
+
+function onConnect(connection: Connection) {
+  store.addEdge(connection)
 }
 
 function onDragOver(event: DragEvent) {
@@ -87,6 +91,7 @@ function onDrop(event: DragEvent) {
       class="h-full w-full"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
+      @connect="onConnect"
     >
       <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1.5" color="#d1d5db" />
       <Controls />

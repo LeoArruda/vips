@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
-import { Play, Save, Rocket, Loader2, Check } from 'lucide-vue-next'
+import { Play, Save, Rocket, Loader2, Check, CheckCircle2, XCircle } from 'lucide-vue-next'
 import { useBuilderStore } from '@/stores/builder'
 import { useWorkflowsStore } from '@/stores/workflows'
 import { useRunsStore } from '@/stores/runs'
 
-const router = useRouter()
 const builderStore = useBuilderStore()
 const workflowsStore = useWorkflowsStore()
 const runsStore = useRunsStore()
@@ -15,6 +13,7 @@ const isRunning = ref(false)
 const isSaving = ref(false)
 const saveOk = ref(false)
 const runError = ref<string | null>(null)
+const runResult = ref<'success' | 'failed' | null>(null)
 
 async function save() {
   if (isSaving.value) return
@@ -55,11 +54,36 @@ async function triggerRun() {
   if (!builderStore.currentWorkflowId || isRunning.value) return
   isRunning.value = true
   runError.value = null
+  runResult.value = null
+  builderStore.resetNodeStatuses()
+
   try {
     const run = await runsStore.triggerRun(builderStore.currentWorkflowId)
-    if (run) router.push(`/runs/${run.id}`)
+    if (!run) throw new Error('Run could not be started')
+
+    // Poll until terminal state — max 2 minutes (60 × 2s)
+    for (let i = 0; i < 60; i++) {
+      await new Promise<void>((resolve) => setTimeout(resolve, 2000))
+      const detail = await runsStore.fetchDetail(run.id)
+      if (!detail) break
+
+      builderStore.applyRunLogs(detail.logs)
+
+      if (detail.status === 'success') {
+        builderStore.setAllNodeStatus('success')
+        runResult.value = 'success'
+        break
+      }
+      if (detail.status === 'failed') {
+        builderStore.setAllNodeStatus('failed')
+        runResult.value = 'failed'
+        runError.value = 'Run failed — check node logs'
+        break
+      }
+    }
   } catch (err) {
     runError.value = err instanceof Error ? err.message : 'Run failed'
+    builderStore.setAllNodeStatus('failed')
   } finally {
     isRunning.value = false
   }
@@ -105,13 +129,20 @@ async function triggerRun() {
         Publish
       </button>
       <button
-        class="flex items-center gap-1.5 rounded-[5px] bg-indigo-500 px-3 py-[5px] text-[11.5px] font-medium text-white transition-opacity hover:bg-indigo-600 disabled:opacity-50"
+        class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium text-white transition-opacity disabled:opacity-50"
+        :class="{
+          'bg-green-500 hover:bg-green-600': runResult === 'success',
+          'bg-red-500 hover:bg-red-600': runResult === 'failed',
+          'bg-indigo-500 hover:bg-indigo-600': !runResult,
+        }"
         :disabled="isRunning || !builderStore.currentWorkflowId || builderStore.nodes.length === 0"
         @click="triggerRun"
       >
         <Loader2 v-if="isRunning" class="h-3.5 w-3.5 animate-spin" />
+        <CheckCircle2 v-else-if="runResult === 'success'" class="h-3.5 w-3.5" />
+        <XCircle v-else-if="runResult === 'failed'" class="h-3.5 w-3.5" />
         <Play v-else class="h-3.5 w-3.5" />
-        {{ isRunning ? 'Starting…' : 'Run' }}
+        {{ isRunning ? 'Running…' : runResult === 'success' ? 'Done' : runResult === 'failed' ? 'Failed' : 'Run' }}
       </button>
     </div>
   </div>
