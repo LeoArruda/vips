@@ -23,6 +23,8 @@ function save() {
   const base: Record<string, unknown> = {
     connectorType: connectorType.value,
     outputs: outputs.value,
+    // Clear fields from other connector types so stale data doesn't persist
+    method: undefined, url: undefined, query: undefined, table_code: undefined,
   }
   if (connectorType.value === 'http-rest') {
     Object.assign(base, { method: method.value, url: url.value })

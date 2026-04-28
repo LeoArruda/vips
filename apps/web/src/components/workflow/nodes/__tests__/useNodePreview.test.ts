@@ -78,7 +78,7 @@ describe('useNodePreview — outputHint', () => {
     expect(outputHint.value).toBe('✓ 0 rows')
   })
 
-  it('returns truncated error message', () => {
+  it('returns full error message', () => {
     const { outputHint } = useNodePreview(() => ({ lastRunOutput: { error: 'Connection refused' } }))
     expect(outputHint.value).toBe('✗ Connection refused')
   })
