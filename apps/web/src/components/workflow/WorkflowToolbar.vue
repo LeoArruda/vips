@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onUnmounted } from 'vue'
 import { Play, Save, Rocket, Loader2, Check, CheckCircle2, XCircle } from 'lucide-vue-next'
 import { useBuilderStore } from '@/stores/builder'
 import { useWorkflowsStore } from '@/stores/workflows'
@@ -14,6 +14,8 @@ const isSaving = ref(false)
 const saveOk = ref(false)
 const runError = ref<string | null>(null)
 const runResult = ref<'success' | 'failed' | null>(null)
+let pollCancelled = false
+onUnmounted(() => { pollCancelled = true })
 
 async function save() {
   if (isSaving.value) return
@@ -61,11 +63,14 @@ async function triggerRun() {
     const run = await runsStore.triggerRun(builderStore.currentWorkflowId)
     if (!run) throw new Error('Run could not be started')
 
+    pollCancelled = false
     // Poll until terminal state — max 2 minutes (60 × 2s)
     for (let i = 0; i < 60; i++) {
       await new Promise<void>((resolve) => setTimeout(resolve, 2000))
+      if (pollCancelled) break
+
       const detail = await runsStore.fetchDetail(run.id)
-      if (!detail) break
+      if (!detail || pollCancelled) break
 
       builderStore.applyRunLogs(detail.logs)
 

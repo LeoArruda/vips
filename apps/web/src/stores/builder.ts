@@ -192,22 +192,41 @@ export const useBuilderStore = defineStore('builder', () => {
   }
 
   function applyRunLogs(logs: Array<{ node_id?: string; level: string; message: string }>) {
+    // Group all logs by node so we can derive status + output in one pass per node
+    const byNode = new Map<string, Array<{ level: string; message: string }>>()
     for (const log of logs) {
       if (!log.node_id) continue
-      const nid = log.node_id
-      if (log.message.includes('Starting node')) {
-        nodes.value = nodes.value.map((n) =>
-          n.id === nid ? { ...n, data: { ...n.data, status: 'running' as NodeStatus } } : n,
-        )
-      } else if (log.message.includes('completed successfully') || log.message.match(/\d+ row/)) {
-        nodes.value = nodes.value.map((n) =>
-          n.id === nid ? { ...n, data: { ...n.data, status: 'success' as NodeStatus } } : n,
-        )
-      } else if (log.level === 'error') {
-        nodes.value = nodes.value.map((n) =>
-          n.id === nid ? { ...n, data: { ...n.data, status: 'failed' as NodeStatus } } : n,
-        )
+      if (!byNode.has(log.node_id)) byNode.set(log.node_id, [])
+      byNode.get(log.node_id)!.push(log)
+    }
+
+    for (const [nid, nodeLogs] of byNode) {
+      const starting  = nodeLogs.some((l) => l.message.includes('Starting node'))
+      const completed = nodeLogs.some((l) => l.message.includes('completed successfully'))
+      const errorLog  = nodeLogs.find((l) => l.level === 'error')
+
+      let status: NodeStatus = 'pending'
+      if (starting)   status = 'running'
+      if (completed)  status = 'success'
+      if (errorLog)   status = 'failed'
+
+      // Extract row / data-point count from any connector-specific log message
+      let lastRunOutput: Record<string, unknown> | undefined
+      for (const log of nodeLogs) {
+        const countMatch = log.message.match(/(\d+)\s+(row|data point)/i)
+        if (countMatch) { lastRunOutput = { rowCount: parseInt(countMatch[1]) }; break }
+        // HTTP: "GET url → 200" — treat as 1 response
+        if (log.message.match(/→\s*\d{3}/)) { lastRunOutput = { rowCount: 1 }; break }
       }
+      if (errorLog) lastRunOutput = { error: errorLog.message }
+
+      nodes.value = nodes.value.map((n) => {
+        if (n.id !== nid) return n
+        const config = lastRunOutput !== undefined
+          ? { ...n.data.config, lastRunOutput }
+          : n.data.config
+        return { ...n, data: { ...n.data, status, config } }
+      })
     }
   }
 

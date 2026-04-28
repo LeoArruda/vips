@@ -87,7 +87,7 @@ function onDrop(event: DragEvent) {
       :edges="store.edges"
       :node-types="nodeTypes"
       :default-edge-options="defaultEdgeOptions"
-      fit-view-on-init
+      :fit-view-on-init="hasNodes"
       class="h-full w-full"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
