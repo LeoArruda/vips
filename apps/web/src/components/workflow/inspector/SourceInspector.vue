@@ -154,6 +154,7 @@ watch(() => props.data, (d) => {
           <div class="h-2 w-2 flex-shrink-0 rounded-full border-2 border-blue-400 bg-white" />
           <span class="flex-1 text-xs font-medium text-foreground">Output {{ i + 1 }}</span>
           <button
+            v-if="i === outputs - 1"
             class="text-muted-foreground/60 hover:text-red-400"
             :aria-label="`Remove output ${i + 1}`"
             @click="removeOutput"
