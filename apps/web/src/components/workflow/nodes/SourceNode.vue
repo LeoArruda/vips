@@ -37,7 +37,7 @@ const { activeTab, schemaHint, outputHint } = useNodePreview(() => props.data.co
       type="source"
       :position="Position.Right"
       :id="`output-${i - 1}`"
-      :style="{ top: handleTop(i - 1, outputCount.value) }"
+      :style="{ top: handleTop(i - 1, outputCount) }"
       class="!h-2.5 !w-2.5 !border-2 !border-blue-400 !bg-white"
     />
 
@@ -80,7 +80,7 @@ const { activeTab, schemaHint, outputHint } = useNodePreview(() => props.data.co
     <!-- Status dot -->
     <div
       v-if="props.data.status !== 'pending'"
-      class="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-white"
+      class="absolute -right-1 -top-1 h-2 w-2 rounded-full border-2 border-white"
       :class="{
         'animate-pulse bg-blue-500': props.data.status === 'running',
         'bg-green-500': props.data.status === 'success',

@@ -68,7 +68,7 @@ const { activeTab, schemaHint, outputHint } = useNodePreview(() => props.data.co
     <!-- Status dot -->
     <div
       v-if="props.data.status !== 'pending'"
-      class="absolute -right-1 -top-1 h-2 w-2 rounded-full border border-white"
+      class="absolute -right-1 -top-1 h-2 w-2 rounded-full border-2 border-white"
       :class="{
         'animate-pulse bg-green-400': props.data.status === 'running',
         'bg-green-600': props.data.status === 'success',
