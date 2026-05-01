@@ -1,7 +1,7 @@
 # Workflow Builder — Graph persistence & canvas state design
 
 **Date:** 2026-04-30  
-**Status:** Draft (user selected persistence option **C — hybrid**)  
+**Status:** Approved (persistence option **C — hybrid**; spec reviewed 2026-04-30)  
 **Scope:** How the Workflow Builder records, edits, and persists **nodes**, **edges**, and **positions** so deletes and layout stay correct across reloads, without ad-hoc fixes scattered across the canvas and stores.
 
 ---
