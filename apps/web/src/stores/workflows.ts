@@ -78,10 +78,15 @@ export const useWorkflowsStore = defineStore('workflows', () => {
   }
 
   async function update(workflowId: string, payload: UpdateWorkflowRequest): Promise<WorkflowSummary> {
-    const data = await api.put<WorkflowSummary>(`/workflows/${workflowId}`, payload)
-    if (!data) throw new Error('Update workflow returned no data')
+    const raw = await api.put<Record<string, unknown>>(`/workflows/${workflowId}`, payload)
+    if (!raw) throw new Error('Update workflow returned no data')
+    // Same shape as GET list: Postgres row (id, updated_at, definition.trigger, …)
+    const data = mapRow(raw)
     const idx = summaries.value.findIndex((w) => w.workflowId === workflowId)
     if (idx !== -1) summaries.value[idx] = data
+    // Invalidate the definition cache immediately so any concurrent or subsequent
+    // loadWorkflow call is forced to re-fetch instead of serving stale pre-save data.
+    definitions.value.delete(workflowId)
     return data
   }
 

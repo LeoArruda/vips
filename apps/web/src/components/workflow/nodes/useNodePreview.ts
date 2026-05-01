@@ -1,6 +1,8 @@
 import { ref, computed } from 'vue'
+import { useBuilderStore } from '@/stores/builder'
 
-export function useNodePreview(getConfig: () => Record<string, unknown>) {
+export function useNodePreview(nodeId: string, getConfig: () => Record<string, unknown>) {
+  const builderStore = useBuilderStore()
   const activeTab = ref<'schema' | 'output'>('schema')
 
   const schemaHint = computed((): string => {
@@ -35,14 +37,18 @@ export function useNodePreview(getConfig: () => Record<string, unknown>) {
     return ct
   })
 
-  const outputHint = computed((): string | null => {
-    const out = getConfig().lastRunOutput as
-      | { rowCount?: number; error?: string }
-      | undefined
-    if (!out) return null
-    if (out.error) return `✗ ${String(out.error)}`
-    return `✓ ${out.rowCount ?? 0} rows`
+  const runSchema = computed((): string | null => {
+    return builderStore.nodeOutputs[nodeId]?.schema ?? null
   })
 
-  return { activeTab, schemaHint, outputHint }
+  const outputHint = computed((): string | null => {
+    const out = builderStore.nodeOutputs[nodeId]
+    if (!out) return null
+    if (out.error) return `✗ ${String(out.error)}`
+    const count = out.rowCount ?? 0
+    const suffix = out.schema ? ` · ${out.schema}` : ''
+    return `✓ ${count} ${count === 1 ? 'record' : 'records'}${suffix}`
+  })
+
+  return { activeTab, schemaHint, runSchema, outputHint }
 }

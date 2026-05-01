@@ -1,0 +1,112 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: vipsOS
+      - button "Toggle sidebar" [expanded] [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+    - navigation [ref=e10]:
+      - generic [ref=e11]:
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+          - generic [ref=e18]: Dashboard
+        - generic: Dashboard
+      - paragraph [ref=e19]: BUILD
+      - generic [ref=e20]:
+        - link "Workflows" [ref=e21] [cursor=pointer]:
+          - /url: /workflows
+          - img [ref=e22]
+          - generic [ref=e26]: Workflows
+        - generic: Workflows
+      - generic [ref=e27]:
+        - link "Connectors" [ref=e28] [cursor=pointer]:
+          - /url: /connectors
+          - img [ref=e29]
+          - generic [ref=e31]: Connectors
+        - generic: Connectors
+      - generic [ref=e32]:
+        - link "Templates" [ref=e33] [cursor=pointer]:
+          - /url: /templates
+          - img [ref=e34]
+          - generic [ref=e37]: Templates
+        - generic: Templates
+      - generic [ref=e38]:
+        - link "Secrets" [ref=e39] [cursor=pointer]:
+          - /url: /secrets
+          - img [ref=e40]
+          - generic [ref=e43]: Secrets
+        - generic: Secrets
+      - paragraph [ref=e44]: OPERATE
+      - generic [ref=e45]:
+        - link "Runs" [ref=e46] [cursor=pointer]:
+          - /url: /runs
+          - img [ref=e47]
+          - generic [ref=e50]: Runs
+        - generic: Runs
+      - generic [ref=e51]:
+        - link "Monitoring" [ref=e52] [cursor=pointer]:
+          - /url: /monitoring
+          - img [ref=e53]
+          - generic [ref=e55]: Monitoring
+        - generic: Monitoring
+      - generic [ref=e56]:
+        - link "Alerts" [ref=e57] [cursor=pointer]:
+          - /url: /alerts
+          - img [ref=e58]
+          - generic [ref=e61]: Alerts
+        - generic: Alerts
+      - paragraph [ref=e62]: ECOSYSTEM
+      - generic [ref=e63]:
+        - link "Marketplace" [ref=e64] [cursor=pointer]:
+          - /url: /marketplace
+          - img [ref=e65]
+          - generic [ref=e68]: Marketplace
+        - generic: Marketplace
+      - paragraph [ref=e69]: PLATFORM
+      - generic [ref=e70]:
+        - link "Environments" [ref=e71] [cursor=pointer]:
+          - /url: /environments
+          - img [ref=e72]
+          - generic [ref=e75]: Environments
+        - generic: Environments
+      - generic [ref=e76]:
+        - link "Audit" [ref=e77] [cursor=pointer]:
+          - /url: /audit
+          - img [ref=e78]
+          - generic [ref=e81]: Audit
+        - generic: Audit
+    - generic [ref=e83]:
+      - link "Settings" [ref=e84] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e85]
+        - generic [ref=e88]: Settings
+      - generic: Settings
+  - generic [ref=e89]:
+    - banner [ref=e90]:
+      - button "Workspace" [ref=e91]:
+        - generic [ref=e92]: Workspace
+        - img [ref=e93]
+      - generic [ref=e96]:
+        - button [ref=e97]:
+          - img [ref=e98]
+        - link "?" [ref=e102] [cursor=pointer]:
+          - /url: /profile
+    - main [ref=e103]:
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - heading "Sign in to vipsOS" [level=1] [ref=e107]
+          - paragraph [ref=e108]: Enter your credentials to continue
+        - generic [ref=e109]:
+          - generic [ref=e110]:
+            - generic [ref=e111]: Email
+            - textbox "you@company.com" [ref=e112]
+          - generic [ref=e113]:
+            - generic [ref=e114]: Password
+            - textbox "••••••••" [ref=e115]
+          - button "Sign in" [ref=e116]
+        - generic [ref=e119]: OR
+        - button "Continue with SSO" [ref=e121]
+        - paragraph [ref=e122]:
+          - text: Don't have an account?
+          - link "Sign up" [ref=e123] [cursor=pointer]:
+            - /url: /auth/signup

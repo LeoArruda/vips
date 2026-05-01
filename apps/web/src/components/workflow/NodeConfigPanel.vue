@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { X } from 'lucide-vue-next'
+import { X, Trash2 } from 'lucide-vue-next'
 import { useBuilderStore } from '@/stores/builder'
 import SourceInspector from './inspector/SourceInspector.vue'
 import TransformInspector from './inspector/TransformInspector.vue'
@@ -50,10 +50,20 @@ const inspectorComponent = computed(() => {
           <h2 class="text-[11.5px] font-semibold leading-tight">{{ node.data.label }}</h2>
         </div>
       </div>
-      <button class="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
-        aria-label="Close panel" @click="store.clearSelection()">
-        <X class="h-4 w-4" />
-      </button>
+      <div class="flex items-center gap-0.5">
+        <button
+          class="rounded-md p-1 text-muted-foreground hover:bg-red-50 hover:text-red-500"
+          aria-label="Delete node"
+          title="Delete node (Delete / Backspace)"
+          @click="node && store.removeNodeAndSave(node.id)"
+        >
+          <Trash2 class="h-3.5 w-3.5" />
+        </button>
+        <button class="rounded-md p-1 text-muted-foreground hover:bg-muted hover:text-foreground"
+          aria-label="Close panel" @click="store.clearSelection()">
+          <X class="h-4 w-4" />
+        </button>
+      </div>
     </div>
 
     <!-- Context-sensitive inspector -->
