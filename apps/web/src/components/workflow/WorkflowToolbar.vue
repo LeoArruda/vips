@@ -12,18 +12,44 @@ const runsStore = useRunsStore()
 const isRunning = ref(false)
 const isSaving = ref(false)
 const saveOk = ref(false)
+const saveError = ref<string | null>(null)
 const runError = ref<string | null>(null)
 const runResult = ref<'success' | 'failed' | null>(null)
 let pollCancelled = false
 onUnmounted(() => { pollCancelled = true })
 
+async function retryPersist() {
+  saveError.value = null
+  builderStore.clearPersistError()
+  isSaving.value = true
+  try {
+    await builderStore.flushPendingGraph()
+    saveOk.value = true
+    setTimeout(() => { saveOk.value = false }, 2000)
+  } catch (err) {
+    saveError.value = err instanceof Error ? err.message : 'Save failed'
+  } finally {
+    isSaving.value = false
+  }
+}
+
+async function discardPersistAndReload() {
+  saveError.value = null
+  await builderStore.discardPersistErrorAndReload()
+}
+
 async function save() {
   if (isSaving.value) return
   isSaving.value = true
+  saveError.value = null
+  builderStore.clearPersistError()
   try {
     await builderStore.saveWorkflow()
     saveOk.value = true
     setTimeout(() => { saveOk.value = false }, 2000)
+  } catch (err) {
+    saveError.value = err instanceof Error ? err.message : 'Save failed'
+    setTimeout(() => { saveError.value = null }, 4000)
   } finally {
     isSaving.value = false
   }
@@ -31,6 +57,7 @@ async function save() {
 
 async function publish() {
   isSaving.value = true
+  builderStore.clearPersistError()
   try {
     await builderStore.publishWorkflow()
     saveOk.value = true
@@ -110,17 +137,24 @@ async function triggerRun() {
       </span>
     </div>
 
-    <div class="flex items-center gap-2">
-      <span v-if="runError" class="text-xs text-red-500">{{ runError }}</span>
+    <div class="flex flex-wrap items-center justify-end gap-2">
+      <span v-if="builderStore.persistError" class="max-w-[220px] text-xs text-red-500">
+        {{ builderStore.persistError }}
+        <button type="button" class="ml-1 underline" @click="retryPersist">Retry</button>
+        <button type="button" class="ml-1 underline" @click="discardPersistAndReload">Reload</button>
+      </span>
+      <span v-else-if="saveError" class="text-xs text-red-500">{{ saveError }}</span>
+      <span v-else-if="runError" class="text-xs text-red-500">{{ runError }}</span>
       <button
         class="flex items-center gap-1.5 rounded-[5px] px-3 py-[5px] text-[11.5px] font-medium transition-colors hover:bg-muted disabled:opacity-40"
-        :class="saveOk ? 'text-green-600' : 'text-muted-foreground'"
+        :class="saveOk ? 'text-green-600' : saveError ? 'text-red-500' : 'text-muted-foreground'"
         :disabled="!builderStore.currentWorkflowId || isSaving"
         title="Save workflow"
         @click="save"
       >
         <Check v-if="saveOk" class="h-3.5 w-3.5" />
         <Loader2 v-else-if="isSaving" class="h-3.5 w-3.5 animate-spin" />
+        <XCircle v-else-if="saveError" class="h-3.5 w-3.5" />
         <Save v-else class="h-3.5 w-3.5" />
         Save
       </button>

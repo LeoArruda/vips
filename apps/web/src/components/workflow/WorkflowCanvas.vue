@@ -7,7 +7,7 @@ import { Background, BackgroundVariant } from '@vue-flow/background'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/controls/dist/style.css'
 import '@vue-flow/minimap/dist/style.css'
-import type { NodeMouseEvent, XYPosition, Connection } from '@vue-flow/core'
+import type { NodeMouseEvent, XYPosition, Connection, NodeDragEvent, GraphNode, GraphEdge } from '@vue-flow/core'
 import { useBuilderStore } from '@/stores/builder'
 import SourceNode from './nodes/SourceNode.vue'
 import TransformNode from './nodes/TransformNode.vue'
@@ -50,6 +50,18 @@ function onConnect(connection: Connection) {
   store.addEdge(connection)
 }
 
+function onNodeDragStop({ node }: NodeDragEvent) {
+  store.updateNodePosition(node.id, node.position)
+}
+
+function onNodesDelete(deleted: GraphNode[]) {
+  store.removeNodesAndSave(deleted.map((n) => n.id))
+}
+
+function onEdgesDelete(deleted: GraphEdge[]) {
+  store.removeEdgesAndSave(deleted.map((e) => e.id))
+}
+
 function onDragOver(event: DragEvent) {
   event.preventDefault()
   if (event.dataTransfer) {
@@ -89,9 +101,13 @@ function onDrop(event: DragEvent) {
       :default-edge-options="defaultEdgeOptions"
       :fit-view-on-init="hasNodes"
       class="h-full w-full"
+      :delete-key-code="['Delete', 'Backspace']"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
       @connect="onConnect"
+      @node-drag-stop="onNodeDragStop"
+      @nodes-delete="onNodesDelete"
+      @edges-delete="onEdgesDelete"
     >
       <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1.5" color="#d1d5db" />
       <Controls />

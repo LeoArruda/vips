@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useBuilderStore } from '../builder'
+import { __updateMock as updateMock } from '../workflows'
 
 // Stub definitions matching the previous hard-coded data
 const stubDefinitions: Record<string, { nodes: unknown[]; edges: unknown[] }> = {
@@ -30,18 +31,23 @@ const stubDefinitions: Record<string, { nodes: unknown[]; edges: unknown[] }> = 
   },
 }
 
-vi.mock('../workflows', () => ({
-  useWorkflowsStore: () => ({
-    getDefinition: (id: string) => stubDefinitions[id] ?? undefined,
-    fetchDefinition: async (id: string) => stubDefinitions[id] ?? undefined,
-    update: vi.fn().mockResolvedValue({}),
-  }),
-}))
+vi.mock('../workflows', () => {
+  const __updateMock = vi.fn().mockResolvedValue({})
+  return {
+    useWorkflowsStore: () => ({
+      getDefinition: (id: string) => stubDefinitions[id] ?? undefined,
+      fetchDefinition: async (id: string) => stubDefinitions[id] ?? undefined,
+      update: __updateMock,
+    }),
+    __updateMock,
+  }
+})
 
 describe('useBuilderStore', () => {
   beforeEach(() => {
     setActivePinia(createPinia())
     vi.useFakeTimers()
+    updateMock.mockClear()
   })
 
   afterEach(() => {
@@ -54,52 +60,52 @@ describe('useBuilderStore', () => {
     expect(store.edges).toHaveLength(0)
   })
 
-  it('loads wf_001 with 3 nodes and 2 edges', () => {
+  it('loads wf_001 with 3 nodes and 2 edges', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     expect(store.nodes).toHaveLength(3)
     expect(store.edges).toHaveLength(2)
   })
 
-  it('loads wf_002 with 4 nodes and 3 edges', () => {
+  it('loads wf_002 with 4 nodes and 3 edges', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_002')
+    await store.loadWorkflow('wf_002')
     expect(store.nodes).toHaveLength(4)
     expect(store.edges).toHaveLength(3)
   })
 
-  it('selectedNodeId starts as null', () => {
+  it('selectedNodeId starts as null', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     expect(store.selectedNodeId).toBeNull()
   })
 
-  it('selectNode sets selectedNodeId', () => {
+  it('selectNode sets selectedNodeId', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     store.selectNode('source_1')
     expect(store.selectedNodeId).toBe('source_1')
   })
 
-  it('selectedNode computed returns the selected node', () => {
+  it('selectedNode computed returns the selected node', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     store.selectNode('source_1')
     expect(store.selectedNode?.id).toBe('source_1')
     expect(store.selectedNode?.data.label).toBeTruthy()
   })
 
-  it('clearSelection resets selectedNodeId to null', () => {
+  it('clearSelection resets selectedNodeId to null', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     store.selectNode('source_1')
     store.clearSelection()
     expect(store.selectedNodeId).toBeNull()
   })
 
-  it('addNode appends a new node at the given position', () => {
+  it('addNode appends a new node at the given position', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('wf_001')
+    await store.loadWorkflow('wf_001')
     const before = store.nodes.length
     store.addNode('connector.source', { x: 100, y: 200 })
     expect(store.nodes).toHaveLength(before + 1)
@@ -131,9 +137,62 @@ describe('useBuilderStore', () => {
     expect(store.isRunning).toBe(false)
   })
 
-  it('returns empty nodes for unknown workflow id', () => {
+  it('returns empty nodes for unknown workflow id', async () => {
     const store = useBuilderStore()
-    store.loadWorkflow('nonexistent')
+    await store.loadWorkflow('nonexistent')
     expect(store.nodes).toHaveLength(0)
+  })
+
+  it('removeNodeAndSave persists node and edge deletions', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+
+    store.removeNodeAndSave('transform_1')
+    await vi.advanceTimersByTimeAsync(150)
+
+    expect(updateMock).toHaveBeenCalledWith(
+      'wf_001',
+      expect.objectContaining({
+        nodes: [
+          expect.objectContaining({ id: 'source_1' }),
+          expect.objectContaining({ id: 'dest_1' }),
+        ],
+        edges: [],
+      }),
+    )
+  })
+
+  it('removeNodesAndSave issues a single PUT when deleting multiple nodes', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+    updateMock.mockClear()
+
+    store.removeNodesAndSave(['transform_1', 'dest_1'])
+    await vi.advanceTimersByTimeAsync(150)
+
+    expect(updateMock).toHaveBeenCalledTimes(1)
+    expect(updateMock).toHaveBeenCalledWith(
+      'wf_001',
+      expect.objectContaining({
+        nodes: [expect.objectContaining({ id: 'source_1' })],
+        edges: [],
+      }),
+    )
+  })
+
+  it('publishWorkflow second update includes graph so status-only merge cannot restore old nodes', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+    updateMock.mockClear()
+
+    await store.publishWorkflow()
+
+    const calls = updateMock.mock.calls
+    expect(calls.length).toBeGreaterThanOrEqual(2)
+    const last = calls[calls.length - 1]![1] as Record<string, unknown>
+    expect(last.status).toBe('published')
+    expect(Array.isArray(last.nodes)).toBe(true)
+    expect(Array.isArray(last.edges)).toBe(true)
+    expect((last.nodes as { id: string }[]).map((n) => n.id).sort()).toEqual(['dest_1', 'source_1', 'transform_1'].sort())
   })
 })
