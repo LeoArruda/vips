@@ -1,0 +1,132 @@
+- generic [ref=e3]:
+  - complementary [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]: vipsOS
+      - button "Toggle sidebar" [expanded] [ref=e7] [cursor=pointer]:
+        - img [ref=e8]
+    - navigation [ref=e10]:
+      - generic [ref=e11]:
+        - link "Dashboard" [ref=e12] [cursor=pointer]:
+          - /url: /dashboard
+          - img [ref=e13]
+          - generic [ref=e18]: Dashboard
+        - generic: Dashboard
+      - paragraph [ref=e19]: BUILD
+      - generic [ref=e20]:
+        - link "Workflows" [ref=e21] [cursor=pointer]:
+          - /url: /workflows
+          - img [ref=e22]
+          - generic [ref=e26]: Workflows
+        - generic: Workflows
+      - generic [ref=e27]:
+        - link "Connectors" [ref=e28] [cursor=pointer]:
+          - /url: /connectors
+          - img [ref=e29]
+          - generic [ref=e31]: Connectors
+        - generic: Connectors
+      - generic [ref=e32]:
+        - link "Templates" [ref=e33] [cursor=pointer]:
+          - /url: /templates
+          - img [ref=e34]
+          - generic [ref=e37]: Templates
+        - generic: Templates
+      - generic [ref=e38]:
+        - link "Secrets" [ref=e39] [cursor=pointer]:
+          - /url: /secrets
+          - img [ref=e40]
+          - generic [ref=e43]: Secrets
+        - generic: Secrets
+      - paragraph [ref=e44]: OPERATE
+      - generic [ref=e45]:
+        - link "Runs" [ref=e46] [cursor=pointer]:
+          - /url: /runs
+          - img [ref=e47]
+          - generic [ref=e50]: Runs
+        - generic: Runs
+      - generic [ref=e51]:
+        - link "Monitoring" [ref=e52] [cursor=pointer]:
+          - /url: /monitoring
+          - img [ref=e53]
+          - generic [ref=e55]: Monitoring
+        - generic: Monitoring
+      - generic [ref=e56]:
+        - link "Alerts" [ref=e57] [cursor=pointer]:
+          - /url: /alerts
+          - img [ref=e58]
+          - generic [ref=e61]: Alerts
+        - generic: Alerts
+      - paragraph [ref=e62]: ECOSYSTEM
+      - generic [ref=e63]:
+        - link "Marketplace" [ref=e64] [cursor=pointer]:
+          - /url: /marketplace
+          - img [ref=e65]
+          - generic [ref=e68]: Marketplace
+        - generic: Marketplace
+      - paragraph [ref=e69]: PLATFORM
+      - generic [ref=e70]:
+        - link "Environments" [ref=e71] [cursor=pointer]:
+          - /url: /environments
+          - img [ref=e72]
+          - generic [ref=e75]: Environments
+        - generic: Environments
+      - generic [ref=e76]:
+        - link "Audit" [ref=e77] [cursor=pointer]:
+          - /url: /audit
+          - img [ref=e78]
+          - generic [ref=e81]: Audit
+        - generic: Audit
+    - generic [ref=e83]:
+      - link "Settings" [ref=e84] [cursor=pointer]:
+        - /url: /settings
+        - img [ref=e85]
+        - generic [ref=e88]: Settings
+      - generic: Settings
+  - generic [ref=e89]:
+    - banner [ref=e90]:
+      - button "My Workspace" [ref=e127]:
+        - generic [ref=e92]: My Workspace
+        - img [ref=e93]
+      - generic [ref=e96]:
+        - button [ref=e97]:
+          - img [ref=e98]
+        - link "?" [ref=e102] [cursor=pointer]:
+          - /url: /profile
+    - main [ref=e103]:
+      - generic [ref=e128]:
+        - generic [ref=e129]:
+          - heading "Dashboard" [level=1] [ref=e130]
+          - paragraph [ref=e131]: Platform health and activity overview
+        - generic [ref=e132]:
+          - generic [ref=e134]:
+            - generic [ref=e135]:
+              - paragraph [ref=e136]: Total Workflows
+              - paragraph [ref=e137]: "4"
+            - img [ref=e139]
+          - generic [ref=e144]:
+            - generic [ref=e145]:
+              - paragraph [ref=e146]: Active
+              - paragraph [ref=e147]: "3"
+            - img [ref=e149]
+          - generic [ref=e152]:
+            - generic [ref=e153]:
+              - paragraph [ref=e154]: Runs Today
+              - paragraph [ref=e155]: "12"
+            - img [ref=e157]
+          - generic [ref=e161]:
+            - generic [ref=e162]:
+              - paragraph [ref=e163]: Failed Today
+              - paragraph [ref=e164]: "1"
+            - img [ref=e166]
+          - generic [ref=e171]:
+            - generic [ref=e172]:
+              - paragraph [ref=e173]: Success Rate
+              - paragraph [ref=e174]: 91.7%
+            - img [ref=e176]
+          - generic [ref=e180]:
+            - generic [ref=e181]:
+              - paragraph [ref=e182]: Connectors
+              - paragraph [ref=e183]: "8"
+            - img [ref=e185]
+        - generic [ref=e187]:
+          - heading "Recent Runs" [level=2] [ref=e188]
+          - generic [ref=e190]: No recent runs.

@@ -1,7 +1,14 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { applyNodeChanges, applyEdgeChanges } from '@vue-flow/core'
+import type { EdgeChange, GraphEdge, GraphNode, NodeChange } from '@vue-flow/core'
 import type { NodeType, NodeStatus } from '@/types'
+import { builderNodesToWorkflowPayload, builderEdgesToWorkflowPayload } from '@/workflow/graphPayload'
+import { positionsForNodesMissingLayout } from '@/workflow/layoutFallback'
 import { useWorkflowsStore } from './workflows'
+
+const STRUCTURAL_DEBOUNCE_MS = 100
+const POSITIONAL_DEBOUNCE_MS = 500
 
 export interface BuilderNodeData {
   label: string
@@ -22,6 +29,8 @@ export interface BuilderEdge {
   id: string
   source: string
   target: string
+  sourceHandle?: string
+  targetHandle?: string
 }
 
 const WORKFLOW_POSITIONS: Record<string, Record<string, { x: number; y: number }>> = {
@@ -40,6 +49,10 @@ const WORKFLOW_POSITIONS: Record<string, Record<string, { x: number; y: number }
     source_1: { x: 50, y: 150 },
     dest_1: { x: 370, y: 150 },
   },
+}
+
+function isDemoWorkflowId(workflowId: string): boolean {
+  return Object.prototype.hasOwnProperty.call(WORKFLOW_POSITIONS, workflowId)
 }
 
 function nodeTypeToVueFlowType(type: NodeType): string {
@@ -72,38 +85,153 @@ function defaultLabelForType(type: NodeType): string {
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
 
+export interface NodeRunOutput {
+  rowCount?: number
+  schema?: string   // e.g. "id · name · email"
+  error?: string
+}
+
 export const useBuilderStore = defineStore('builder', () => {
   const nodes = ref<BuilderNode[]>([])
   const edges = ref<BuilderEdge[]>([])
   const selectedNodeId = ref<string | null>(null)
   const currentWorkflowId = ref<string | null>(null)
   const isRunning = ref(false)
+  // Run outputs stored separately so VueFlow's node-data propagation is not in the critical path
+  const nodeOutputs = ref<Record<string, NodeRunOutput>>({})
 
   const selectedNode = computed(
     () => nodes.value.find((n) => n.id === selectedNodeId.value) ?? null,
   )
 
+  const persistError = ref<string | null>(null)
+  let structuralTimerId: ReturnType<typeof setTimeout> | null = null
+  let positionalTimerId: ReturnType<typeof setTimeout> | null = null
+  let persistInFlight = false
+  let persistQueued = false
+
+  function clearPersistTimers() {
+    if (structuralTimerId !== null) {
+      clearTimeout(structuralTimerId)
+      structuralTimerId = null
+    }
+    if (positionalTimerId !== null) {
+      clearTimeout(positionalTimerId)
+      positionalTimerId = null
+    }
+  }
+
+  async function flushGraphToServer(): Promise<void> {
+    const id = currentWorkflowId.value
+    if (!id) return
+    if (persistInFlight) {
+      persistQueued = true
+      return
+    }
+    persistInFlight = true
+    persistQueued = false
+    persistError.value = null
+    const workflowsStore = useWorkflowsStore()
+    try {
+      await workflowsStore.update(id, {
+        nodes: builderNodesToWorkflowPayload(nodes.value),
+        edges: builderEdgesToWorkflowPayload(edges.value),
+      })
+      await workflowsStore.fetchDefinition(id)
+    } catch (err) {
+      persistError.value = err instanceof Error ? err.message : 'Failed to save workflow'
+      throw err
+    } finally {
+      persistInFlight = false
+      if (persistQueued) {
+        persistQueued = false
+        await flushGraphToServer()
+      }
+    }
+  }
+
+  function markDirty(kind: 'structural' | 'positional') {
+    if (!currentWorkflowId.value) return
+    const delay = kind === 'structural' ? STRUCTURAL_DEBOUNCE_MS : POSITIONAL_DEBOUNCE_MS
+    if (kind === 'structural') {
+      if (structuralTimerId !== null) clearTimeout(structuralTimerId)
+      structuralTimerId = setTimeout(() => {
+        structuralTimerId = null
+        void flushGraphToServer()
+      }, delay)
+    } else {
+      if (positionalTimerId !== null) clearTimeout(positionalTimerId)
+      positionalTimerId = setTimeout(() => {
+        positionalTimerId = null
+        void flushGraphToServer()
+      }, delay)
+    }
+  }
+
+  async function flushPendingGraph(): Promise<void> {
+    if (!currentWorkflowId.value) return
+    clearPersistTimers()
+    await flushGraphToServer()
+  }
+
+  function clearPersistError() {
+    persistError.value = null
+  }
+
+  /** Pinia is source of truth; Vue Flow uses `apply-default={false}` and forwards changes here. */
+  function applyVueFlowNodeChanges(changes: NodeChange[]) {
+    nodes.value = applyNodeChanges(changes, nodes.value as GraphNode[]) as BuilderNode[]
+    const structural = changes.some(
+      (c) => c.type === 'remove' || c.type === 'add' || c.type === 'dimensions',
+    )
+    const positional = changes.some((c) => c.type === 'position')
+    if (structural) markDirty('structural')
+    else if (positional) markDirty('positional')
+  }
+
+  function applyVueFlowEdgeChanges(changes: EdgeChange[]) {
+    edges.value = applyEdgeChanges(changes, edges.value as GraphEdge[]) as BuilderEdge[]
+    const structural = changes.some((c) => c.type === 'remove' || c.type === 'add')
+    if (structural) markDirty('structural')
+  }
+
   async function loadWorkflow(workflowId: string) {
     currentWorkflowId.value = workflowId
     selectedNodeId.value = null
-    nodes.value = []
-    edges.value = []
+    clearPersistTimers()
+    persistError.value = null
 
     const workflowsStore = useWorkflowsStore()
 
-    // Try in-memory cache first; if absent, fetch from the API
-    let def = workflowsStore.getDefinition(workflowId)
-    if (!def) {
-      def = await workflowsStore.fetchDefinition(workflowId)
-    }
+    // Fetch fresh first so post-save deletions are always reflected.
+    // Fall back to cache if the network request fails (transient error).
+    const def =
+      (await workflowsStore.fetchDefinition(workflowId)) ??
+      workflowsStore.getDefinition(workflowId)
+
+    // Clear + populate in one synchronous block AFTER the await so Vue batches
+    // both assignments into a single reactive flush.  VueFlow never sees the
+    // intermediate [] state, which prevents the "initialised: false → opacity 0"
+    // blink caused by VueFlow creating new GraphNodes mid-cycle.
+    nodes.value = []
+    edges.value = []
+    nodeOutputs.value = {}
 
     if (!def || !def.nodes?.length) return
 
-    const positions = WORKFLOW_POSITIONS[workflowId] ?? {}
+    const useDemoMap = isDemoWorkflowId(workflowId)
+    const demoPositions = WORKFLOW_POSITIONS[workflowId] ?? {}
+    const idsMissingPos = def.nodes.filter((n) => !n.position).map((n) => n.id)
+    const layoutFallback =
+      !useDemoMap && idsMissingPos.length > 0 ? positionsForNodesMissingLayout(idsMissingPos) : {}
+
     nodes.value = def.nodes.map((n, i) => ({
       id: n.id,
       type: nodeTypeToVueFlowType(n.type),
-      position: n.position ?? positions[n.id] ?? { x: 50 + i * 270, y: 150 },
+      position:
+        n.position ??
+        (useDemoMap ? demoPositions[n.id] : layoutFallback[n.id]) ??
+        { x: 50 + i * 270, y: 150 },
       data: {
         label: n.label,
         config: n.config,
@@ -115,28 +243,28 @@ export const useBuilderStore = defineStore('builder', () => {
     edges.value = def.edges.map((e) => ({ id: e.id, source: e.source, target: e.target }))
   }
 
+  async function discardPersistErrorAndReload(): Promise<void> {
+    const id = currentWorkflowId.value
+    clearPersistError()
+    if (id) await loadWorkflow(id)
+  }
+
   async function saveWorkflow() {
     if (!currentWorkflowId.value) return
-    const workflowsStore = useWorkflowsStore()
-    const workflowNodes = nodes.value.map((n) => ({
-      id: n.id,
-      type: n.data.nodeType,
-      label: n.data.label,
-      config: n.data.config,
-      connectorId: n.data.connectorId,
-      position: n.position,
-    }))
-    const workflowEdges = edges.value.map((e) => ({ id: e.id, source: e.source, target: e.target }))
-    await workflowsStore.update(currentWorkflowId.value, { nodes: workflowNodes, edges: workflowEdges })
-    // Invalidate the cache so the next loadWorkflow fetches the freshly saved definition
-    await workflowsStore.fetchDefinition(currentWorkflowId.value)
+    clearPersistTimers()
+    await flushGraphToServer()
   }
 
   async function publishWorkflow() {
     if (!currentWorkflowId.value) return
     await saveWorkflow()
     const workflowsStore = useWorkflowsStore()
-    await workflowsStore.update(currentWorkflowId.value, { status: 'published' })
+    await workflowsStore.update(currentWorkflowId.value, {
+      status: 'published',
+      nodes: builderNodesToWorkflowPayload(nodes.value),
+      edges: builderEdgesToWorkflowPayload(edges.value),
+    })
+    await workflowsStore.fetchDefinition(currentWorkflowId.value)
   }
 
   function selectNode(nodeId: string | null) {
@@ -147,10 +275,47 @@ export const useBuilderStore = defineStore('builder', () => {
     selectedNodeId.value = null
   }
 
+  function updateNodePosition(nodeId: string, position: { x: number; y: number }) {
+    const node = nodes.value.find((n) => n.id === nodeId)
+    if (node) node.position = { ...position }
+    markDirty('positional')
+  }
+
+  function removeNode(nodeId: string) {
+    nodes.value = nodes.value.filter((n) => n.id !== nodeId)
+    edges.value = edges.value.filter((e) => e.source !== nodeId && e.target !== nodeId)
+    if (selectedNodeId.value === nodeId) selectedNodeId.value = null
+    const outputs = { ...nodeOutputs.value }
+    delete outputs[nodeId]
+    nodeOutputs.value = outputs
+  }
+
+  /** Remove several nodes; debounced structural persist coalesces multi-select deletes. */
+  function removeNodesAndSave(nodeIds: string[]) {
+    if (!currentWorkflowId.value || nodeIds.length === 0) return
+    for (const id of nodeIds) removeNode(id)
+    markDirty('structural')
+  }
+
+  function removeNodeAndSave(nodeId: string) {
+    removeNodesAndSave([nodeId])
+  }
+
+  function removeEdge(edgeId: string) {
+    edges.value = edges.value.filter((e) => e.id !== edgeId)
+  }
+
+  function removeEdgesAndSave(edgeIds: string[]) {
+    if (!currentWorkflowId.value || edgeIds.length === 0) return
+    const idSet = new Set(edgeIds)
+    edges.value = edges.value.filter((e) => !idSet.has(e.id))
+    markDirty('structural')
+  }
+
   function updateNodeConfig(nodeId: string, config: Record<string, unknown>) {
-    nodes.value = nodes.value.map((n) =>
-      n.id === nodeId ? { ...n, data: { ...n.data, config: { ...n.data.config, ...config } } } : n,
-    )
+    const node = nodes.value.find((n) => n.id === nodeId)
+    if (node) node.data = { ...node.data, config: { ...node.data.config, ...config } }
+    markDirty('structural')
   }
 
   function addNode(
@@ -172,26 +337,87 @@ export const useBuilderStore = defineStore('builder', () => {
       },
     })
     selectedNodeId.value = id   // auto-open inspector
+    markDirty('structural')
+  }
+
+  function addEdge(connection: { source: string; target: string; sourceHandle?: string | null; targetHandle?: string | null }) {
+    const id = `edge_${Date.now()}`
+    edges.value.push({
+      id,
+      source: connection.source,
+      target: connection.target,
+      sourceHandle: connection.sourceHandle ?? undefined,
+      targetHandle: connection.targetHandle ?? undefined,
+    })
+    markDirty('structural')
+  }
+
+  function resetNodeStatuses() {
+    for (const node of nodes.value) {
+      node.data = { ...node.data, status: 'pending' as NodeStatus }
+    }
+    nodeOutputs.value = {}
+  }
+
+  function applyRunLogs(logs: Array<{ node_id?: string; level: string; message: string }>) {
+    // Group logs by node
+    const byNode = new Map<string, Array<{ level: string; message: string }>>()
+    for (const log of logs) {
+      if (!log.node_id) continue
+      if (!byNode.has(log.node_id)) byNode.set(log.node_id, [])
+      byNode.get(log.node_id)!.push(log)
+    }
+
+    const newOutputs: Record<string, NodeRunOutput> = { ...nodeOutputs.value }
+
+    for (const [nid, nodeLogs] of byNode) {
+      const starting  = nodeLogs.some((l) => l.message.includes('Starting node'))
+      const completed = nodeLogs.some((l) => l.message.includes('completed successfully'))
+      const errorLog  = nodeLogs.find((l) => l.level === 'error')
+
+      let status: NodeStatus = 'pending'
+      if (starting)  status = 'running'
+      if (completed) status = 'success'
+      if (errorLog)  status = 'failed'
+
+      // Parse the structured "Output: N records · field1 · field2" log emitted by the runner
+      const outputLog = nodeLogs.find((l) => l.message.startsWith('Output:'))
+      if (outputLog) {
+        const m = outputLog.message.match(/^Output:\s*(\d+)\s+\w+(?:\s*·\s*(.+))?/)
+        if (m) {
+          newOutputs[nid] = { rowCount: parseInt(m[1]), schema: m[2]?.trim() }
+        } else {
+          newOutputs[nid] = { rowCount: 0 }
+        }
+      }
+      if (errorLog) newOutputs[nid] = { error: errorLog.message }
+
+      const nodeToUpdate = nodes.value.find((n) => n.id === nid)
+      if (nodeToUpdate) nodeToUpdate.data = { ...nodeToUpdate.data, status }
+    }
+
+    nodeOutputs.value = newOutputs
+  }
+
+  function setAllNodeStatus(status: NodeStatus) {
+    for (const node of nodes.value) {
+      node.data = { ...node.data, status }
+    }
   }
 
   async function simulateRun() {
     if (isRunning.value) return
     isRunning.value = true
 
-    nodes.value = nodes.value.map((n) => ({
-      ...n,
-      data: { ...n.data, status: 'pending' as NodeStatus },
-    }))
+    for (const node of nodes.value) {
+      node.data = { ...node.data, status: 'pending' as NodeStatus }
+    }
 
     for (const node of nodes.value) {
       await sleep(300)
-      nodes.value = nodes.value.map((n) =>
-        n.id === node.id ? { ...n, data: { ...n.data, status: 'running' as NodeStatus } } : n,
-      )
+      node.data = { ...node.data, status: 'running' as NodeStatus }
       await sleep(700)
-      nodes.value = nodes.value.map((n) =>
-        n.id === node.id ? { ...n, data: { ...n.data, status: 'success' as NodeStatus } } : n,
-      )
+      node.data = { ...node.data, status: 'success' as NodeStatus }
     }
 
     isRunning.value = false
@@ -204,13 +430,30 @@ export const useBuilderStore = defineStore('builder', () => {
     selectedNode,
     currentWorkflowId,
     isRunning,
+    nodeOutputs,
+    persistError,
     loadWorkflow,
     selectNode,
     clearSelection,
     addNode,
+    addEdge,
+    removeNode,
+    removeNodeAndSave,
+    removeNodesAndSave,
+    removeEdge,
+    removeEdgesAndSave,
+    updateNodePosition,
     updateNodeConfig,
     saveWorkflow,
     publishWorkflow,
+    flushPendingGraph,
+    clearPersistError,
+    discardPersistErrorAndReload,
+    applyVueFlowNodeChanges,
+    applyVueFlowEdgeChanges,
+    resetNodeStatuses,
+    applyRunLogs,
+    setAllNodeStatus,
     simulateRun,
   }
 })

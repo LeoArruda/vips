@@ -4,8 +4,8 @@ import { GitBranch } from 'lucide-vue-next'
 import type { BuilderNodeData } from '@/stores/builder'
 import { useNodePreview } from './useNodePreview'
 
-const props = defineProps<{ data: BuilderNodeData; selected: boolean }>()
-const { activeTab, outputHint } = useNodePreview(() => props.data.config)
+const props = defineProps<{ id: string; data: BuilderNodeData; selected: boolean }>()
+const { activeTab, outputHint } = useNodePreview(props.id, () => props.data.config)
 </script>
 
 <template>

@@ -26,7 +26,7 @@ const auth = useAuthStore()
       </button>
       <RouterLink to="/profile"
         class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-semibold text-white hover:ring-2 hover:ring-indigo-300">
-        {{ auth.session?.user.avatarInitial ?? '?' }}
+        {{ auth.session?.email?.[0]?.toUpperCase() ?? '?' }}
       </RouterLink>
     </div>
   </header>

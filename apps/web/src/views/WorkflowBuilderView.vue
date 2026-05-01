@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { onBeforeRouteLeave, useRoute } from 'vue-router'
 import { useBuilderStore } from '@/stores/builder'
 import WorkflowToolbar from '@/components/workflow/WorkflowToolbar.vue'
 import NodePalette from '@/components/workflow/NodePalette.vue'
@@ -17,6 +17,10 @@ async function load() {
 
 onMounted(load)
 watch(() => route.params.id, load)
+
+onBeforeRouteLeave(async () => {
+  await store.flushPendingGraph()
+})
 </script>
 
 <template>

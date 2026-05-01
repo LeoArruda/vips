@@ -1,0 +1,43 @@
+[     156ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login:0
+[  324234ms] [WARNING] [Vue warn]: Unhandled error during execution of render function 
+  at <RouterLink to="/profile" class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-semibold text-white hover:ring-2 hover:ring-indigo-300" > 
+  at <AppTopBar> 
+  at <AppShell key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1735
+[  324234ms] [WARNING] [Vue warn]: Unhandled error during execution of component update 
+  at <RouterLink to="/profile" class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-semibold text-white hover:ring-2 hover:ring-indigo-300" > 
+  at <AppTopBar> 
+  at <AppShell key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1735
+[  324234ms] TypeError: Cannot read properties of undefined (reading 'avatarInitial')
+    at http://localhost:5173/src/components/layout/AppTopBar.vue?t=1777294673749:59:46
+    at Proxy.renderFnWithContext (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:2244:10)
+    at Proxy.<anonymous> (http://localhost:5173/node_modules/.vite/deps/vue-router.js?v=caec4861:5760:69)
+    at renderComponentRoot (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:4697:35)
+    at ReactiveEffect.componentUpdateFn [as fn] (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:5588:22)
+    at ReactiveEffect.run (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:409:16)
+    at ReactiveEffect.runIfDirty (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:436:27)
+    at callWithErrorHandling (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1873:31)
+    at flushJobs (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:2022:5)
+[  324245ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login:0
+[  332715ms] [WARNING] [Vue warn]: Unhandled error during execution of render function 
+  at <RouterLink to="/profile" class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-semibold text-white hover:ring-2 hover:ring-indigo-300" > 
+  at <AppTopBar> 
+  at <AppShell key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1735
+[  332715ms] [WARNING] [Vue warn]: Unhandled error during execution of component update 
+  at <RouterLink to="/profile" class="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-500 text-[10px] font-semibold text-white hover:ring-2 hover:ring-indigo-300" > 
+  at <AppTopBar> 
+  at <AppShell key=0 > 
+  at <App> @ http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1735
+[  332716ms] TypeError: Cannot read properties of undefined (reading 'avatarInitial')
+    at http://localhost:5173/src/components/layout/AppTopBar.vue?t=1777294682332:59:46
+    at Proxy.renderFnWithContext (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:2244:10)
+    at Proxy.<anonymous> (http://localhost:5173/node_modules/.vite/deps/vue-router.js?v=caec4861:5760:69)
+    at renderComponentRoot (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:4697:35)
+    at ReactiveEffect.componentUpdateFn [as fn] (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:5588:22)
+    at ReactiveEffect.run (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:409:16)
+    at ReactiveEffect.runIfDirty (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:436:27)
+    at callWithErrorHandling (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:1873:31)
+    at flushJobs (http://localhost:5173/node_modules/.vite/deps/vue.runtime.esm-bundler-DaROHT9e.js?v=caec4861:2022:5)
+[  332777ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:5173/auth/login:0

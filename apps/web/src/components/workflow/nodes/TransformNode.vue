@@ -5,7 +5,7 @@ import { ArrowLeftRight } from 'lucide-vue-next'
 import type { BuilderNodeData } from '@/stores/builder'
 import { useNodePreview } from './useNodePreview'
 
-const props = defineProps<{ data: BuilderNodeData; selected: boolean }>()
+const props = defineProps<{ id: string; data: BuilderNodeData; selected: boolean }>()
 
 const outputCount = computed(() => (props.data.config.outputs as number | undefined) ?? 1)
 
@@ -13,7 +13,7 @@ function handleTop(i: number, total: number): string {
   return `${((i + 1) / (total + 1)) * 100}%`
 }
 
-const { activeTab, outputHint } = useNodePreview(() => props.data.config)
+const { activeTab, outputHint } = useNodePreview(props.id, () => props.data.config)
 
 const subLabel = computed(() => {
   const count = outputCount.value

@@ -7,7 +7,7 @@ import { Background, BackgroundVariant } from '@vue-flow/background'
 import '@vue-flow/core/dist/style.css'
 import '@vue-flow/controls/dist/style.css'
 import '@vue-flow/minimap/dist/style.css'
-import type { NodeMouseEvent, XYPosition } from '@vue-flow/core'
+import type { NodeMouseEvent, XYPosition, Connection, EdgeChange, NodeChange } from '@vue-flow/core'
 import { useBuilderStore } from '@/stores/builder'
 import SourceNode from './nodes/SourceNode.vue'
 import TransformNode from './nodes/TransformNode.vue'
@@ -46,6 +46,18 @@ function onPaneClick() {
   store.clearSelection()
 }
 
+function onConnect(connection: Connection) {
+  store.addEdge(connection)
+}
+
+function onNodesChange(changes: NodeChange[]) {
+  store.applyVueFlowNodeChanges(changes)
+}
+
+function onEdgesChange(changes: EdgeChange[]) {
+  store.applyVueFlowEdgeChanges(changes)
+}
+
 function onDragOver(event: DragEvent) {
   event.preventDefault()
   if (event.dataTransfer) {
@@ -81,12 +93,17 @@ function onDrop(event: DragEvent) {
     <VueFlow
       :nodes="store.nodes"
       :edges="store.edges"
+      :apply-default="false"
       :node-types="nodeTypes"
       :default-edge-options="defaultEdgeOptions"
-      fit-view-on-init
+      :fit-view-on-init="hasNodes"
       class="h-full w-full"
+      :delete-key-code="['Delete', 'Backspace']"
       @node-click="onNodeClick"
       @pane-click="onPaneClick"
+      @connect="onConnect"
+      @nodes-change="onNodesChange"
+      @edges-change="onEdgesChange"
     >
       <Background :variant="BackgroundVariant.Dots" :gap="20" :size="1.5" color="#d1d5db" />
       <Controls />

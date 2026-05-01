@@ -163,9 +163,9 @@ function exportWorkflow(workflowId: string) {
           </div>
           <div class="mt-0.5 flex items-center gap-3 text-xs text-muted-foreground">
             <span class="flex items-center gap-1">
-              <component :is="triggerIcons[wf.trigger.type] ?? Play" class="h-3 w-3" />
-              {{ wf.trigger.type }}
-              <template v-if="wf.trigger.cron">({{ wf.trigger.cron }})</template>
+              <component :is="triggerIcons[wf.trigger?.type ?? 'manual'] ?? Play" class="h-3 w-3" />
+              {{ wf.trigger?.type ?? 'manual' }}
+              <template v-if="wf.trigger?.cron">({{ wf.trigger.cron }})</template>
             </span>
             <span
               v-if="wf.lastRunStatus"

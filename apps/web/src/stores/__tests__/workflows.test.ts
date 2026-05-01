@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
+import { api } from '@/lib/api'
 import { useWorkflowsStore } from '../workflows'
 
 vi.mock('@/lib/api', () => ({
@@ -67,5 +68,26 @@ describe('useWorkflowsStore (API-backed)', () => {
       { workflowId: 'b', name: 'B', status: 'draft', updatedAt: '', trigger: { type: 'manual' } },
     ]
     expect(store.publishedCount).toBe(1)
+  })
+
+  it('update maps snake_case PUT response into summaries (same as control-plane row)', async () => {
+    const store = useWorkflowsStore()
+    store.summaries = [
+      { workflowId: 'wf_1', name: 'Flow', status: 'draft', updatedAt: '2020-01-01', trigger: { type: 'manual' } },
+    ]
+    vi.mocked(api.put).mockResolvedValueOnce({
+      id: 'wf_1',
+      name: 'Updated Flow',
+      status: 'published',
+      updated_at: '2026-01-02T00:00:00.000Z',
+      definition: { trigger: { type: 'webhook' } },
+    })
+    await store.update('wf_1', { status: 'published' })
+    expect(store.summaries[0]).toMatchObject({
+      workflowId: 'wf_1',
+      name: 'Updated Flow',
+      status: 'published',
+      trigger: { type: 'webhook' },
+    })
   })
 })

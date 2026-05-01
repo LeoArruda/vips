@@ -5,7 +5,7 @@ import { Globe } from 'lucide-vue-next'
 import type { BuilderNodeData } from '@/stores/builder'
 import { useNodePreview } from './useNodePreview'
 
-const props = defineProps<{ data: BuilderNodeData; selected: boolean }>()
+const props = defineProps<{ id: string; data: BuilderNodeData; selected: boolean }>()
 
 const outputCount = computed(() => (props.data.config.outputs as number | undefined) ?? 1)
 
@@ -13,7 +13,7 @@ function handleTop(i: number, total: number): string {
   return `${((i + 1) / (total + 1)) * 100}%`
 }
 
-const { activeTab, schemaHint, outputHint } = useNodePreview(() => props.data.config)
+const { activeTab, schemaHint, runSchema, outputHint } = useNodePreview(props.id, () => props.data.config)
 </script>
 
 <template>
@@ -68,7 +68,8 @@ const { activeTab, schemaHint, outputHint } = useNodePreview(() => props.data.co
       </div>
       <div class="px-3 py-[4px]">
         <template v-if="activeTab === 'schema'">
-          <span class="block truncate font-mono text-[10px] text-violet-600">{{ schemaHint }}</span>
+          <span v-if="runSchema" class="block truncate font-mono text-[10px] text-violet-600">{{ runSchema }}</span>
+          <span v-else class="block truncate font-mono text-[10px] text-slate-400">{{ schemaHint }}</span>
         </template>
         <template v-else>
           <span v-if="outputHint" class="block truncate font-mono text-[10px] text-green-600">{{ outputHint }}</span>
