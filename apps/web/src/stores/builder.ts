@@ -1,5 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { applyNodeChanges, applyEdgeChanges } from '@vue-flow/core'
+import type { EdgeChange, GraphEdge, GraphNode, NodeChange } from '@vue-flow/core'
 import type { NodeType, NodeStatus } from '@/types'
 import { builderNodesToWorkflowPayload, builderEdgesToWorkflowPayload } from '@/workflow/graphPayload'
 import { positionsForNodesMissingLayout } from '@/workflow/layoutFallback'
@@ -174,6 +176,23 @@ export const useBuilderStore = defineStore('builder', () => {
 
   function clearPersistError() {
     persistError.value = null
+  }
+
+  /** Pinia is source of truth; Vue Flow uses `apply-default={false}` and forwards changes here. */
+  function applyVueFlowNodeChanges(changes: NodeChange[]) {
+    nodes.value = applyNodeChanges(changes, nodes.value as GraphNode[]) as BuilderNode[]
+    const structural = changes.some(
+      (c) => c.type === 'remove' || c.type === 'add' || c.type === 'dimensions',
+    )
+    const positional = changes.some((c) => c.type === 'position')
+    if (structural) markDirty('structural')
+    else if (positional) markDirty('positional')
+  }
+
+  function applyVueFlowEdgeChanges(changes: EdgeChange[]) {
+    edges.value = applyEdgeChanges(changes, edges.value as GraphEdge[]) as BuilderEdge[]
+    const structural = changes.some((c) => c.type === 'remove' || c.type === 'add')
+    if (structural) markDirty('structural')
   }
 
   async function loadWorkflow(workflowId: string) {
@@ -430,6 +449,8 @@ export const useBuilderStore = defineStore('builder', () => {
     flushPendingGraph,
     clearPersistError,
     discardPersistErrorAndReload,
+    applyVueFlowNodeChanges,
+    applyVueFlowEdgeChanges,
     resetNodeStatuses,
     applyRunLogs,
     setAllNodeStatus,
