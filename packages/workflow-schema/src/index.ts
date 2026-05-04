@@ -2,12 +2,34 @@ export type WorkflowStatus = 'draft' | 'published' | 'archived'
 export type RunStatus = 'queued' | 'running' | 'success' | 'failed'
 export type NodeStatus = 'pending' | 'running' | 'success' | 'failed' | 'skipped'
 export type TriggerType = 'manual' | 'schedule' | 'webhook'
+
 export type NodeType =
   | 'connector.source'
   | 'connector.destination'
   | 'transform.map'
+  | 'transform.filter'
+  | 'transform.join'
+  | 'transform.merge'
+  | 'transform.union'
+  | 'transform.convert'
+  | 'transform.derive'
+  | 'transform.aggregate'
+  | 'transform.flatten'
+  | 'transform.lookup'
+  | 'transform.validate'
+  | 'transform.cleanse'
+  | 'transform.code'
   | 'logic.branch'
   | 'trigger'
+
+export type TransformNodeType = Extract<NodeType, `transform.${string}`>
+
+export interface SchemaField {
+  name: string
+  type: 'string' | 'number' | 'boolean' | 'date' | 'object' | 'array' | 'unknown'
+  nullable?: boolean
+}
+
 export type ConnectorCategory = 'database' | 'saas' | 'storage' | 'messaging' | 'analytics'
 export type AuthMethod = 'oauth2' | 'api-key' | 'basic' | 'none'
 export type LogLevel = 'info' | 'warn' | 'error'
@@ -25,6 +47,7 @@ export interface WorkflowNode {
   label: string
   config: Record<string, unknown>
   connectorId?: string
+  outputSchema?: SchemaField[]
   position?: { x: number; y: number }
 }
 
@@ -32,6 +55,8 @@ export interface WorkflowEdge {
   id: string
   source: string
   target: string
+  sourceHandle?: string
+  targetHandle?: string
 }
 
 export interface WorkflowDefinition {
