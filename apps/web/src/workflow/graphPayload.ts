@@ -13,5 +13,11 @@ export function builderNodesToWorkflowPayload(nodes: BuilderNode[]): WorkflowNod
 }
 
 export function builderEdgesToWorkflowPayload(edges: BuilderEdge[]): WorkflowEdge[] {
-  return edges.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+  return edges.map((e) => ({
+    id: e.id,
+    source: e.source,
+    target: e.target,
+    ...(e.sourceHandle ? { sourceHandle: e.sourceHandle } : {}),
+    ...(e.targetHandle ? { targetHandle: e.targetHandle } : {}),
+  }))
 }
