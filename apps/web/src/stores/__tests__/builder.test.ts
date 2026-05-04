@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
 import { setActivePinia, createPinia } from 'pinia'
 import { useBuilderStore } from '../builder'
 import { __updateMock as updateMock } from '../workflows'
+import type { SchemaField } from '@/types'
 
 // Stub definitions matching the previous hard-coded data
 const stubDefinitions: Record<string, { nodes: unknown[]; edges: unknown[] }> = {
@@ -178,6 +179,56 @@ describe('useBuilderStore', () => {
         edges: [],
       }),
     )
+  })
+
+  it('getUpstreamSchema returns [] for a source node with no incoming edges', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+    expect(store.getUpstreamSchema('source_1')).toEqual([])
+  })
+
+  it('getUpstreamSchema returns outputSchema from the direct upstream node', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+    const schema: SchemaField[] = [
+      { name: 'id', type: 'number' },
+      { name: 'email', type: 'string' },
+    ]
+    store.updateNodeConfig('source_1', { outputSchema: schema })
+    expect(store.getUpstreamSchema('transform_1')).toEqual(schema)
+  })
+
+  it('getUpstreamSchema deduplicates fields present in multiple upstream schemas', () => {
+    const store = useBuilderStore()
+    store.addNode('connector.source', { x: 0, y: 0 })
+    const n1 = store.nodes[store.nodes.length - 1].id
+    store.addNode('connector.source', { x: 0, y: 100 })
+    const n2 = store.nodes[store.nodes.length - 1].id
+    store.addNode('transform.join', { x: 200, y: 50 })
+    const n3 = store.nodes[store.nodes.length - 1].id
+    store.addEdge({ source: n1, target: n3 })
+    store.addEdge({ source: n2, target: n3 })
+
+    const s1: SchemaField[] = [{ name: 'id', type: 'number' }, { name: 'name', type: 'string' }]
+    const s2: SchemaField[] = [{ name: 'id', type: 'number' }, { name: 'email', type: 'string' }]
+    store.updateNodeConfig(n1, { outputSchema: s1 })
+    store.updateNodeConfig(n2, { outputSchema: s2 })
+
+    const result = store.getUpstreamSchema(n3)
+    const names = result.map(f => f.name)
+    expect(names.filter(n => n === 'id')).toHaveLength(1)
+    expect(names).toContain('name')
+    expect(names).toContain('email')
+  })
+
+  it('getUpstreamSchemaPerHandle keys schema by targetHandle, falling back to source id', async () => {
+    const store = useBuilderStore()
+    await store.loadWorkflow('wf_001')
+    const schema: SchemaField[] = [{ name: 'user_id', type: 'number' }]
+    store.updateNodeConfig('source_1', { outputSchema: schema })
+    const byHandle = store.getUpstreamSchemaPerHandle('transform_1')
+    // edge e1 has no targetHandle, so key falls back to source id
+    expect(byHandle['source_1']).toEqual(schema)
   })
 
   it('publishWorkflow second update includes graph so status-only merge cannot restore old nodes', async () => {

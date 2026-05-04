@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import { applyNodeChanges, applyEdgeChanges } from '@vue-flow/core'
 import type { EdgeChange, GraphEdge, GraphNode, NodeChange } from '@vue-flow/core'
-import type { NodeType, NodeStatus } from '@/types'
+import type { NodeType, NodeStatus, SchemaField } from '@/types'
 import { builderNodesToWorkflowPayload, builderEdgesToWorkflowPayload } from '@/workflow/graphPayload'
 import { positionsForNodesMissingLayout } from '@/workflow/layoutFallback'
 import { useWorkflowsStore } from './workflows'
@@ -56,27 +56,37 @@ function isDemoWorkflowId(workflowId: string): boolean {
 }
 
 function nodeTypeToVueFlowType(type: NodeType): string {
+  if (type.startsWith('transform.')) return 'transformNode'
   switch (type) {
-    case 'connector.source':
-      return 'sourceNode'
-    case 'connector.destination':
-      return 'destinationNode'
-    case 'transform.map':
-      return 'transformNode'
-    case 'logic.branch':
-      return 'logicNode'
-    case 'trigger':
-      return 'sourceNode'
-    default:
-      return 'sourceNode'
+    case 'connector.source': return 'sourceNode'
+    case 'connector.destination': return 'destinationNode'
+    case 'logic.branch': return 'logicNode'
+    case 'trigger': return 'sourceNode'
+    default: return 'sourceNode'
   }
 }
 
+const TRANSFORM_DEFAULT_LABELS: Partial<Record<NodeType, string>> = {
+  'transform.map': 'Map Fields',
+  'transform.filter': 'Filter',
+  'transform.join': 'Join',
+  'transform.merge': 'Merge',
+  'transform.union': 'Union',
+  'transform.convert': 'Convert',
+  'transform.derive': 'Derive',
+  'transform.aggregate': 'Aggregate',
+  'transform.flatten': 'Flatten JSON',
+  'transform.lookup': 'Lookup',
+  'transform.validate': 'Validate',
+  'transform.cleanse': 'Cleanse',
+  'transform.code': 'Code Step',
+}
+
 function defaultLabelForType(type: NodeType): string {
-  const labels: Record<NodeType, string> = {
+  if (TRANSFORM_DEFAULT_LABELS[type]) return TRANSFORM_DEFAULT_LABELS[type]!
+  const labels: Partial<Record<NodeType, string>> = {
     'connector.source': 'Source',
     'connector.destination': 'Destination',
-    'transform.map': 'Transform',
     'logic.branch': 'Branch',
     trigger: 'Trigger',
   }
@@ -84,6 +94,9 @@ function defaultLabelForType(type: NodeType): string {
 }
 
 const sleep = (ms: number) => new Promise<void>((resolve) => setTimeout(resolve, ms))
+
+let _nodeIdSeq = 0
+let _edgeIdSeq = 0
 
 export interface NodeRunOutput {
   rowCount?: number
@@ -240,7 +253,13 @@ export const useBuilderStore = defineStore('builder', () => {
         status: 'pending' as NodeStatus,
       },
     }))
-    edges.value = def.edges.map((e) => ({ id: e.id, source: e.source, target: e.target }))
+    edges.value = def.edges.map((e) => ({
+      id: e.id,
+      source: e.source,
+      target: e.target,
+      ...(e.sourceHandle ? { sourceHandle: e.sourceHandle } : {}),
+      ...(e.targetHandle ? { targetHandle: e.targetHandle } : {}),
+    }))
   }
 
   async function discardPersistErrorAndReload(): Promise<void> {
@@ -318,13 +337,32 @@ export const useBuilderStore = defineStore('builder', () => {
     markDirty('structural')
   }
 
+  function getUpstreamSchema(nodeId: string): SchemaField[] {
+    const incomingEdges = edges.value.filter(e => e.target === nodeId)
+    const schemas = incomingEdges.flatMap(e => {
+      const sourceNode = nodes.value.find(n => n.id === e.source)
+      return (sourceNode?.data.config.outputSchema as SchemaField[] | undefined) ?? []
+    })
+    const seen = new Set<string>()
+    return schemas.filter(f => seen.has(f.name) ? false : (seen.add(f.name), true))
+  }
+
+  function getUpstreamSchemaPerHandle(nodeId: string): Record<string, SchemaField[]> {
+    const incomingEdges = edges.value.filter(e => e.target === nodeId)
+    return Object.fromEntries(incomingEdges.map(e => {
+      const src = nodes.value.find(n => n.id === e.source)
+      const schema = (src?.data.config.outputSchema as SchemaField[] | undefined) ?? []
+      return [e.targetHandle ?? e.source, schema]
+    }))
+  }
+
   function addNode(
     type: NodeType,
     position: { x: number; y: number },
     initialConfig: Record<string, unknown> = {},
     label?: string,
   ) {
-    const id = `node_${Date.now()}`
+    const id = `node_${Date.now()}_${++_nodeIdSeq}`
     nodes.value.push({
       id,
       type: nodeTypeToVueFlowType(type),
@@ -341,7 +379,7 @@ export const useBuilderStore = defineStore('builder', () => {
   }
 
   function addEdge(connection: { source: string; target: string; sourceHandle?: string | null; targetHandle?: string | null }) {
-    const id = `edge_${Date.now()}`
+    const id = `edge_${Date.now()}_${++_edgeIdSeq}`
     edges.value.push({
       id,
       source: connection.source,
@@ -444,6 +482,8 @@ export const useBuilderStore = defineStore('builder', () => {
     removeEdgesAndSave,
     updateNodePosition,
     updateNodeConfig,
+    getUpstreamSchema,
+    getUpstreamSchemaPerHandle,
     saveWorkflow,
     publishWorkflow,
     flushPendingGraph,
