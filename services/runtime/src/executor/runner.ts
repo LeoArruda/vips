@@ -1,24 +1,39 @@
 import type { WorkflowDefinition } from '@vipsos/workflow-schema'
+import type { TransformNodeType } from '@vipsos/workflow-schema'
 import { topoSort } from './graph.ts'
 import { getConnector } from '../connectors/registry.ts'
+import { TRANSFORM_EXECUTORS } from '../transforms/index.ts'
+import type { TransformContext } from '../transforms/index.ts'
+
+function toRecords(output: Record<string, unknown> | undefined): Record<string, unknown>[] {
+  if (!output) return []
+  if (Array.isArray(output.records)) return output.records as Record<string, unknown>[]
+  if (Array.isArray(output.rows)) return output.rows as Record<string, unknown>[]
+  if (Array.isArray(output.body)) return output.body as Record<string, unknown>[]
+  if (Array.isArray(output.data)) return output.data as Record<string, unknown>[]
+  return []
+}
 
 function deriveSchemaLog(output: Record<string, unknown>): string | null {
-  // HTTP body: array of objects → "Output: N records · field1 · field2"
+  if (Array.isArray(output.records)) {
+    if (output.records.length > 0 && typeof output.records[0] === 'object' && output.records[0] !== null) {
+      const fields = Object.keys(output.records[0] as object).join(' · ')
+      return `Output: ${output.records.length} records · ${fields}`
+    }
+    return `Output: ${output.records.length} records`
+  }
   if (Array.isArray(output.body) && output.body.length > 0 && typeof output.body[0] === 'object' && output.body[0] !== null) {
     const fields = Object.keys(output.body[0] as object).join(' · ')
     return `Output: ${output.body.length} records · ${fields}`
   }
-  // HTTP body: single object → "Output: 1 record · field1 · field2"
   if (output.body && typeof output.body === 'object' && !Array.isArray(output.body)) {
     const fields = Object.keys(output.body as object).join(' · ')
     return `Output: 1 record · ${fields}`
   }
-  // Postgres rows array
   if (Array.isArray(output.rows) && (output.rows as unknown[]).length > 0 && typeof (output.rows as unknown[])[0] === 'object') {
     const fields = Object.keys((output.rows as object[])[0]).join(' · ')
     return `Output: ${(output.rows as unknown[]).length} rows · ${fields}`
   }
-  // StatCan data array
   if (Array.isArray(output.data) && (output.data as unknown[]).length > 0) {
     return `Output: ${(output.data as unknown[]).length} records`
   }
@@ -57,9 +72,50 @@ export async function executeRun(definition: WorkflowDefinition, ctx: RunContext
   for (const node of sortedNodes) {
     await ctx.postLog(node.id, 'info', `Starting node: ${node.label}`)
 
+    if (node.type.startsWith('transform.')) {
+      const fn = TRANSFORM_EXECUTORS[node.type as TransformNodeType]
+      if (!fn) {
+        await ctx.postLog(node.id, 'error', `Unknown transform type: ${node.type}`)
+        await ctx.patchRun({ status: 'failed', finished_at: new Date().toISOString() })
+        return
+      }
+
+      const incomingEdges = executableEdges.filter(e => e.target === node.id)
+      const leftEdge = incomingEdges.find(e => e.targetHandle === 'input-left') ?? incomingEdges[0]
+      const leftRecords = leftEdge ? toRecords(outputs.get(leftEdge.source)) : []
+
+      const augmentedConfig: Record<string, unknown> = {
+        ...node.config,
+        _upstreamNodeIds: incomingEdges.map(e => ({
+          source: e.source,
+          handle: e.targetHandle ?? (e === leftEdge ? 'input-left' : 'input-right'),
+        })),
+      }
+
+      const transformCtx: TransformContext = {
+        log: (level, msg) => { void ctx.postLog(node.id, level, msg) },
+        getNodeOutput: (nodeId) => toRecords(outputs.get(nodeId)),
+      }
+
+      let transformOutput: Record<string, unknown>[]
+      try {
+        transformOutput = await fn(leftRecords, augmentedConfig, transformCtx)
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err)
+        await ctx.postLog(node.id, 'error', `Transform failed: ${msg}`)
+        await ctx.patchRun({ status: 'failed', finished_at: new Date().toISOString() })
+        return
+      }
+
+      outputs.set(node.id, { records: transformOutput })
+      const schemaLine = deriveSchemaLog({ records: transformOutput })
+      if (schemaLine) await ctx.postLog(node.id, 'info', schemaLine)
+      await ctx.postLog(node.id, 'info', `Node completed successfully`)
+      continue
+    }
+
     // connectorType must be set explicitly in node.config — node.type values like
-    // 'connector.source' are UI categories, not connector IDs. Nodes without
-    // config.connectorType will fail here with a clear error rather than silently skip.
+    // 'connector.source' are UI categories, not connector IDs.
     const connectorType = node.config.connectorType as string | undefined
     if (!connectorType) {
       await ctx.postLog(node.id, 'error', `Node "${node.label}" has no config.connectorType — set it to "http-rest", "postgres", or "statcan"`)
@@ -75,9 +131,7 @@ export async function executeRun(definition: WorkflowDefinition, ctx: RunContext
     }
 
     const inputs: Record<string, unknown> = {}
-    for (const [id, output] of outputs) {
-      inputs[id] = output
-    }
+    for (const [id, output] of outputs) inputs[id] = output
 
     const secrets: Record<string, string> = {}
     if (process.env.POSTGRES_CONNECTION_STRING) {
@@ -100,11 +154,8 @@ export async function executeRun(definition: WorkflowDefinition, ctx: RunContext
     }
 
     outputs.set(node.id, result.output)
-
-    // Log a structured schema line so the frontend can surface field names in the node Output tab
     const schemaLine = deriveSchemaLog(result.output)
     if (schemaLine) await ctx.postLog(node.id, 'info', schemaLine)
-
     await ctx.postLog(node.id, 'info', `Node completed successfully`)
   }
 
