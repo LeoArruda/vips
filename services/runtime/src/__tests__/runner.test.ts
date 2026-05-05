@@ -68,4 +68,27 @@ describe('executeRun', () => {
     const n2Log = logs.find((l) => l.nodeId === 'n2' && l.message.includes('Starting'))
     expect(n2Log).toBeUndefined()
   })
+
+  it('executes chained transform nodes (map → filter) and reaches success', async () => {
+    const { ctx, patches } = makeContext()
+    const def = makeDefinition([
+      { id: 'map', type: 'transform.map' as const, label: 'Map', config: {} },
+      { id: 'filter', type: 'transform.filter' as const, label: 'Filter', config: { conditions: [], logic: 'AND' } },
+    ], [{ id: 'e1', source: 'map', target: 'filter' }])
+
+    await executeRun(def, ctx)
+
+    const successPatch = patches.find(p => p.status === 'success')
+    expect(successPatch).toBeTruthy()
+  })
+
+  it('executes a standalone transform node with no upstream and reaches success', async () => {
+    const { ctx, patches } = makeContext()
+    const def = makeDefinition([
+      { id: 'n1', type: 'transform.map' as const, label: 'Map', config: {} },
+    ])
+    await executeRun(def, ctx)
+    const lastPatch = patches[patches.length - 1]
+    expect(lastPatch.status).toBe('success')
+  })
 })
